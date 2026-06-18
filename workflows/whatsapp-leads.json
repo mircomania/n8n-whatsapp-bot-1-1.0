@@ -1,0 +1,2453 @@
+{
+  "name": "whatsapp-leads",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "206fe8eb-8eff-4b54-8a3b-432a6f42ad85",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": "={{ true }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -720,
+        -112
+      ],
+      "id": "b5fbd85a-4766-4dbd-8eaa-aadb8ee6703f",
+      "name": "¿Usuario existe?"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "leads",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefono",
+              "condition": "eq",
+              "keyValue": "={{ $json.telefono }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -912,
+        -112
+      ],
+      "id": "95674975-03a5-4fc6-9b41-9f79addfef97",
+      "name": "Revisar tabla",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "telefono"
+            },
+            {
+              "name": "mensaje"
+            },
+            {
+              "name": "tipo"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1296,
+        -112
+      ],
+      "id": "21716d62-77b3-4d5b-88f1-a3776b469951",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.etapa }}",
+                    "rightValue": "estado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "6d28761a-aded-4b59-b8e3-697c7c1c639b"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "360918e8-bb10-4759-b3f0-3e6155045373",
+                    "leftValue": "={{ $json.etapa }}",
+                    "rightValue": "trabajo",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "e22bd7f7-a5d6-4226-82e8-54273c821654",
+                    "leftValue": "={{ $json.etapa }}",
+                    "rightValue": "subcuenta",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "82b5f1b4-cc80-4f43-9b4b-ebe47ec27cbe",
+                    "leftValue": "={{ $json.etapa }}",
+                    "rightValue": "calificado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "60ec1af1-f006-42c8-b135-7b1f8513986b",
+                    "leftValue": "={{ $json.etapa }}",
+                    "rightValue": "fin",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "400e20ac-0deb-44ec-b64a-2c47b32644ee",
+                    "leftValue": "={{ $json.etapa }}",
+                    "rightValue": "re_cita",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        432,
+        -384
+      ],
+      "id": "997c2ea5-6ef5-472d-b099-65edf8546458",
+      "name": "¿Etapa?"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "estado",
+              "fieldValue": "=estado de mexico"
+            },
+            {
+              "fieldId": "etapa",
+              "fieldValue": "trabajo"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        816,
+        -768
+      ],
+      "id": "3d10937a-9ab0-4c29-96fc-0e339a1d42be",
+      "name": "Estado de mexico",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "estado",
+              "fieldValue": "=ciudad de mexico"
+            },
+            {
+              "fieldId": "etapa",
+              "fieldValue": "trabajo"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        816,
+        -912
+      ],
+      "id": "7d1e2bf3-2dfc-4c2c-b0a4-4649b330c26e",
+      "name": "Ciudad de mexico",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "estado",
+              "fieldValue": "=nuevo leon"
+            },
+            {
+              "fieldId": "etapa",
+              "fieldValue": "trabajo"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        816,
+        -1056
+      ],
+      "id": "8b5246e4-765f-47b7-9ec5-8c77f0aefc50",
+      "name": "Nuevo leon",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "mensaje_original",
+              "fieldValue": "={{ $('Obtener datos').item.json.mensaje }}"
+            },
+            {
+              "fieldId": "ultima_interaccion",
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -336,
+        -320
+      ],
+      "id": "1e2c44a4-df8b-4a18-8be7-d41c8938d829",
+      "name": "Guardar Mensaje",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "calificado",
+              "fieldValue": "false"
+            },
+            {
+              "fieldId": "etapa",
+              "fieldValue": "rechazado"
+            },
+            {
+              "fieldId": "motivo_rechazo",
+              "fieldValue": "estado"
+            },
+            {
+              "fieldId": "estado",
+              "fieldValue": "otro"
+            },
+            {
+              "fieldId": "fecha_reset",
+              "fieldValue": "={{ new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        816,
+        -624
+      ],
+      "id": "8a7f4501-118d-4964-9c8d-f17f32b1462f",
+      "name": "Otro",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "estado_1",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "bf24eedc-2036-4df0-bb75-9d93ddd25df2"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5a8a0b0b-a886-41bc-8374-4fa53b0091a4",
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "estado_2",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "696ebda9-221f-4b69-bb7e-9246f5047f38",
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "estado_3",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "b7b647f9-30bb-4409-ba90-5d1176ecc774",
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "estado_4",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        624,
+        -928
+      ],
+      "id": "6da9379f-9bcd-4a80-a397-49f092e87dc3",
+      "name": "Estado"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "trabajo_si",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "bf24eedc-2036-4df0-bb75-9d93ddd25df2"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5a8a0b0b-a886-41bc-8374-4fa53b0091a4",
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "trabajo_no",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1504,
+        -384
+      ],
+      "id": "49320b29-02f5-4da2-9105-4ac2afde397e",
+      "name": "Trabajo"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "calificado",
+              "fieldValue": "false"
+            },
+            {
+              "fieldId": "etapa",
+              "fieldValue": "rechazado"
+            },
+            {
+              "fieldId": "motivo_rechazo",
+              "fieldValue": "trabajo"
+            },
+            {
+              "fieldId": "tiempo_trabajo",
+              "fieldValue": "no"
+            },
+            {
+              "fieldId": "fecha_reset",
+              "fieldValue": "={{ new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1696,
+        -368
+      ],
+      "id": "ffe56796-c9f8-4b5f-8511-72d922ec35bf",
+      "name": "No trabajo",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "tiempo_trabajo",
+              "fieldValue": "=si"
+            },
+            {
+              "fieldId": "etapa",
+              "fieldValue": "subcuenta"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1696,
+        -512
+      ],
+      "id": "435b8420-b3ac-4d6c-bb84-029824e7a30b",
+      "name": "Si trabajo",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "subcuenta_si",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "bf24eedc-2036-4df0-bb75-9d93ddd25df2"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5a8a0b0b-a886-41bc-8374-4fa53b0091a4",
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "subcuenta_no",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        624,
+        -64
+      ],
+      "id": "e616980b-544f-4add-b65c-3917da6513a8",
+      "name": "Subcuenta"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "subcuenta",
+              "fieldValue": "=si"
+            },
+            {
+              "fieldId": "etapa",
+              "fieldValue": "calificado"
+            },
+            {
+              "fieldId": "calificado",
+              "fieldValue": "true"
+            },
+            {
+              "fieldId": "fecha_calificado",
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        816,
+        -192
+      ],
+      "id": "5abbeea5-46b1-409a-a106-cbcec6cd6788",
+      "name": "Si subcuenta",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "calificado",
+              "fieldValue": "false"
+            },
+            {
+              "fieldId": "etapa",
+              "fieldValue": "rechazado"
+            },
+            {
+              "fieldId": "motivo_rechazo",
+              "fieldValue": "subcuenta"
+            },
+            {
+              "fieldId": "subcuenta",
+              "fieldValue": "no"
+            },
+            {
+              "fieldId": "fecha_reset",
+              "fieldValue": "={{ new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        816,
+        -48
+      ],
+      "id": "75968e57-f900-4f83-9675-0255ed83d6d1",
+      "name": "No subcuenta",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ec5ca074-128d-4878-88e5-7e7931a9b862",
+              "leftValue": "={{ $('Revisar tabla').item.json.estado }}",
+              "rightValue": "nuevo leon",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1008,
+        -192
+      ],
+      "id": "f36f584c-ad58-4ce3-b145-13740a1555c2",
+      "name": "¿Estado?"
+    },
+    {
+      "parameters": {
+        "tableId": "leads",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "telefono",
+              "fieldValue": "={{ $('Obtener datos').item.json.telefono }}"
+            },
+            {
+              "fieldId": "etapa",
+              "fieldValue": "estado"
+            },
+            {
+              "fieldId": "mensaje_original",
+              "fieldValue": "={{ $('Obtener datos').item.json.mensaje }}"
+            },
+            {
+              "fieldId": "ultima_interaccion",
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        240,
+        -96
+      ],
+      "id": "ff2d474c-9708-4c66-93a8-99296b8e07d4",
+      "name": "Crear tabla",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cf470d51-cb10-4017-91c6-b2b3c4e5457a",
+              "name": "telefono",
+              "value": "={{ $json.telefono }}",
+              "type": "string"
+            },
+            {
+              "id": "796bd800-d464-4c48-a70e-13fbb1f83608",
+              "name": "mensaje",
+              "value": "={{ $json.mensaje }}",
+              "type": "string"
+            },
+            {
+              "id": "e0db4e8a-8b07-475e-95ff-7f559c23b80c",
+              "name": "tipo",
+              "value": "={{ $json.tipo }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1104,
+        -112
+      ],
+      "id": "36bd9b01-a775-4322-a6fd-1121032a04b0",
+      "name": "Obtener datos"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "cita_si",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "bf24eedc-2036-4df0-bb75-9d93ddd25df2"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5a8a0b0b-a886-41bc-8374-4fa53b0091a4",
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "cita_no",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        624,
+        496
+      ],
+      "id": "5edc54fc-61d7-44db-bfc3-a1c4ad97b42c",
+      "name": "calificado"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "etapa",
+              "fieldValue": "cita"
+            },
+            {
+              "fieldId": "fecha_cita",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "fecha_reset",
+              "fieldValue": "={{ new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        816,
+        368
+      ],
+      "id": "5a942734-d63f-4251-bdca-8dd4af439f8c",
+      "name": "Si cita",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "etapa",
+              "fieldValue": "fin"
+            },
+            {
+              "fieldId": "motivo_rechazo",
+              "fieldValue": "rechaza_cita"
+            },
+            {
+              "fieldId": "fecha_fin",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "fecha_reset",
+              "fieldValue": "={{ new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        816,
+        512
+      ],
+      "id": "7acb1c8f-8c0e-4bbe-beee-4e480c4fe4a7",
+      "name": "No cita",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "cita_si",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "bf24eedc-2036-4df0-bb75-9d93ddd25df2"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5a8a0b0b-a886-41bc-8374-4fa53b0091a4",
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "cita_no",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        624,
+        1024
+      ],
+      "id": "223f0ee2-fa17-4580-9c9f-16a4ef75a723",
+      "name": "Re cita"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "etapa",
+              "fieldValue": "re_cita"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        624,
+        800
+      ],
+      "id": "20a8fd7c-8201-47e1-9228-2368fbf33d52",
+      "name": "Fin",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"list\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"📍 Ubicación\"\n    },\n    \"body\": {\n      \"text\": \"Hola 👋\\n\\nPara verificar si podemos ayudarte, selecciona el estado donde vives.\"\n    },\n    \"action\": {\n      \"button\": \"Elegir estado\",\n      \"sections\": [\n        {\n          \"title\": \"Estados disponibles\",\n          \"rows\": [\n            {\n              \"id\": \"estado_1\",\n              \"title\": \"Nuevo León\"\n            },\n            {\n              \"id\": \"estado_2\",\n              \"title\": \"CDMX\"\n            },\n            {\n              \"id\": \"estado_3\",\n              \"title\": \"Estado de México\"\n            },\n            {\n              \"id\": \"estado_4\",\n              \"title\": \"Otro\"\n            }\n          ]\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        432,
+        -96
+      ],
+      "id": "3e199f34-db9e-402c-8790-250146a67d4c",
+      "name": "Pregunta estado",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "18ZdsyhqGzQY3wkl",
+          "name": "Bearer Auth account"
+        },
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"💼 Situación laboral\"\n    },\n    \"body\": {\n      \"text\": \"Perfecto 👍\\n\\nAhora necesitamos saber un poco más sobre tu situación laboral.\\n\\n¿Actualmente trabajas desde hace más de 3 meses?\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"trabajo_si\",\n            \"title\": \"Sí\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"trabajo_no\",\n            \"title\": \"No\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1008,
+        -912
+      ],
+      "id": "ca751d9c-cf0a-4518-b92b-749ec60dc424",
+      "name": "Pregunta trabajo",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"list\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"⚠️ Respuesta inválida\"\n    },\n    \"body\": {\n      \"text\": \"Por favor selecciona una de las opciones disponibles para continuar.\\n\\n¿De qué estado eres?\"\n    },\n    \"action\": {\n      \"button\": \"Seleccionar estado\",\n      \"sections\": [\n        {\n          \"title\": \"Estados disponibles\",\n          \"rows\": [\n            {\n              \"id\": \"estado_1\",\n              \"title\": \"Nuevo León\"\n            },\n            {\n              \"id\": \"estado_2\",\n              \"title\": \"CDMX\"\n            },\n            {\n              \"id\": \"estado_3\",\n              \"title\": \"Estado de México\"\n            },\n            {\n              \"id\": \"estado_4\",\n              \"title\": \"Otro\"\n            }\n          ]\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        816,
+        -480
+      ],
+      "id": "9e28b73c-3d4b-4d73-bd7f-2a2c80dac73f",
+      "name": "RE pregunta estado",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"preview_url\": false,\n    \"body\": \"❌ Lo sentimos\\n\\nActualmente solo podemos atender solicitudes de Nuevo León, CDMX y Estado de México.\\n\\nGracias por tu interés.\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1008,
+        -624
+      ],
+      "id": "42750767-bd8d-4462-b7f1-1401212c8999",
+      "name": "Final estado",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"🏦 Subcuenta de vivienda\"\n    },\n    \"body\": {\n      \"text\": \"Excelente 👍\\n\\nAhora necesitamos validar un requisito adicional.\\n\\n¿Tienes más de $33,500 MXN acumulados en tu subcuenta de vivienda?\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"subcuenta_si\",\n            \"title\": \"Sí\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"subcuenta_no\",\n            \"title\": \"No\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1888,
+        -512
+      ],
+      "id": "c2a9a621-1a0e-48b7-ad21-228a713f40f5",
+      "name": "Pregunta subcuenta",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"preview_url\": false,\n    \"body\": \"Gracias por tu interés 🙏\\n\\nPor el momento no cumples con los requisitos mínimos para continuar con el proceso de precalificación.\\n\\nTe recomendamos volver a intentarlo una vez que tengas más de 3 meses de antigüedad laboral.\\n\\n¡Mucho éxito!\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1888,
+        -368
+      ],
+      "id": "2a554152-3061-478c-aced-51386ae37f4a",
+      "name": "Final trabajo",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"⚠️ Respuesta inválida\"\n    },\n    \"body\": {\n      \"text\": \"Por favor selecciona una de las opciones disponibles.\\n\\n¿Actualmente trabajas desde hace más de 3 meses?\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"trabajo_si\",\n            \"title\": \"Sí\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"trabajo_no\",\n            \"title\": \"No\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1696,
+        -208
+      ],
+      "id": "c7f612f7-e0e0-4419-a9d5-6252ce1dfb39",
+      "name": "RE pregunta trabajo",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"🎉 ¡Felicidades!\"\n    },\n    \"body\": {\n      \"text\": \"Has sido precalificado para continuar con tu trámite de Mejoravit ✅\\n\\nContamos con una oficina cercana para ayudarte a completar el proceso.\\n\\n📍 Emilio Carranza 732, Centro, 64000 Monterrey, N.L., Mexico\\n🔗 https://maps.app.goo.gl/DqNuJYyNmZsq6MN36\\n\\n¿Te gustaría agendar una cita con uno de nuestros asesores?\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"cita_si\",\n            \"title\": \"Agendar cita\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"cita_no\",\n            \"title\": \"Más tarde\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1200,
+        -272
+      ],
+      "id": "0940d69b-c936-47ac-959c-53525e32b2dd",
+      "name": "Pregunta cita NL",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"🎉 ¡Felicidades!\"\n    },\n    \"body\": {\n      \"text\": \"Has sido precalificado para continuar con tu trámite de Mejoravit ✅\\n\\nContamos con una oficina cercana para ayudarte a completar el proceso.\\n\\n📍 Av. Primero de Mayo 15-Piso 12 , Oficina 1220, Naucalpan, 53500 Naucalpan de Juárez, Méx., Mexico\\n🔗 https://maps.app.goo.gl/ZAmSm74pfXTpxFTN9\\n\\n¿Te gustaría agendar una cita con uno de nuestros asesores?\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"cita_si\",\n            \"title\": \"Agendar cita\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"cita_no\",\n            \"title\": \"Más tarde\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1200,
+        -112
+      ],
+      "id": "d02f5176-d3dc-497e-a53b-c461fb7b6594",
+      "name": "Pregunta cita MX",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"preview_url\": false,\n    \"body\": \"Gracias por tu interés 🙏\\n\\nActualmente no cuentas con el saldo mínimo requerido en tu subcuenta de vivienda para continuar con el proceso.\\n\\nCuando tu saldo sea mayor a $33,500 MXN podrás volver a iniciar tu precalificación.\\n\\n¡Te esperamos!\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1008,
+        -48
+      ],
+      "id": "909f37f6-1b2b-4fc7-a2c7-4bd0d32b539c",
+      "name": "Final subcuenta",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"⚠️ Respuesta inválida\"\n    },\n    \"body\": {\n      \"text\": \"Por favor selecciona una de las opciones disponibles.\\n\\n¿Tienes más de $33,500 MXN acumulados en tu subcuenta de vivienda?\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"subcuenta_si\",\n            \"title\": \"Sí\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"subcuenta_no\",\n            \"title\": \"No\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        816,
+        96
+      ],
+      "id": "4b4c2597-056e-4174-821f-6933b57b6c58",
+      "name": "RE pregunta subcuenta",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"📅 Agendar cita\"\n    },\n    \"body\": {\n      \"text\": \"¡Hola de nuevo! 👋\\n\\nVemos que anteriormente completaste tu precalificación.\\n\\n¿Cambiaste de opinión y te gustaría agendar una cita para continuar con tu trámite?\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"cita_si\",\n            \"title\": \"Sí\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"cita_no\",\n            \"title\": \"No\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        816,
+        800
+      ],
+      "id": "0e524b2f-b6fe-4ebf-b9e9-668d15290261",
+      "name": "Pregunta re cita",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"⚠️ Respuesta inválida\"\n    },\n    \"body\": {\n      \"text\": \"Por favor selecciona una de las opciones disponibles.\\n\\n¿Te gustaría agendar una cita para continuar con tu trámite?\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"cita_si\",\n            \"title\": \"Sí\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"cita_no\",\n            \"title\": \"No\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        816,
+        656
+      ],
+      "id": "18facfcc-5676-4b87-bca8-f89e18ccdf3b",
+      "name": "RE pregunta calificado",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"preview_url\": false,\n    \"body\": \"👍 Entendido.\\n\\nTu precalificación quedó registrada correctamente.\\n\\nSi más adelante decides continuar con tu trámite, estaremos encantados de ayudarte.\\n\\n📞 Puedes volver a contactarnos cuando lo necesites.\\n\\n¡Que tengas un excelente día!\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1008,
+        512
+      ],
+      "id": "57ed79af-80f1-4b38-9de0-0edcb641cd4f",
+      "name": "Final calificado",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"528126023798\",\n  \"type\": \"text\",\n  \"text\": {\n    \"preview_url\": false,\n    \"body\": \"📅 NUEVA CITA SOLICITADA\\n\\n📞 Teléfono: {{ $('Revisar tabla').item.json.telefono }}\\n📍 Estado: {{ $('Revisar tabla').item.json.estado }}\\n\\nEl cliente desea agendar una cita.\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1200,
+        368
+      ],
+      "id": "b34307ed-307c-46ee-bb4c-de6488b19868",
+      "name": "Aviso agente",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"preview_url\": false,\n    \"body\": \"🎉 ¡Excelente!\\n\\nTu solicitud ha sido preaprobada correctamente.\\n\\n📞 Uno de nuestros asesores se pondrá en contacto contigo en breve para confirmar tu cita y ayudarte a finalizar el proceso.\\n\\nGracias por tu interés. ¡Estamos listos para ayudarte a obtener tu Mejoravit!\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1008,
+        368
+      ],
+      "id": "7f53d957-a54d-4441-ad11-6c427c74b7a9",
+      "name": "Espera agente",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "etapa",
+              "fieldValue": "estado"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        240,
+        -464
+      ],
+      "id": "8c3dc23c-2b6b-478c-8855-0a0522f5890e",
+      "name": "Reset estado",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "5c1a4019-d7a4-4b7d-8277-bae50ac9a1bb",
+              "leftValue": "={{ new Date($json.fecha_reset) < new Date() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        48,
+        -336
+      ],
+      "id": "a31aa307-4d67-431e-9742-d0b4d3e46248",
+      "name": "¿Debe reiniciarse?"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "d36c36b2-5db9-4faa-9c08-ff97b8d9dcc6",
+              "leftValue": "={{ $json.fecha_reset }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -144,
+        -320
+      ],
+      "id": "1a7d07e9-78c2-4039-8d3c-5391ab03f215",
+      "name": "¿Tiene fecha reset?"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4a79987c-a6ce-4ed1-81ec-d66553e6938f",
+              "leftValue": "={{ (new Date() - new Date($json.ultima_interaccion)) < 1500 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -528,
+        -336
+      ],
+      "id": "ed8e37f9-9c39-40a8-9237-8b7a0e808dfe",
+      "name": "¿Muy rapido?"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "¿Usuario existe?": {
+      "main": [
+        [
+          {
+            "node": "¿Muy rapido?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Crear tabla",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Revisar tabla": {
+      "main": [
+        [
+          {
+            "node": "¿Usuario existe?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Obtener datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Etapa?": {
+      "main": [
+        [
+          {
+            "node": "Estado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Trabajo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Subcuenta",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "calificado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fin",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Re cita",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nuevo leon": {
+      "main": [
+        [
+          {
+            "node": "Pregunta trabajo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ciudad de mexico": {
+      "main": [
+        [
+          {
+            "node": "Pregunta trabajo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Estado de mexico": {
+      "main": [
+        [
+          {
+            "node": "Pregunta trabajo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar Mensaje": {
+      "main": [
+        [
+          {
+            "node": "¿Tiene fecha reset?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Otro": {
+      "main": [
+        [
+          {
+            "node": "Final estado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Estado": {
+      "main": [
+        [
+          {
+            "node": "Nuevo leon",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ciudad de mexico",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Estado de mexico",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Otro",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "RE pregunta estado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trabajo": {
+      "main": [
+        [
+          {
+            "node": "Si trabajo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No trabajo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "RE pregunta trabajo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No trabajo": {
+      "main": [
+        [
+          {
+            "node": "Final trabajo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Si trabajo": {
+      "main": [
+        [
+          {
+            "node": "Pregunta subcuenta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Subcuenta": {
+      "main": [
+        [
+          {
+            "node": "Si subcuenta",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No subcuenta",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "RE pregunta subcuenta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Si subcuenta": {
+      "main": [
+        [
+          {
+            "node": "¿Estado?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No subcuenta": {
+      "main": [
+        [
+          {
+            "node": "Final subcuenta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Estado?": {
+      "main": [
+        [
+          {
+            "node": "Pregunta cita NL",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Pregunta cita MX",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crear tabla": {
+      "main": [
+        [
+          {
+            "node": "Pregunta estado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener datos": {
+      "main": [
+        [
+          {
+            "node": "Revisar tabla",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "calificado": {
+      "main": [
+        [
+          {
+            "node": "Si cita",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No cita",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "RE pregunta calificado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No cita": {
+      "main": [
+        [
+          {
+            "node": "Final calificado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Si cita": {
+      "main": [
+        [
+          {
+            "node": "Espera agente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Re cita": {
+      "main": [
+        [
+          {
+            "node": "Si cita",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No cita",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "RE pregunta calificado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fin": {
+      "main": [
+        [
+          {
+            "node": "Pregunta re cita",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Espera agente": {
+      "main": [
+        [
+          {
+            "node": "Aviso agente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reset estado": {
+      "main": [
+        [
+          {
+            "node": "Pregunta estado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Debe reiniciarse?": {
+      "main": [
+        [
+          {
+            "node": "Reset estado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "¿Etapa?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Tiene fecha reset?": {
+      "main": [
+        [
+          {
+            "node": "¿Debe reiniciarse?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "¿Etapa?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Muy rapido?": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Guardar Mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "b3329c03-de6f-4d72-af62-3448a8f6afce",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "bf168903a33cfec42ff3ec307c6b8d46610847bf94dc4be799c84e8be60878c0"
+  },
+  "id": "4grFx6GCtkfCtebO",
+  "tags": []
+}

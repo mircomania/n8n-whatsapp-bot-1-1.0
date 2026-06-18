@@ -1,0 +1,21 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.*
+
+# n8n local database
+database.sqlite
+database.sqlite-shm
+database.sqlite-wal
+
+# Credentials exports (si algún día exportas credenciales)
+credentials*.json

@@ -1,0 +1,6 @@
+docker run -d `
+--name n8n `
+-p 5678:5678 `
+-v C:\Users\Mircomania\.n8n:/home/node/.n8n `
+-e WEBHOOK_URL=https://drank-twelve-finale.ngrok-free.dev `
+n8nio/n8n
