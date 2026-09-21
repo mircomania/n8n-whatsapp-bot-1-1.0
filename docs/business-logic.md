@@ -1,129 +1,61 @@
-# Lógica de Negocio
+# Lógica de negocio
 
-## Identificación
+## Identificación y estado
 
-Cada lead se identifica principalmente mediante su número de WhatsApp.
+Cada lead se identifica por su número de WhatsApp. Antes de interpretar una respuesta, el workflow consulta `public.leads` para recuperar su etapa, datos y `fecha_reset`.
 
-Antes de procesar una respuesta se consulta Supabase para determinar:
+La etapa persistida determina el significado de la siguiente respuesta. Una respuesta nunca debe interpretarse solo por su contenido sin considerar esa etapa.
 
-- Si el usuario existe.
-- Su etapa actual.
-- Sus datos almacenados.
-- Su fecha de reset.
-
-## Nuevo usuario
+## Lead nuevo
 
 Si el teléfono no existe:
 
-1. Crear registro.
-2. Guardar teléfono.
-3. Guardar mensaje original.
-4. Establecer etapa inicial `estado`.
-5. Enviar pregunta de ubicación.
+1. Se crea el registro.
+2. Se guardan el teléfono y el mensaje original.
+3. Se establece la etapa inicial `estado`.
+4. Se envía la primera pregunta.
 
-## Etapa: estado
+La restricción única existente sobre `telefono` evita dos registros no nulos con el mismo teléfono, pero no evita procesar dos veces un mensaje.
 
-Opciones:
+## Etapas de precalificación
 
-- Nuevo León.
-- CDMX.
-- Estado de México.
-- Otro.
+### `estado`
 
-Si selecciona uno de los estados admitidos:
+Las opciones admitidas incluyen Nuevo León, Ciudad de México y Estado de México. Una opción admitida se guarda y avanza a `trabajo`. La opción “Otro” lleva a `rechazado`, registra `motivo_rechazo = estado` y establece una fecha de reset. Una respuesta inválida vuelve a solicitar la selección.
 
-- Guardar estado.
-- Cambiar etapa a `trabajo`.
-- Enviar siguiente pregunta.
+### `trabajo`
 
-Si selecciona Otro:
+Se comprueba el tiempo mínimo exigido por el proceso comercial. Si cumple, se guarda la respuesta y avanza a `subcuenta`. Si no, pasa a `rechazado`, registra el motivo y establece una fecha de reset.
 
-- Marcar como rechazado.
-- motivo_rechazo = estado.
-- Establecer fecha_reset.
-- Enviar mensaje de rechazo.
+### `subcuenta`
 
-Las respuestas no válidas no avanzan la etapa.
+Se comprueba el requisito mínimo de subcuenta de vivienda. Si cumple, continúa hacia la calificación y el flujo de cita; si no, se rechaza con su motivo y fecha de reset.
 
-## Etapa: trabajo
+### `calificado` y `re_cita`
 
-Se verifica si el usuario cumple con el tiempo mínimo de trabajo definido por el proceso comercial.
+El usuario puede solicitar o rechazar una cita. Una solicitud registra el avance, envía una confirmación y activa el aviso al agente. Un rechazo finaliza la ruta correspondiente y permite una reactivación posterior conforme al reset.
 
-Si cumple:
+### `cita`, `fin` y `rechazado`
 
-- Guardar respuesta.
-- Avanzar a `subcuenta`.
+Son estados de resultado o espera observados en los datos. La reactivación no ocurre necesariamente en el momento exacto de vencer la fecha; se evalúa en la siguiente interacción.
 
-Si no cumple:
+## Reset: comportamiento actual
 
-- etapa = rechazado.
-- motivo_rechazo = trabajo.
-- Establecer fecha_reset.
+- Para rechazos se configura un reset de 24 horas.
+- Para estados finales de cita/fin se utiliza el periodo configurado en el workflow.
+- Si `fecha_reset` existe y es anterior a la hora actual, se ejecuta `Reset estado`.
+- La implementación exportada solo actualiza `etapa = estado`.
 
-## Etapa: subcuenta
+La limpieza de `fecha_reset` y de otros campos de una precalificación anterior **no está implementada** en ese nodo. Debe definirse qué información se reinicia y cuál se conserva antes de corregirlo en v1.1. Una fecha vencida en la base no demuestra por sí sola un fallo, porque la comprobación depende de una nueva interacción.
 
-Se verifica si el usuario cumple el requisito mínimo definido para su subcuenta de vivienda.
+## Protección temporal actual
 
-Si cumple:
+El workflow compara `ultima_interaccion` y descarta interacciones con menos de 1500 ms de separación. Este control reduce respuestas rápidas destinadas a una etapa anterior, pero no es idempotencia: no usa `wamid`, no resuelve carreras y no garantiza entrega única de mensajes o avisos.
 
-- Marcar avance de precalificación.
-- Continuar al flujo de cita.
+## Derivación humana
 
-Si no cumple:
+La ruta actual de cita incluye `Si cita -> Espera agente -> Aviso agente`. v1.1 debe asegurar que una respuesta duplicada no produzca varios avisos y que una notificación fallida pueda recuperarse después de registrar la cita.
 
-- etapa = rechazado.
-- motivo_rechazo = subcuenta.
-- Establecer fecha_reset.
+## Evolución con IA
 
-## Etapa: cita
-
-El usuario puede:
-
-- Solicitar cita.
-- Rechazar cita.
-
-Si solicita cita:
-
-- Registrar intención.
-- Notificar al agente.
-- Informar al usuario que será contactado.
-
-Si no desea cita:
-
-- Finalizar el flujo correspondiente.
-- Permitir una futura reactivación según las reglas de reset.
-
-## Reset
-
-Los usuarios pueden volver a comenzar el proceso después de determinado tiempo.
-
-Reglas actuales:
-
-- Rechazados: reset después de 24 horas.
-- Estados finales correspondientes a cita/fin: reset después del periodo configurado.
-
-La fecha se almacena en:
-
-`fecha_reset`
-
-Antes de procesar la etapa se comprueba si:
-
-`fecha_reset < fecha actual`
-
-Si corresponde reiniciar:
-
-- Limpiar o actualizar los campos necesarios.
-- Regresar a la etapa inicial.
-- Comenzar nuevamente la precalificación.
-
-## Anti-spam
-
-Se utiliza `ultima_interaccion` para evitar procesar múltiples mensajes enviados en un intervalo extremadamente corto.
-
-El objetivo es impedir que respuestas repetidas destinadas a una etapa anterior sean procesadas después de que el usuario haya avanzado a una nueva etapa.
-
-## Regla fundamental
-
-La etapa almacenada en Supabase determina qué significa la siguiente respuesta del usuario.
-
-Nunca se debe interpretar una respuesta únicamente por su contenido sin considerar la etapa actual.
+Una futura capa de IA podrá complementar la atención, pero no sustituir sin controles las reglas deterministas de precalificación. El diseño deberá hacer explícitos los límites y la transferencia entre automatización, IA y agente humano.

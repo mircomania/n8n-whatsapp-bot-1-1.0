@@ -1,65 +1,76 @@
 # Roadmap
 
-## v1.0 — MVP
+## v1.0 — MVP completado
 
-- [x] Configurar n8n mediante Docker.
-- [x] Integrar WhatsApp Cloud API.
-- [x] Configurar webhook de Meta.
-- [x] Crear workflow receptor.
-- [x] Crear workflow principal.
-- [x] Integrar Supabase.
-- [x] Registrar nuevos leads.
-- [x] Implementar sistema de etapas.
-- [x] Implementar listas interactivas.
-- [x] Implementar botones interactivos.
-- [x] Validar respuestas.
-- [x] Implementar rechazo por estado.
-- [x] Implementar rechazo por situación laboral.
-- [x] Implementar rechazo por subcuenta.
-- [x] Implementar flujo de cita.
-- [x] Implementar derivación a agente.
-- [x] Implementar fecha de reset.
-- [x] Implementar protección básica contra spam.
-- [x] Configurar credenciales de Meta.
-- [x] Realizar pruebas con tráfico real.
-- [x] Versionar workflows mediante GitHub.
+- [x] Ejecutar n8n localmente mediante Docker.
+- [x] Integrar WhatsApp Cloud API y el webhook de Meta.
+- [x] Crear el workflow receptor y el workflow principal.
+- [x] Integrar `public.leads` de Supabase.
+- [x] Registrar leads y persistir su etapa.
+- [x] Implementar listas, botones y validación de respuestas.
+- [x] Implementar precalificación por estado, trabajo y subcuenta.
+- [x] Registrar rechazo y motivo.
+- [x] Implementar el flujo de cita y derivación al agente.
+- [x] Implementar `fecha_reset` y su comprobación al volver a interactuar.
+- [x] Implementar protección temporal básica mediante `ultima_interaccion`.
+- [x] Probar el MVP con tráfico real y versionar los exportes.
 
-## v1.1 — Hardening
+“Implementado” describe el alcance del MVP; el reset, el filtrado y la protección temporal tienen correcciones pendientes documentadas en v1.1.
 
-- [ ] Implementar idempotencia mediante Message ID (`wamid`).
-- [ ] Detectar webhooks duplicados.
-- [ ] Evitar procesamiento doble del mismo mensaje.
-- [ ] Revisar manejo de errores de API.
-- [ ] Configurar workflow de errores de n8n.
-- [ ] Revisar logs y observabilidad.
-- [ ] Definir estrategia de backups.
+## v1.1 — Hardening (etapa actual)
+
+Debe completarse antes de iniciar la operación sobre el VPS.
+
+### Mensajes e idempotencia
+
+- [ ] Propagar y validar el identificador `wamid`.
+- [ ] Aprobar el modelo duradero de registro y estados de mensajes.
+- [ ] Garantizar un solo procesamiento efectivo por mensaje.
+- [ ] Proteger las ejecuciones simultáneas.
+- [ ] Recuperar mensajes pendientes y fallos parciales sin duplicar efectos.
+- [ ] Garantizar una única notificación al agente por solicitud.
+
+### Webhook y estado
+
+- [ ] Validar la estructura del evento antes de acceder a `messages[0]`.
+- [ ] Ignorar de forma segura estados y tipos no admitidos.
+- [ ] Definir los campos que el reset limpia y conserva.
+- [ ] Corregir el reset para consumir o reemplazar `fecha_reset`.
+- [ ] Investigar, sin asumir corrupción, el caso observado en `re_cita` con reset vencido.
+
+### Resiliencia y operación
+
+- [ ] Diseñar reintentos compatibles con idempotencia para Meta y Supabase.
+- [ ] Configurar manejo centralizado de errores o un mecanismo equivalente.
+- [ ] Incorporar logs, métricas y alertas sin secretos ni datos personales.
+- [ ] Auditar RLS, permisos de Data API y generación automática de `id`.
+- [ ] Revisar valores potencialmente sensibles en archivos públicos y acordar su remediación.
+- [ ] Verificar un respaldo actual y validar una restauración controlada.
+- [ ] Ejecutar la regresión completa del flujo comercial.
+- [ ] Cumplir todos los criterios de [Auditoría v1.1](audit-1.1.md).
 
 ## v1.2 — Producción
 
-- [ ] Contratar/configurar VPS.
-- [ ] Instalar Docker.
-- [ ] Desplegar n8n.
-- [ ] Configurar persistencia.
-- [ ] Configurar reinicio automático del contenedor.
-- [ ] Configurar dominio/subdominio.
-- [ ] Configurar HTTPS.
-- [ ] Eliminar dependencia de ngrok.
-- [ ] Migrar workflows.
-- [ ] Configurar credentials de producción.
-- [ ] Actualizar webhook de Meta.
-- [ ] Realizar pruebas end-to-end.
-- [ ] Activar monitoreo.
+Decisión aprobada: **Contabo Cloud VPS 6**, con referencia de 6 vCPU, 12 GB RAM y 200 GB SSD. El presupuesto aproximado es USD 9 mensuales; el precio final no está verificado y el VPS no se ha contratado.
+
+- [ ] Contratar el VPS después del cierre de v1.1.
+- [ ] Preparar Ubuntu Server.
+- [ ] Instalar Docker y Docker Compose.
+- [ ] Desplegar n8n con persistencia y política de reinicio apropiada.
+- [ ] Configurar dominio o subdominio permanente y HTTPS.
+- [ ] Configurar credenciales de producción de forma segura.
+- [ ] Eliminar la dependencia de ngrok.
+- [ ] Migrar los workflows de forma controlada.
+- [ ] Verificar y actualizar el webhook de Meta.
+- [ ] Ejecutar pruebas end-to-end.
+- [ ] Activar monitoreo, alertas y estrategia operativa de backups.
+
+Supabase continuará como servicio externo salvo que se apruebe expresamente un cambio de arquitectura.
 
 ## Futuro
 
-Posibles mejoras:
-
-- Dashboard de leads.
-- Métricas de conversión por etapa.
-- Recordatorios automáticos de citas.
-- Seguimiento de leads que abandonan el flujo.
-- Integración con CRM.
-- Alertas para agentes.
-- Historial de conversaciones.
-- Métricas de tiempos de respuesta.
-- Automatización del seguimiento post-cita.
+- Dashboard para agentes y métricas de conversión.
+- Seguimiento de abandonos, citas y post-cita.
+- Integración con CRM y alertas operativas.
+- Historial de conversación con controles de privacidad.
+- Inteligencia artificial como complemento previo a la derivación humana, preservando las reglas deterministas y una transición controlada.

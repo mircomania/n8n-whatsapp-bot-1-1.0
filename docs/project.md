@@ -1,64 +1,40 @@
-# WhatsApp Lead Qualification Bot
+# Proyecto
 
 ## Descripción
 
-Sistema automatizado de atención y precalificación de leads mediante WhatsApp, desarrollado para Pro Consultores.
+Bot de WhatsApp para atender y precalificar leads de Mejoravit, desarrollado para Pro Consultores. Recibe usuarios provenientes principalmente de campañas, conduce una conversación estructurada y deriva a un agente humano a quienes llegan al flujo de cita.
 
-El objetivo es recibir usuarios provenientes principalmente de campañas publicitarias, realizar una precalificación automática mediante una conversación estructurada y derivar a un agente humano únicamente los leads que cumplen los requisitos definidos.
+WhatsApp Cloud API proporciona el canal, n8n coordina la automatización y Supabase PostgreSQL conserva los datos y la etapa de cada lead.
 
-El sistema utiliza WhatsApp Cloud API como canal de comunicación, n8n para la automatización y Supabase para persistir el estado y los datos de cada lead.
+## Objetivos
 
-## Flujo general
+- Responder de manera consistente a cada mensaje admitido.
+- Aplicar reglas deterministas de precalificación por ubicación, situación laboral y subcuenta.
+- Conservar el estado entre ejecuciones independientes.
+- Registrar resultados y motivos de rechazo.
+- Derivar solicitudes de cita al agente humano.
+- Operar con controles de idempotencia, errores, recuperación y observabilidad antes de migrar a producción.
 
-1. El usuario inicia una conversación por WhatsApp.
-2. Meta envía el mensaje mediante webhook.
-3. n8n normaliza los datos recibidos.
-4. Se identifica al usuario mediante su número de WhatsApp.
-5. Supabase determina si el usuario es nuevo o existente.
-6. Si es nuevo, se crea su registro y comienza la precalificación.
-7. Cada respuesta se valida según la etapa actual.
-8. Las respuestas válidas actualizan los datos y avanzan la etapa.
-9. Las respuestas inválidas generan una nueva solicitud de respuesta.
-10. Si el usuario no cumple un requisito, se registra el motivo de rechazo.
-11. Si cumple los requisitos, puede solicitar una cita.
-12. Los leads que solicitan una cita son derivados a un agente humano.
+## Flujo funcional
 
-## Características
+1. Meta entrega un evento al webhook.
+2. El receptor valida y normaliza el mensaje admitido.
+3. El workflow principal identifica el teléfono y consulta `public.leads`.
+4. Un lead nuevo inicia en `estado`; uno existente continúa según su etapa y reset.
+5. Cada respuesta válida actualiza datos y avanza el proceso; una inválida vuelve a solicitar la respuesta.
+6. Un incumplimiento registra el rechazo y su motivo.
+7. Una solicitud de cita actualiza el lead y activa la derivación al agente.
 
-- Recepción de mensajes mediante Webhooks de Meta.
-- Normalización de eventos de WhatsApp.
-- Filtrado de eventos que no contienen mensajes.
-- Identificación de usuarios por teléfono.
-- Persistencia de conversaciones mediante etapas.
-- Preguntas interactivas mediante botones y listas.
-- Validación de respuestas.
-- Rutas de aprobación y rechazo.
-- Registro del motivo de rechazo.
-- Solicitud de citas.
-- Derivación a agente humano.
-- Sistema de reinicio de usuarios.
-- Protección básica contra mensajes enviados repetidamente.
-- Persistencia de leads mediante Supabase.
+El paso 2 describe la responsabilidad deseada. La implementación actual intenta extraer `messages[0]` antes de validar por completo el evento y debe corregirse en v1.1.
 
-## Estado actual
+## Estado del producto
 
-El bot se encuentra funcional y ha sido probado con tráfico real.
+- **v1.0 — MVP:** completada; el bot lleva aproximadamente un mes operando con tráfico real al momento de la auditoría.
+- **v1.1 — Hardening:** etapa actual; debe resolver idempotencia, concurrencia, reset, validación de webhooks, errores, observabilidad, recuperación y regresión.
+- **v1.2 — Producción:** migración posterior a un VPS de Contabo ya seleccionado como proveedor, pero aún no contratado.
 
-Actualmente se ejecuta localmente mediante Docker y n8n, exponiendo el webhook mediante ngrok.
+La operación actual depende de Windows 10, Docker Desktop y ngrok. La evidencia detallada y fechada se conserva en [Estado actual](current-state.md); los criterios técnicos están en [Auditoría v1.1](audit-1.1.md).
 
-Los workflows están versionados mediante GitHub.
+## Alcance futuro
 
-## Objetivo de producción
-
-Migrar la infraestructura desde el entorno local a un VPS, eliminando la dependencia del computador local y de ngrok.
-
-El entorno de producción deberá contar con:
-
-- n8n ejecutándose mediante Docker.
-- Dominio/subdominio permanente.
-- HTTPS.
-- Persistencia de datos.
-- Reinicio automático de servicios.
-- Backups.
-- Protección contra webhooks duplicados.
-- Monitoreo básico de errores.
+Se contempla un dashboard para agentes e inteligencia artificial como complemento de la atención antes de la derivación humana. La IA no debe sustituir sin controles las reglas deterministas; cualquier diseño deberá definir la transición entre automatización, IA y agente.

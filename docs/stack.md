@@ -1,120 +1,37 @@
-# Stack Tecnológico
+# Stack tecnológico
 
-## Automatización
+## Automatización: n8n
 
-### n8n
+n8n recibe eventos, ejecuta la lógica de precalificación, consulta y actualiza Supabase y envía mensajes mediante WhatsApp Cloud API.
 
-Responsable de:
+- Edición: Self Hosted.
+- Versión local verificada: **2.35.5**.
+- Workflows publicados: `whatsapp-webhook` y `whatsapp-leads`.
 
-- Recibir eventos de WhatsApp.
-- Procesar mensajes.
-- Ejecutar la lógica de precalificación.
-- Consultar y actualizar Supabase.
-- Enviar respuestas mediante WhatsApp Cloud API.
-- Controlar las etapas del usuario.
+## Contenedores: Docker Desktop
 
-Versión utilizada durante desarrollo:
+El entorno actual ejecuta la imagen `n8nio/n8n` en un contenedor llamado `n8n`, sobre Windows 10, con el puerto 5678 publicado. La persistencia usa un bind mount de lectura y escritura hacia `/home/node/.n8n`; la política de reinicio local es `no`.
 
-n8n 2.21.7 Self Hosted.
+Estos son hechos del entorno local al 21 de septiembre de 2026, no una plantilla aprobada de producción. La configuración completa está en [Estado actual](current-state.md).
 
----
+## Mensajería: WhatsApp Cloud API
 
-## Contenedores
+Meta proporciona la recepción y el envío de mensajes de texto e interacciones con botones y listas. La autenticación debe residir en credenciales de n8n; ningún access token debe incluirse en los exportes o documentos.
 
-### Docker
+## Persistencia comercial: Supabase PostgreSQL
 
-n8n se ejecuta actualmente dentro de un contenedor Docker.
+La tabla verificada `public.leads` conserva el teléfono, datos de precalificación, etapa, resultado, fechas y control de interacción/reset. La restricción única de `telefono` evita duplicar teléfonos no nulos, pero no reemplaza la idempotencia por mensaje.
 
-Entorno actual:
+El esquema verificado está en [Estado actual](current-state.md). RLS, permisos de Data API y generación automática de `id` siguen pendientes de auditoría formal.
 
-- Host: Windows.
-- Puerto n8n: 5678.
-- Persistencia mediante bind mount.
-- Datos locales de n8n almacenados fuera del contenedor.
+## Exposición local: ngrok
 
-La información persistente de n8n NO debe almacenarse en GitHub.
+ngrok proporciona HTTPS temporal para el webhook local y está operativo. Se eliminará como dependencia en v1.2; las URLs temporales no son endpoints permanentes y no deben publicarse en la documentación.
 
----
+## Producción aprobada
 
-## Mensajería
-
-### WhatsApp Cloud API
-
-Proveedor:
-
-Meta.
-
-Utilizada para:
-
-- Recibir mensajes.
-- Enviar mensajes de texto.
-- Enviar botones interactivos.
-- Enviar listas interactivas.
-- Recibir respuestas interactivas.
-
-La autenticación se almacena mediante Credentials de n8n.
-
-Nunca deben almacenarse Access Tokens directamente en los workflows versionados.
-
----
-
-## Base de datos
-
-### Supabase
-
-Base de datos PostgreSQL utilizada para persistir los leads y el estado de la conversación.
-
-Información almacenada:
-
-- Teléfono.
-- Estado.
-- Tiempo trabajando.
-- Subcuenta.
-- Nombre.
-- NSS.
-- Etapa.
-- Estado de calificación.
-- Motivo de rechazo.
-- Fecha de calificación.
-- Fecha de cita.
-- Fecha de finalización.
-- Última interacción.
-- Mensaje original.
-- Fecha de reset.
-
----
-
-## Desarrollo local
-
-### ngrok
-
-Utilizado exclusivamente durante desarrollo para exponer el webhook local de n8n mediante HTTPS.
-
-Arquitectura actual:
-
-WhatsApp Cloud API
-→ ngrok
-→ localhost:5678
-→ n8n
-
-ngrok será eliminado al migrar el proyecto a producción.
-
----
+La referencia aprobada para v1.2 es Contabo Cloud VPS 6 con Ubuntu Server, Docker y Docker Compose. La contratación, el precio final y toda la configuración de producción permanecen pendientes.
 
 ## Control de versiones
 
-### Git / GitHub
-
-El repositorio contiene:
-
-- Workflows exportados de n8n.
-- Documentación.
-- Configuración reproducible cuando corresponda.
-
-No contiene:
-
-- Tokens.
-- Credentials.
-- Base de datos interna de n8n.
-- Datos de leads.
-- Secrets.
+Git/GitHub conserva workflows exportados y documentación. No debe contener credenciales, secretos, datos personales, la base interna de n8n ni respaldos. Los hallazgos de exposición potencial en archivos existentes están registrados sin valores en [Auditoría v1.1](audit-1.1.md).
