@@ -66,9 +66,9 @@ Consecuencias: Producción y desarrollo local son instalaciones independientes. 
 
 Fecha: septiembre de 2026; fecha exacta de decisión no registrada.
 
-Estado: Aprobada e implementada en la documentación.
+Estado: Aprobada; su definición de v1.2 fue parcialmente sustituida por DEC-011.
 
-Decisión: Considerar v1.1 como despliegue en producción, v1.2 como integración de IA y v1.9 como mantenimiento avanzado reservado. La antigua etapa de hardening v1.1 deja de ser un requisito previo para v1.2.
+Decisión original: Considerar v1.1 como despliegue en producción, v1.2 como integración de IA y v1.9 como mantenimiento avanzado reservado. La antigua etapa de hardening v1.1 deja de ser un requisito previo para v1.2. El alcance de IA para v1.2 fue reemplazado por DEC-011; v1.1 y v1.9 mantienen su estado.
 
 Consecuencia: La auditoría histórica se conserva como `docs/audit-1.9.md`; sus criterios no son requisitos vigentes automáticos.
 
@@ -100,7 +100,7 @@ Consecuencia: El procedimiento es manual y no garantiza la entrega permanente. L
 
 Fecha: septiembre de 2026; fecha exacta de decisión no registrada.
 
-Estado: Aprobada / Planificada.
+Estado: Sustituida por DEC-011; no forma parte del alcance aprobado vigente de v1.2.
 
 Decisión: Diseñar en v1.2 un tercer workflow, de nombre provisional `whatsapp-ia`, para gestionar las citas de usuarios que ya superaron el filtro determinista.
 
@@ -112,7 +112,7 @@ Consecuencias: La IA no reemplaza la precalificación. Debe recibir las respuest
 
 Fecha: septiembre de 2026; fecha exacta de decisión no registrada.
 
-Estado: Aprobada / Planificada.
+Estado: Sustituida por DEC-011; no forma parte del alcance aprobado vigente de v1.2.
 
 Decisión: Una cita realmente confirmada generará una notificación por correo a destinatarios autorizados de la empresa. El personal registrará manualmente la información en su tabla o sistema interno.
 
@@ -124,8 +124,22 @@ Consecuencias: El evento, los campos, la prevención de duplicados, los cambios 
 
 Fecha: septiembre de 2026; fecha exacta de decisión no registrada.
 
-Estado: Aprobada / Planificada.
+Estado: Sustituida en lo relativo al modelo de citas con IA, correo y revisión diaria de esos avisos. La frecuencia de revisiones técnicas queda sin confirmar como decisión vigente.
 
 Decisión: Buscar una operación sencilla: la IA gestiona citas durante el día, las confirmaciones generan correos y la empresa revisa y registra las nuevas citas cada mañana. También se contemplan dos o tres revisiones técnicas semanales.
 
-Consecuencia: El objetivo aproximado de 10 minutos diarios y esas frecuencias son estimaciones deseadas, no métricas actualmente verificadas ni garantías de detección inmediata.
+Consecuencia: El objetivo aproximado de 10 minutos diarios y la revisión diaria de correos pertenecían al alcance anterior; no son objetivos vigentes de v1.2. La frecuencia técnica mencionada requiere confirmación antes de tratarse como compromiso operativo.
+
+### DEC-011 — Sustituir IA y correo por integración con Airtable
+
+Fecha: 23 de septiembre de 2026.
+
+Estado: Aprobada / Planificada; pendiente de implementación.
+
+Contexto: La empresa redefinió el alcance de la siguiente versión y necesita consultar y gestionar en Airtable los leads que solicitan cita tras superar la precalificación.
+
+Decisión: La v1.2 integrará Airtable en el tramo final del workflow existente `whatsapp-leads`. Cuando un usuario calificado solicite una cita, el flujo actualizará Supabase y creará un registro en Airtable, sustituyendo el aviso interno actual al agente por WhatsApp. Se conservarán los dos workflows actuales y Supabase como base principal. La creación del registro representa una solicitud de cita, no una cita confirmada.
+
+Motivo: Incorporar al flujo existente el destino que la empresa utilizará para consultar y gestionar los leads recibidos, sin crear un sistema adicional de citas.
+
+Consecuencias: Se descartan del alcance aprobado de v1.2 la IA, el workflow `whatsapp-ia`, la coordinación automatizada de disponibilidad y las notificaciones por correo. La autenticación, base, tabla y mapeo de columnas de Airtable quedan pendientes de la implementación. Las reglas y etapas actuales de precalificación no cambian.

@@ -2,7 +2,7 @@
 
 Fecha de referencia: **23 de septiembre de 2026**.
 
-Esta fotografía consolida la información operativa proporcionada para el cierre documental de v1.1. Describe producción en Contabo y conserva separada la instalación local de desarrollo. El repositorio no demuestra por sí mismo acceso directo al VPS, n8n publicado, Meta o Supabase.
+Esta fotografía consolida la información operativa proporcionada para el cierre documental de v1.1. Describe producción en Contabo y conserva separada la instalación local de desarrollo. El repositorio no demuestra por sí mismo acceso directo al VPS, n8n publicado, Meta o Supabase. La decisión registrada el 23 de septiembre de 2026 planifica la integración con Airtable para v1.2; Airtable aún no forma parte de la operación.
 
 ## Producción en Contabo
 
@@ -95,4 +95,4 @@ GitHub conserva documentación y exportes de workflows, pero no es un respaldo c
 - Comparación actual entre los exportes versionados y los workflows publicados.
 - Política definitiva de idempotencia, reintentos, recuperación y notificaciones.
 - Origen individual de los avisos al agente no recibidos.
-- Definiciones de disponibilidad de citas, oficinas, horarios y reglas para v1.2.
+- Credencial, base, tabla, columnas y mapeo que se utilizarán en Airtable durante v1.2.

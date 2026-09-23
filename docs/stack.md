@@ -8,7 +8,7 @@ n8n recibe eventos, ejecuta la lógica de precalificación, consulta y actualiza
 - Producción reportada: **2.35.5**.
 - Imagen de producción: `n8nio/n8n:2.35.5`.
 - Workflows actuales: `whatsapp-webhook` y `whatsapp-leads`.
-- v1.2 planificada: un tercer workflow de nombre provisional `whatsapp-ia`.
+- v1.2 planificada: integración de Airtable en el tramo final de `whatsapp-leads`.
 
 ## Producción: Contabo, Docker y Caddy
 
@@ -30,9 +30,9 @@ Meta proporciona la recepción y el envío de mensajes de texto e interacciones 
 
 Supabase continúa funcionando como servicio externo. La tabla principal verificada es `public.leads`, que conserva los datos de precalificación, etapa, resultado, fechas y control de interacción/reset. La migración a Contabo no migró la base comercial ni cambió su estructura.
 
-## IA y correo previstos
+## Destino empresarial planificado: Airtable
 
-La IA y el correo electrónico son alcance planificado de v1.2, no componentes instalados del stack actual. La herramienta de envío de correo todavía no está decidida entre n8n, Make u otra alternativa. No se han configurado servicios de correo ni destinatarios reales.
+Airtable es una integración planificada para v1.2 y no forma parte del stack operativo actual. Recibirá un registro cuando un usuario calificado solicite una cita; ese registro no representa una cita confirmada. La credencial se gestionará en n8n. La base, tabla, columnas y mapeo se definirán durante la implementación.
 
 ## Control de versiones y seguridad
 

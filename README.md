@@ -2,7 +2,7 @@
 
 Sistema de atención y precalificación de leads de Mejoravit, desarrollado para Pro Consultores con WhatsApp Cloud API, n8n y Supabase PostgreSQL.
 
-La v1.0 corresponde al MVP inicial. La v1.1, cuyo alcance fue el despliegue en producción, está completada en Contabo. La v1.2 está planificada para incorporar la gestión de citas con IA y notificaciones internas por correo electrónico; todavía no está implementada.
+La v1.0 corresponde al MVP inicial. La v1.1, cuyo alcance fue el despliegue en producción, está completada en Contabo. La v1.2 está planificada para integrar Airtable al flujo de precalificación y registrar leads que solicitan una cita; la integración todavía no está implementada.
 
 ## Flujo actual de producción
 
@@ -13,8 +13,10 @@ WhatsApp Cloud API / Meta
   -> n8n en Contabo: whatsapp-webhook
   -> n8n: whatsapp-leads
   -> Supabase PostgreSQL: public.leads
-  -> respuesta por WhatsApp o aviso al agente cuando corresponde
+  -> respuesta por WhatsApp y aviso actual al agente cuando corresponde
 ```
+
+La arquitectura objetivo de v1.2 conservará los dos workflows y añadirá la creación de un registro en Airtable cuando un usuario calificado solicite una cita. Ese registro no significa que exista una cita confirmada.
 
 La instalación de producción funciona de forma independiente del entorno local de Windows. El entorno local se conserva para desarrollo y pruebas, pero modificar sus exportes no modifica automáticamente la instalación publicada. Ambos entornos pueden compartir integraciones reales, por lo que las pruebas locales deben tratarse como operativamente sensibles.
 

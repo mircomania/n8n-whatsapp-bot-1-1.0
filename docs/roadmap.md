@@ -20,22 +20,23 @@ Desarrollo inicial del bot de atención y precalificación para Pro Consultores 
 
 La v1.1 no incorporó nuevas funcionalidades de precalificación ni cambios en la lógica comercial. La instalación de producción está operativa en Contabo.
 
-## v1.2 — Integración de IA y gestión de citas
+## v1.2 — Integración con Airtable
 
-**Estado: planificada.** No implementar todavía.
+**Estado: planificada / pendiente de implementación.**
 
-- Incorporar un tercer workflow, de nombre provisional `whatsapp-ia`.
-- Mantener `whatsapp-leads` como responsable de la precalificación determinista.
-- Enrutar hacia IA las respuestas posteriores de usuarios que superaron la precalificación y solicitaron una cita.
-- Solicitar y registrar el nombre del usuario.
-- Coordinar fecha y horario con disponibilidad realmente existente.
-- Confirmar la cita solo cuando se cumplan las reglas comerciales y las validaciones necesarias.
-- Registrar la información de la cita en `public.leads`, definiendo antes los campos y estados definitivos.
-- Enviar al usuario un comprobante por WhatsApp con la información autorizada de la cita.
-- Sustituir el aviso interno por WhatsApp por una notificación por correo electrónico a destinatarios autorizados.
-- Permitir que la empresa registre manualmente la cita en su propio sistema a partir del correo.
+El objetivo es registrar en Airtable la información comercial de un usuario que completó satisfactoriamente la precalificación y solicitó una cita. El registro representa una solicitud de cita, no una cita confirmada con fecha y horario.
 
-Durante v1.2 deben definirse el enrutamiento, la disponibilidad, las oficinas y horarios, el evento de confirmación, la prevención de correos duplicados, los cambios posteriores y el tratamiento de fallos. La herramienta de correo no está seleccionada; no se ha elegido definitivamente n8n ni Make.
+Alcance previsto:
+
+- Identificar el punto de `whatsapp-leads` donde actualmente se envía el aviso al agente.
+- Configurar la credencial de Airtable en n8n.
+- Añadir una operación de creación de registro con base, tabla y campos que se definirán durante la implementación.
+- Mapear los campos comerciales existentes a las columnas acordadas de Airtable.
+- Sustituir el aviso interno al agente por WhatsApp por la creación del registro en Airtable.
+- Validar la creación y recepción de registros mediante pruebas controladas.
+- Comprobar que la integración no altera las reglas comerciales ni las etapas anteriores y que el workflow funciona correctamente en producción.
+
+La integración conservará los dos workflows actuales (`whatsapp-webhook` y `whatsapp-leads`). Supabase seguirá siendo la base principal comercial y conversacional. La configuración de autenticación, el destino y el mapeo están pendientes. La v1.2 no incluye IA, un tercer workflow, gestión adicional de citas ni notificaciones por correo.
 
 ## v1.3 a v1.8 — Evolución futura
 
@@ -53,4 +54,4 @@ La v1.9 no es requisito previo para comenzar v1.2. Sus criterios no deben presen
 
 El bot es una herramienta complementaria de captación y precalificación. Se mantendrá supervisión operativa; cada error o inconsistencia confirmada se investigará y corregirá de forma focalizada, comprobando el resultado. No se convertirán automáticamente todos los hallazgos de la auditoría histórica en trabajo obligatorio.
 
-La operación prevista para v1.2 contempla una revisión diaria de nuevas citas y entre dos y tres revisiones técnicas semanales. El objetivo aproximado de 10 minutos diarios y esas frecuencias son estimaciones operativas, no métricas actuales verificadas ni garantías de detección inmediata.
+La frecuencia definitiva y las responsabilidades operativas podrán ajustarse según la experiencia real.

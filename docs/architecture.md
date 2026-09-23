@@ -17,56 +17,50 @@ Usuario de WhatsApp
   -> Supabase PostgreSQL
 ```
 
-El estado conversacional reside en Supabase, no en una ejecución prolongada de n8n. La instalación local de Windows conserva una copia independiente para desarrollo y pruebas; no es el punto de entrada operativo de Meta.
+El estado conversacional reside en Supabase. La instalación local de Windows conserva una copia independiente para desarrollo y pruebas; no es el punto de entrada operativo de Meta.
 
-## Responsabilidades actuales
+## Componentes actuales
 
 ### `whatsapp-webhook`
 
-Es el punto de entrada de Meta. Recibe el evento y dirige los mensajes admitidos al workflow de precalificación.
+Es el punto de entrada de Meta. Recibe el evento y dirige los mensajes admitidos al workflow comercial.
 
 ### `whatsapp-leads`
 
-Es el workflow principal. Busca o crea el lead en `public.leads`, interpreta la etapa persistida, aplica las reglas deterministas, actualiza datos, responde al usuario y activa el aviso al agente cuando se solicita una cita.
-
-Actualmente existen dos workflows. La arquitectura publicada no incluye todavía un workflow de IA.
+Busca o crea el lead en `public.leads`, interpreta la etapa persistida, aplica las reglas deterministas, actualiza datos y responde al usuario. Cuando un usuario calificado solicita una cita, actualmente envía un aviso al agente por WhatsApp.
 
 ### Supabase
 
-`public.leads` mantiene el estado comercial y conversacional. No se modificó su estructura durante la migración a Contabo.
+`public.leads` mantiene la persistencia comercial y conversacional. No se modificó su estructura durante la migración a Contabo.
 
-## Limitación operativa conocida
+### Airtable
 
-La ruta actual de cita incluye un aviso al agente mediante WhatsApp. Se reportaron ocho leads con solicitudes de cita cuyos avisos no fueron recibidos. No hay evidencia individual suficiente para afirmar que los ocho casos tuvieron la misma causa.
-
-La causa operativa conocida que debe contemplarse es la ventana de atención de WhatsApp: si han transcurrido más de 24 horas desde la última interacción iniciada por el agente con el número del bot, un mensaje normal puede ser rechazado. El procedimiento temporal es que el agente inicie una interacción con el bot al menos una vez cada 24 horas. Es una medida manual y no garantiza la entrega permanente.
-
-No se modifica actualmente el workflow para resolver este problema. Una ejecución exitosa de n8n tampoco garantiza por sí sola la recepción del mensaje externo.
+Airtable no forma parte de la instalación operativa actual. Su integración está planificada para v1.2.
 
 ## Arquitectura objetivo de v1.2
 
-La v1.2 contempla tres workflows:
+La arquitectura conservará los dos workflows existentes:
 
-1. `whatsapp-webhook` — punto de entrada de Meta y futuro enrutamiento según el estado del usuario.
-2. `whatsapp-leads` — conserva la precalificación determinista actual.
-3. `whatsapp-ia` — nombre provisional para gestionar la conversación posterior a la precalificación y la solicitud de cita.
+```text
+Usuario de WhatsApp
+  -> WhatsApp Cloud API
+  -> whatsapp-webhook
+  -> whatsapp-leads
+       -> precalificación determinista
+       -> actualización del lead en Supabase
+       -> creación del registro correspondiente en Airtable
+```
 
-El enrutamiento exacto se definirá durante el desarrollo de v1.2. No basta con ejecutar el tercer workflow una sola vez: las respuestas posteriores del usuario deberán continuar llegando al flujo de IA según el estado persistido.
+El punto de integración será el tramo final de `whatsapp-leads`, donde actualmente se envía el aviso al agente. La creación de un registro en Airtable sustituirá ese aviso interno. No se incorporará un tercer workflow.
 
-Cuando el usuario supere el filtro y solicite una cita, `whatsapp-leads` deberá transferir el contexto necesario al flujo de IA y comunicar al usuario que continuará la atención para coordinarla. La IA no sustituirá la precalificación determinista.
+Supabase permanecerá como base principal para datos comerciales y estado conversacional. Airtable recibirá los registros que la empresa necesita consultar y gestionar. Un registro creado a partir de una solicitud de cita no representa una cita confirmada ni implica fecha u horario confirmados.
 
-El flujo de IA podrá solicitar el nombre, registrar la información autorizada, coordinar fecha y horario, confirmar según disponibilidad real, registrar la cita y enviar un comprobante por WhatsApp. No podrá inventar horarios, disponibilidad, direcciones ni confirmaciones. Si hace falta validación humana, la cita no se comunicará como confirmada antes de cumplir las condiciones acordadas.
+La credencial de Airtable, base, tabla, columnas y mapeo de campos están pendientes de definición y configuración durante la implementación. No se presuponen campos ni identificadores.
 
-La ubicación obtenida durante la precalificación podrá utilizarse para identificar la oficina correspondiente. El origen de oficinas, horarios, disponibilidad, campos y transiciones todavía debe definirse. No se modifica ahora la estructura de Supabase.
+## Limitación operativa actual
 
-La respuesta afirmativa actual conduce a la etapa persistida `cita`; la nueva arquitectura debe contemplar ese valor y no asumir `cita_si`.
-
-## Notificación interna prevista
-
-Cuando una cita quede realmente confirmada, la v1.2 contempla generar una notificación por correo electrónico a destinatarios autorizados de la empresa. El mecanismo concreto, el evento, la prevención de duplicados, los cambios posteriores y la detección de fallos todavía están pendientes. No se ha seleccionado definitivamente n8n o Make, ni se ha configurado correo.
-
-La empresa utilizará inicialmente el correo para registrar manualmente la cita en su propio sistema. No se contempla desarrollar de inicio una integración automática con esa tabla.
+Se reportaron ocho leads con solicitudes de cita cuyos avisos no fueron recibidos. No hay evidencia individual suficiente para atribuir todos los casos a una misma causa. Una causa operativa conocida es el rechazo de mensajes normales fuera de la ventana de atención de WhatsApp. El procedimiento temporal documentado es que el agente inicie una interacción con el bot al menos una vez cada 24 horas; es manual y no garantiza la entrega.
 
 ## Seguridad y límites
 
-Los secretos deben mantenerse en credenciales de n8n o variables de entorno, nunca en JSON, documentación o GitHub. La arquitectura documentada no implica acceso del repositorio al VPS ni autorización para modificar servicios externos.
+Las credenciales se gestionarán mediante el sistema de credenciales de n8n. No se documentan secretos ni identificadores privados de Airtable.
