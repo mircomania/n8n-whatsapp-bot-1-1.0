@@ -13,28 +13,33 @@ WhatsApp Cloud API proporciona el canal, n8n coordina la automatización y Supab
 - Conservar el estado entre ejecuciones independientes.
 - Registrar resultados y motivos de rechazo.
 - Derivar solicitudes de cita al agente humano.
-- Operar con controles de idempotencia, errores, recuperación y observabilidad antes de migrar a producción.
+- Mantener una operación complementaria de captación, sin convertir el bot en el sistema central de operaciones de la empresa.
 
-## Flujo funcional
+La meta comercial inicial es generar aproximadamente 20 leads calificados mensuales. Es una meta de negocio, no una métrica alcanzada o verificada.
 
-1. Meta entrega un evento al webhook.
-2. El receptor valida y normaliza el mensaje admitido.
-3. El workflow principal identifica el teléfono y consulta `public.leads`.
+## Flujo funcional actual
+
+1. Meta entrega un evento al webhook de producción.
+2. El receptor dirige el mensaje admitido al workflow principal.
+3. El workflow identifica el teléfono y consulta `public.leads`.
 4. Un lead nuevo inicia en `estado`; uno existente continúa según su etapa y reset.
 5. Cada respuesta válida actualiza datos y avanza el proceso; una inválida vuelve a solicitar la respuesta.
 6. Un incumplimiento registra el rechazo y su motivo.
-7. Una solicitud de cita actualiza el lead y activa la derivación al agente.
-
-El paso 2 describe la responsabilidad deseada. La implementación actual intenta extraer `messages[0]` antes de validar por completo el evento y debe corregirse en v1.1.
+7. Una solicitud de cita actualiza el lead y activa el aviso al agente.
 
 ## Estado del producto
 
-- **v1.0 — MVP:** completada; el bot lleva aproximadamente un mes operando con tráfico real al momento de la auditoría.
-- **v1.1 — Hardening:** etapa actual; debe resolver idempotencia, concurrencia, reset, validación de webhooks, errores, observabilidad, recuperación y regresión.
-- **v1.2 — Producción:** migración posterior a un VPS de Contabo ya seleccionado como proveedor, pero aún no contratado.
+- **v1.0 — MVP:** completada. Incluye el bot determinista de precalificación y derivación.
+- **v1.1 — Despliegue en producción:** completada. El bot funcional fue migrado a Contabo, con dominio permanente, HTTPS, restauración de n8n y validación del recorrido comercial. No incorporó nuevas funcionalidades comerciales.
+- **v1.2 — Integración de IA:** planificada. Incorporará la gestión posterior a la precalificación, citas y notificaciones internas por correo. No está implementada.
+- **v1.9 — Mantenimiento avanzado:** reservada y no priorizada. Reúne la auditoría histórica y no es requisito previo para comenzar v1.2.
 
-La operación actual depende de Windows 10, Docker Desktop y ngrok. La evidencia detallada y fechada se conserva en [Estado actual](current-state.md); los criterios técnicos están en [Auditoría v1.1](audit-1.1.md).
+La producción funciona en Contabo. El entorno local de Windows se conserva para desarrollo y pruebas, pero es independiente y puede compartir integraciones reales; no debe considerarse completamente aislado.
+
+## Mantenimiento
+
+La metodología aprobada es supervisar la operación, investigar cada error o inconsistencia observada, aplicar una corrección focalizada y comprobar el resultado. No se convertirán automáticamente todos los hallazgos históricos de hardening en tareas obligatorias.
 
 ## Alcance futuro
 
-Se contempla un dashboard para agentes e inteligencia artificial como complemento de la atención antes de la derivación humana. La IA no debe sustituir sin controles las reglas deterministas; cualquier diseño deberá definir la transición entre automatización, IA y agente.
+La v1.2 contempla un tercer workflow para gestionar citas con IA después de que el usuario supere la precalificación determinista. La IA no sustituirá las reglas actuales. También se contempla una notificación interna por correo electrónico para que la empresa registre manualmente las citas confirmadas. Ambos elementos siguen planificados.

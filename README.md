@@ -2,30 +2,32 @@
 
 Sistema de atención y precalificación de leads de Mejoravit, desarrollado para Pro Consultores con WhatsApp Cloud API, n8n y Supabase PostgreSQL.
 
-El MVP v1.0 está completado y funciona con tráfico real en un entorno local. El proyecto se encuentra en **v1.1 Hardening**; la migración al VPS de producción corresponde a v1.2 y no debe iniciarse antes de cerrar los criterios de v1.1.
+La v1.0 corresponde al MVP inicial. La v1.1, cuyo alcance fue el despliegue en producción, está completada en Contabo. La v1.2 está planificada para incorporar la gestión de citas con IA y notificaciones internas por correo electrónico; todavía no está implementada.
 
-## Flujo general
+## Flujo actual de producción
 
 ```text
-WhatsApp Cloud API
-  -> webhook HTTPS local mediante ngrok
-  -> n8n: whatsapp-webhook
+WhatsApp Cloud API / Meta
+  -> https://bot.proconsultores.com.mx
+  -> Caddy en Docker
+  -> n8n en Contabo: whatsapp-webhook
   -> n8n: whatsapp-leads
-  -> Supabase PostgreSQL
-  -> respuesta por WhatsApp o derivación a agente
+  -> Supabase PostgreSQL: public.leads
+  -> respuesta por WhatsApp o aviso al agente cuando corresponde
 ```
 
-El receptor normaliza el evento y llama al workflow principal. El flujo principal consulta y actualiza el lead, aplica las reglas de precalificación, envía respuestas y deriva las solicitudes de cita.
+La instalación de producción funciona de forma independiente del entorno local de Windows. El entorno local se conserva para desarrollo y pruebas, pero modificar sus exportes no modifica automáticamente la instalación publicada. Ambos entornos pueden compartir integraciones reales, por lo que las pruebas locales deben tratarse como operativamente sensibles.
 
 ## Estado y documentación
 
-- [Estado actual verificado](docs/current-state.md): infraestructura, versiones, workflows, Supabase, datos y respaldos.
-- [Auditoría técnica v1.1](docs/audit-1.1.md): hallazgos, riesgos, propuestas y criterios de aceptación.
-- [Proyecto](docs/project.md): objetivo, alcance y estado del producto.
-- [Arquitectura](docs/architecture.md): componentes y flujos actuales y futuros.
-- [Lógica de negocio](docs/business-logic.md): etapas y reglas de conversación.
-- [Roadmap](docs/roadmap.md): versiones y trabajo pendiente.
+- [Estado actual](docs/current-state.md): producción en Contabo, entorno local, versiones, validaciones y respaldos.
+- [Proyecto](docs/project.md): propósito, alcance y estado del producto.
+- [Arquitectura](docs/architecture.md): componentes actuales y arquitectura planificada para v1.2.
+- [Lógica de negocio](docs/business-logic.md): etapas y reglas deterministas de precalificación.
+- [Roadmap](docs/roadmap.md): versiones, estados y trabajo futuro.
+- [Registro de decisiones](docs/decisions.md): decisiones técnicas, comerciales y operativas.
 - [Stack](docs/stack.md): tecnologías y responsabilidades.
+- [Auditoría histórica v1.9](docs/audit-1.9.md): hallazgos y propuestas de la antigua planificación de hardening v1.1.
 - [Instrucciones para agentes](AGENTS.md): reglas permanentes para futuras sesiones.
 
 ## Estructura relevante
@@ -36,9 +38,10 @@ El receptor normaliza el evento y llama al workflow principal. El flujo principa
 ├── dockers-run.txt
 ├── docs/
 │   ├── architecture.md
-│   ├── audit-1.1.md
+│   ├── audit-1.9.md
 │   ├── business-logic.md
 │   ├── current-state.md
+│   ├── decisions.md
 │   ├── project.md
 │   ├── roadmap.md
 │   └── stack.md

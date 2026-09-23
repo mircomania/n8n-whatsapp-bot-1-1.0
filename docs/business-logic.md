@@ -6,56 +6,40 @@ Cada lead se identifica por su número de WhatsApp. Antes de interpretar una res
 
 La etapa persistida determina el significado de la siguiente respuesta. Una respuesta nunca debe interpretarse solo por su contenido sin considerar esa etapa.
 
-## Lead nuevo
+## Precalificación determinista actual
 
-Si el teléfono no existe:
+Si el teléfono no existe, se crea el registro, se guarda el teléfono y el mensaje original, se establece la etapa inicial `estado` y se envía la primera pregunta.
 
-1. Se crea el registro.
-2. Se guardan el teléfono y el mensaje original.
-3. Se establece la etapa inicial `estado`.
-4. Se envía la primera pregunta.
+Las etapas comerciales actuales son:
 
-La restricción única existente sobre `telefono` evita dos registros no nulos con el mismo teléfono, pero no evita procesar dos veces un mensaje.
+- `estado`: se validan Nuevo León, Ciudad de México y Estado de México. La opción “Otro” lleva a `rechazado` con su motivo y fecha de reset.
+- `trabajo`: se valida el tiempo mínimo exigido por el proceso comercial. Si no cumple, pasa a `rechazado`.
+- `subcuenta`: se valida el requisito mínimo de subcuenta de vivienda. Si no cumple, pasa a `rechazado`.
+- `calificado` y `re_cita`: el usuario puede solicitar o rechazar una cita.
+- `cita`, `fin` y `rechazado`: estados de resultado, espera o reactivación observados en la operación.
 
-## Etapas de precalificación
+Una respuesta inválida vuelve a solicitar la opción correspondiente. Los motivos de rechazo y los datos comerciales se conservan en `public.leads` según la lógica actual.
 
-### `estado`
+## Reset
 
-Las opciones admitidas incluyen Nuevo León, Ciudad de México y Estado de México. Una opción admitida se guarda y avanza a `trabajo`. La opción “Otro” lleva a `rechazado`, registra `motivo_rechazo = estado` y establece una fecha de reset. Una respuesta inválida vuelve a solicitar la selección.
+El reset se evalúa cuando el usuario vuelve a escribir después de que `fecha_reset` haya vencido. No es un proceso programado que cambie el estado exactamente en el instante del vencimiento.
 
-### `trabajo`
+La semántica completa de los campos que deben limpiarse o conservarse no se modifica en esta tarea documental. Tampoco se modifica la estructura de Supabase.
 
-Se comprueba el tiempo mínimo exigido por el proceso comercial. Si cumple, se guarda la respuesta y avanza a `subcuenta`. Si no, pasa a `rechazado`, registra el motivo y establece una fecha de reset.
+## Solicitud de cita y aviso al agente
 
-### `subcuenta`
+La ruta actual registra la solicitud de cita y envía un aviso al agente mediante WhatsApp. La respuesta afirmativa conduce a la etapa persistida `cita`; no debe asumirse que el valor almacenado sea `cita_si`.
 
-Se comprueba el requisito mínimo de subcuenta de vivienda. Si cumple, continúa hacia la calificación y el flujo de cita; si no, se rechaza con su motivo y fecha de reset.
+Se reportaron ocho solicitudes de cita cuyos avisos no fueron recibidos por el agente. El dato se registra como observación operativa y no demuestra una causa común para los ocho casos.
 
-### `calificado` y `re_cita`
+El procedimiento temporal es que el agente inicie una interacción con el número del bot al menos una vez cada 24 horas, para mantener abierta su ventana de atención para mensajes normales. Es manual y no constituye una garantía permanente de entrega. No se modifica el workflow actual para resolverlo.
 
-El usuario puede solicitar o rechazar una cita. Una solicitud registra el avance, envía una confirmación y activa el aviso al agente. Un rechazo finaliza la ruta correspondiente y permite una reactivación posterior conforme al reset.
+## Evolución prevista en v1.2
 
-### `cita`, `fin` y `rechazado`
+La precalificación seguirá siendo determinista. Después de que el usuario la supere y solicite una cita, un tercer workflow de nombre provisional `whatsapp-ia` gestionará las respuestas posteriores.
 
-Son estados de resultado o espera observados en los datos. La reactivación no ocurre necesariamente en el momento exacto de vencer la fecha; se evalúa en la siguiente interacción.
+La IA podrá solicitar el nombre, registrar los datos autorizados, coordinar fecha y horario, confirmar solo con disponibilidad real, guardar la cita y enviar un comprobante por WhatsApp con la información definida para la oficina correspondiente.
 
-## Reset: comportamiento actual
+No podrá inventar horarios, disponibilidad, direcciones ni confirmaciones. Si se requiere validación humana, la cita no se comunicará como confirmada antes de cumplir las reglas acordadas. Los campos, estados y transiciones definitivos se definirán durante v1.2.
 
-- Para rechazos se configura un reset de 24 horas.
-- Para estados finales de cita/fin se utiliza el periodo configurado en el workflow.
-- Si `fecha_reset` existe y es anterior a la hora actual, se ejecuta `Reset estado`.
-- La implementación exportada solo actualiza `etapa = estado`.
-
-La limpieza de `fecha_reset` y de otros campos de una precalificación anterior **no está implementada** en ese nodo. Debe definirse qué información se reinicia y cuál se conserva antes de corregirlo en v1.1. Una fecha vencida en la base no demuestra por sí sola un fallo, porque la comprobación depende de una nueva interacción.
-
-## Protección temporal actual
-
-El workflow compara `ultima_interaccion` y descarta interacciones con menos de 1500 ms de separación. Este control reduce respuestas rápidas destinadas a una etapa anterior, pero no es idempotencia: no usa `wamid`, no resuelve carreras y no garantiza entrega única de mensajes o avisos.
-
-## Derivación humana
-
-La ruta actual de cita incluye `Si cita -> Espera agente -> Aviso agente`. v1.1 debe asegurar que una respuesta duplicada no produzca varios avisos y que una notificación fallida pueda recuperarse después de registrar la cita.
-
-## Evolución con IA
-
-Una futura capa de IA podrá complementar la atención, pero no sustituir sin controles las reglas deterministas de precalificación. El diseño deberá hacer explícitos los límites y la transferencia entre automatización, IA y agente humano.
+La notificación interna prevista para una cita confirmada será por correo electrónico a destinatarios autorizados. El personal de la empresa registrará manualmente la información en su tabla o sistema interno. No se ha configurado el correo, no se ha seleccionado definitivamente la herramienta de envío y no se han creado nuevos estados de Supabase.

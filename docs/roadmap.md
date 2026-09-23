@@ -1,76 +1,56 @@
 # Roadmap
 
-## v1.0 — MVP completado
+## v1.0 — MVP
 
-- [x] Ejecutar n8n localmente mediante Docker.
-- [x] Integrar WhatsApp Cloud API y el webhook de Meta.
-- [x] Crear el workflow receptor y el workflow principal.
-- [x] Integrar `public.leads` de Supabase.
-- [x] Registrar leads y persistir su etapa.
-- [x] Implementar listas, botones y validación de respuestas.
-- [x] Implementar precalificación por estado, trabajo y subcuenta.
-- [x] Registrar rechazo y motivo.
-- [x] Implementar el flujo de cita y derivación al agente.
-- [x] Implementar `fecha_reset` y su comprobación al volver a interactuar.
-- [x] Implementar protección temporal básica mediante `ultima_interaccion`.
-- [x] Probar el MVP con tráfico real y versionar los exportes.
+**Estado: completada.**
 
-“Implementado” describe el alcance del MVP; el reset, el filtrado y la protección temporal tienen correcciones pendientes documentadas en v1.1.
+Desarrollo inicial del bot de atención y precalificación para Pro Consultores mediante n8n, WhatsApp Cloud API y Supabase. Incluyó el flujo determinista de precalificación y la derivación al agente.
 
-## v1.1 — Hardening (etapa actual)
+## v1.1 — Despliegue en producción
 
-Debe completarse antes de iniciar la operación sobre el VPS.
+**Estado: completada.**
 
-### Mensajes e idempotencia
+- Migrar el bot funcional a Contabo Cloud VPS 6.
+- Instalar Ubuntu, Docker y Docker Compose.
+- Restaurar n8n, sus workflows y credenciales cifradas.
+- Configurar `bot.proconsultores.com.mx` y HTTPS con Caddy.
+- Actualizar el webhook de Meta.
+- Configurar acceso SSH mediante claves y desactivar el acceso SSH por contraseña.
+- Validar el flujo comercial con tráfico real y con la computadora local apagada.
 
-- [ ] Propagar y validar el identificador `wamid`.
-- [ ] Aprobar el modelo duradero de registro y estados de mensajes.
-- [ ] Garantizar un solo procesamiento efectivo por mensaje.
-- [ ] Proteger las ejecuciones simultáneas.
-- [ ] Recuperar mensajes pendientes y fallos parciales sin duplicar efectos.
-- [ ] Garantizar una única notificación al agente por solicitud.
+La v1.1 no incorporó nuevas funcionalidades de precalificación ni cambios en la lógica comercial. La instalación de producción está operativa en Contabo.
 
-### Webhook y estado
+## v1.2 — Integración de IA y gestión de citas
 
-- [ ] Validar la estructura del evento antes de acceder a `messages[0]`.
-- [ ] Ignorar de forma segura estados y tipos no admitidos.
-- [ ] Definir los campos que el reset limpia y conserva.
-- [ ] Corregir el reset para consumir o reemplazar `fecha_reset`.
-- [ ] Investigar, sin asumir corrupción, el caso observado en `re_cita` con reset vencido.
+**Estado: planificada.** No implementar todavía.
 
-### Resiliencia y operación
+- Incorporar un tercer workflow, de nombre provisional `whatsapp-ia`.
+- Mantener `whatsapp-leads` como responsable de la precalificación determinista.
+- Enrutar hacia IA las respuestas posteriores de usuarios que superaron la precalificación y solicitaron una cita.
+- Solicitar y registrar el nombre del usuario.
+- Coordinar fecha y horario con disponibilidad realmente existente.
+- Confirmar la cita solo cuando se cumplan las reglas comerciales y las validaciones necesarias.
+- Registrar la información de la cita en `public.leads`, definiendo antes los campos y estados definitivos.
+- Enviar al usuario un comprobante por WhatsApp con la información autorizada de la cita.
+- Sustituir el aviso interno por WhatsApp por una notificación por correo electrónico a destinatarios autorizados.
+- Permitir que la empresa registre manualmente la cita en su propio sistema a partir del correo.
 
-- [ ] Diseñar reintentos compatibles con idempotencia para Meta y Supabase.
-- [ ] Configurar manejo centralizado de errores o un mecanismo equivalente.
-- [ ] Incorporar logs, métricas y alertas sin secretos ni datos personales.
-- [ ] Auditar RLS, permisos de Data API y generación automática de `id`.
-- [ ] Revisar valores potencialmente sensibles en archivos públicos y acordar su remediación.
-- [ ] Verificar un respaldo actual y validar una restauración controlada.
-- [ ] Ejecutar la regresión completa del flujo comercial.
-- [ ] Cumplir todos los criterios de [Auditoría v1.1](audit-1.1.md).
+Durante v1.2 deben definirse el enrutamiento, la disponibilidad, las oficinas y horarios, el evento de confirmación, la prevención de correos duplicados, los cambios posteriores y el tratamiento de fallos. La herramienta de correo no está seleccionada; no se ha elegido definitivamente n8n ni Make.
 
-## v1.2 — Producción
+## v1.3 a v1.8 — Evolución futura
 
-Decisión aprobada: **Contabo Cloud VPS 6**, con referencia de 6 vCPU, 12 GB RAM y 200 GB SSD. El presupuesto aproximado es USD 9 mensuales; el precio final no está verificado y el VPS no se ha contratado.
+**Estado: sin definir.** Estas versiones quedan reservadas para funcionalidades y mejoras que se decidan posteriormente. No se inventan fechas, requisitos ni funcionalidades.
 
-- [ ] Contratar el VPS después del cierre de v1.1.
-- [ ] Preparar Ubuntu Server.
-- [ ] Instalar Docker y Docker Compose.
-- [ ] Desplegar n8n con persistencia y política de reinicio apropiada.
-- [ ] Configurar dominio o subdominio permanente y HTTPS.
-- [ ] Configurar credenciales de producción de forma segura.
-- [ ] Eliminar la dependencia de ngrok.
-- [ ] Migrar los workflows de forma controlada.
-- [ ] Verificar y actualizar el webhook de Meta.
-- [ ] Ejecutar pruebas end-to-end.
-- [ ] Activar monitoreo, alertas y estrategia operativa de backups.
+## v1.9 — Mantenimiento avanzado
 
-Supabase continuará como servicio externo salvo que se apruebe expresamente un cambio de arquitectura.
+**Estado: reservada / no priorizada.**
 
-## Futuro
+Esta versión reúne los hallazgos y propuestas de la antigua planificación de hardening v1.1. La auditoría histórica se conserva en [docs/audit-1.9.md](audit-1.9.md), con su fecha original.
 
-- Dashboard para agentes y métricas de conversión.
-- Seguimiento de abandonos, citas y post-cita.
-- Integración con CRM y alertas operativas.
-- Historial de conversación con controles de privacidad.
-- Inteligencia artificial como complemento previo a la derivación humana, preservando las reglas deterministas y una transición controlada.
+La v1.9 no es requisito previo para comenzar v1.2. Sus criterios no deben presentarse como implementados ni como una puerta obligatoria de desarrollo. Los problemas técnicos se atenderán individualmente, según evidencia operativa, impacto y decisiones aprobadas.
+
+## Metodología de mantenimiento
+
+El bot es una herramienta complementaria de captación y precalificación. Se mantendrá supervisión operativa; cada error o inconsistencia confirmada se investigará y corregirá de forma focalizada, comprobando el resultado. No se convertirán automáticamente todos los hallazgos de la auditoría histórica en trabajo obligatorio.
+
+La operación prevista para v1.2 contempla una revisión diaria de nuevas citas y entre dos y tres revisiones técnicas semanales. El objetivo aproximado de 10 minutos diarios y esas frecuencias son estimaciones operativas, no métricas actuales verificadas ni garantías de detección inmediata.

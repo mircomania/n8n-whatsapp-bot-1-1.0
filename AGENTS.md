@@ -5,12 +5,13 @@ Este archivo es el punto de entrada obligatorio para cualquier agente de IA que 
 ## Antes de actuar
 
 1. Leer `README.md` y los documentos enlazados desde allí.
-2. Consultar `docs/current-state.md` para conocer el estado operativo verificado y su fecha de referencia.
-3. Consultar `docs/audit-1.1.md` antes de proponer o implementar tareas de hardening.
-4. Consultar `docs/roadmap.md` para respetar el alcance y el orden de las versiones.
-5. Revisar el estado de Git y preservar cambios locales ajenos a la tarea.
+2. Consultar `docs/current-state.md` para conocer el estado operativo y su fecha de referencia.
+3. Consultar `docs/decisions.md` antes de proponer cambios importantes de arquitectura o modificar el roadmap.
+4. Consultar `docs/audit-1.9.md` cuando la tarea trate sobre los hallazgos históricos de mantenimiento avanzado.
+5. Consultar `docs/roadmap.md` para respetar el alcance y el orden de las versiones.
+6. Revisar el estado de Git y preservar cambios locales ajenos a la tarea.
 
-No volver a solicitar información que ya esté registrada como verificada. Si un dato documentado tiene fecha de referencia, tratarlo como una fotografía de ese momento y comprobar si necesita actualización antes de usarlo como estado actual.
+No volver a solicitar información que ya esté registrada como verificada o aprobada. Si un dato documentado tiene fecha de referencia, tratarlo como una fotografía de ese momento y comprobar si necesita actualización antes de usarlo como estado actual.
 
 ## Clasificación de la información
 
@@ -27,12 +28,13 @@ No convertir propuestas en decisiones ni pendientes en hechos. No marcar una tar
 
 - `README.md`: entrada al repositorio y navegación.
 - `docs/project.md`: propósito, alcance y estado general del producto.
-- `docs/current-state.md`: infraestructura, versiones, datos y evidencia operativa verificada.
+- `docs/current-state.md`: infraestructura, versiones, datos y evidencia operativa con fecha de referencia.
 - `docs/architecture.md`: componentes, responsabilidades y flujo entre sistemas.
 - `docs/business-logic.md`: reglas de conversación y precalificación.
-- `docs/audit-1.1.md`: hallazgos, riesgos, propuestas y criterios de aceptación de hardening.
+- `docs/decisions.md`: decisiones técnicas, comerciales y operativas y sus consecuencias.
+- `docs/audit-1.9.md`: auditoría histórica de mantenimiento avanzado, elaborada durante la antigua planificación v1.1.
 - `docs/roadmap.md`: trabajo completado, actual y futuro.
-- `docs/stack.md`: tecnologías y responsabilidades técnicas.
+- `docs/stack.md`: tecnologías y responsabilidades.
 
 Cuando se complete una etapa o cambie un hecho operativo, actualizar el documento responsable y corregir los enlaces o resúmenes afectados. Evitar copiar todo el contenido entre documentos.
 
@@ -43,7 +45,7 @@ Cuando se complete una etapa o cambie un hecho operativo, actualizar el document
 - En una tarea exclusivamente documental, no modificar los JSON de `workflows/`.
 - No ejecutar SQL, migraciones, importaciones, despliegues, reinicios de contenedores ni operaciones destructivas por iniciativa propia.
 - No contratar ni configurar infraestructura sin autorización.
-- Respetar la secuencia aprobada: completar v1.1 antes de migrar a producción en v1.2.
+- La v1.1 de despliegue está completada; la v1.2 de IA está planificada y la v1.9 queda reservada para mantenimiento avanzado. Respetar este orden y no presentar planes como implementación.
 
 ## Seguridad y privacidad
 

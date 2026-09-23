@@ -1,90 +1,72 @@
 # Arquitectura
 
-## Arquitectura actual
+## Arquitectura actual de producción
 
 ```text
-Usuario
-  -> WhatsApp Cloud API / webhook de Meta
-  -> ngrok (exposición HTTPS local)
-  -> n8n: whatsapp-webhook
-       -> extracción y normalización
-       -> filtro actual
-       -> Execute Sub-workflow
+Usuario de WhatsApp
+  -> WhatsApp Cloud API / Meta
+  -> https://bot.proconsultores.com.mx
+  -> Caddy en Docker
+  -> n8n en Contabo: whatsapp-webhook
+       -> recepción y enrutamiento del evento
   -> n8n: whatsapp-leads
        -> consulta/actualización de public.leads
-       -> lógica por etapa
-       -> respuestas por WhatsApp Cloud API
+       -> precalificación determinista
+       -> respuestas por WhatsApp
        -> aviso al agente cuando corresponde
+  -> Supabase PostgreSQL
 ```
 
-El estado conversacional reside en Supabase, no en una ejecución prolongada de n8n. Cada mensaje inicia una ejecución que interpreta la siguiente respuesta usando la etapa persistida del lead.
+El estado conversacional reside en Supabase, no en una ejecución prolongada de n8n. La instalación local de Windows conserva una copia independiente para desarrollo y pruebas; no es el punto de entrada operativo de Meta.
 
-## Responsabilidades
+## Responsabilidades actuales
 
 ### `whatsapp-webhook`
 
-Punto de entrada de Meta. El exporte actual:
-
-- recibe el POST;
-- intenta extraer `telefono`, `tipo` y `mensaje` desde `messages[0]`;
-- acepta texto, respuesta de lista o respuesta de botón;
-- comprueba después si existe `tipo`;
-- llama a `whatsapp-leads` y responde al webhook.
-
-Aunque existe un filtro, el orden actual no valida de forma segura todos los eventos antes de acceder a `messages[0]`. En v1.1 la validación estructural debe preceder a la extracción para tolerar estados y otros eventos de Meta. Tampoco se propaga actualmente `wamid`.
+Es el punto de entrada de Meta. Recibe el evento y dirige los mensajes admitidos al workflow de precalificación.
 
 ### `whatsapp-leads`
 
-Workflow principal encargado de:
+Es el workflow principal. Busca o crea el lead en `public.leads`, interpreta la etapa persistida, aplica las reglas deterministas, actualiza datos, responde al usuario y activa el aviso al agente cuando se solicita una cita.
 
-- buscar o crear el lead en `public.leads`;
-- aplicar un control temporal de interacción;
-- evaluar `fecha_reset` cuando existe;
-- enrutar por `etapa`;
-- validar y persistir respuestas;
-- enviar preguntas y resultados;
-- registrar citas y avisar al agente.
-
-El flujo exportado contiene 44 nodos, incluidos 16 `HTTP Request`. No se identificaron reintentos explícitos ni un workflow centralizado de errores.
+Actualmente existen dos workflows. La arquitectura publicada no incluye todavía un workflow de IA.
 
 ### Supabase
 
-`public.leads` mantiene el estado comercial y conversacional. La unicidad de `telefono` protege la identidad del lead, no la unicidad de cada evento. El esquema completo está en [Estado actual](current-state.md).
+`public.leads` mantiene el estado comercial y conversacional. No se modificó su estructura durante la migración a Contabo.
 
-## Controles actuales y límites
+## Limitación operativa conocida
 
-- `ultima_interaccion` descarta mensajes en intervalos menores a 1500 ms, pero no garantiza idempotencia ni exclusión concurrente.
-- `fecha_reset` se evalúa cuando el usuario vuelve a escribir; no hay un reinicio programado en el instante del vencimiento.
-- `Reset estado` solo asigna `etapa = estado`; la limpieza coherente del resto de campos está pendiente.
-- La ruta `Si cita -> Espera agente -> Aviso agente` no muestra una garantía explícita de notificación única o recuperación.
-- Los errores y reintentos deben diseñarse junto con la idempotencia para evitar efectos duplicados.
+La ruta actual de cita incluye un aviso al agente mediante WhatsApp. Se reportaron ocho leads con solicitudes de cita cuyos avisos no fueron recibidos. No hay evidencia individual suficiente para afirmar que los ocho casos tuvieron la misma causa.
 
-## Arquitectura objetivo de v1.1
+La causa operativa conocida que debe contemplarse es la ventana de atención de WhatsApp: si han transcurrido más de 24 horas desde la última interacción iniciada por el agente con el número del bot, un mensaje normal puede ser rechazado. El procedimiento temporal es que el agente inicie una interacción con el bot al menos una vez cada 24 horas. Es una medida manual y no garantiza la entrega permanente.
 
-El diseño definitivo todavía debe aprobarse, pero la arquitectura endurecida debe incorporar:
-
-1. Validación del evento antes de normalizarlo.
-2. Identificación por `wamid` y registro duradero del procesamiento.
-3. Protección ante ejecuciones concurrentes y duplicados.
-4. Estados recuperables para mensajes y notificaciones con fallos parciales.
-5. Reset con semántica explícita de limpieza y conservación histórica.
-6. Manejo de errores, reintentos limitados, métricas y alertas sin datos personales.
-
-Una tabla independiente de mensajes en Supabase es una posibilidad, no una decisión aprobada. Véanse los criterios en [Auditoría v1.1](audit-1.1.md).
+No se modifica actualmente el workflow para resolver este problema. Una ejecución exitosa de n8n tampoco garantiza por sí sola la recepción del mensaje externo.
 
 ## Arquitectura objetivo de v1.2
 
-```text
-Usuario
-  -> WhatsApp Cloud API
-  -> dominio o subdominio HTTPS permanente
-  -> Contabo VPS
-  -> n8n en Docker con persistencia y reinicio automático
-  -> Supabase administrado (servicio externo)
-```
+La v1.2 contempla tres workflows:
 
-Contabo y el plan Cloud VPS 6 están aprobados como referencia. El VPS aún no se ha contratado y la topología detallada, proxy, certificados, secretos, backups y monitoreo todavía deben definirse e implementarse. Supabase seguirá externo salvo aprobación expresa de otro cambio.
+1. `whatsapp-webhook` — punto de entrada de Meta y futuro enrutamiento según el estado del usuario.
+2. `whatsapp-leads` — conserva la precalificación determinista actual.
+3. `whatsapp-ia` — nombre provisional para gestionar la conversación posterior a la precalificación y la solicitud de cita.
 
-## Seguridad
+El enrutamiento exacto se definirá durante el desarrollo de v1.2. No basta con ejecutar el tercer workflow una sola vez: las respuestas posteriores del usuario deberán continuar llegando al flujo de IA según el estado persistido.
 
-Los secretos deben mantenerse en credenciales de n8n o variables de entorno, nunca en JSON, documentación o GitHub. Los exportes existentes requieren una revisión autorizada de identificadores y destinos fijos potencialmente sensibles; el hallazgo se registra sin reproducir valores en la auditoría.
+Cuando el usuario supere el filtro y solicite una cita, `whatsapp-leads` deberá transferir el contexto necesario al flujo de IA y comunicar al usuario que continuará la atención para coordinarla. La IA no sustituirá la precalificación determinista.
+
+El flujo de IA podrá solicitar el nombre, registrar la información autorizada, coordinar fecha y horario, confirmar según disponibilidad real, registrar la cita y enviar un comprobante por WhatsApp. No podrá inventar horarios, disponibilidad, direcciones ni confirmaciones. Si hace falta validación humana, la cita no se comunicará como confirmada antes de cumplir las condiciones acordadas.
+
+La ubicación obtenida durante la precalificación podrá utilizarse para identificar la oficina correspondiente. El origen de oficinas, horarios, disponibilidad, campos y transiciones todavía debe definirse. No se modifica ahora la estructura de Supabase.
+
+La respuesta afirmativa actual conduce a la etapa persistida `cita`; la nueva arquitectura debe contemplar ese valor y no asumir `cita_si`.
+
+## Notificación interna prevista
+
+Cuando una cita quede realmente confirmada, la v1.2 contempla generar una notificación por correo electrónico a destinatarios autorizados de la empresa. El mecanismo concreto, el evento, la prevención de duplicados, los cambios posteriores y la detección de fallos todavía están pendientes. No se ha seleccionado definitivamente n8n o Make, ni se ha configurado correo.
+
+La empresa utilizará inicialmente el correo para registrar manualmente la cita en su propio sistema. No se contempla desarrollar de inicio una integración automática con esa tabla.
+
+## Seguridad y límites
+
+Los secretos deben mantenerse en credenciales de n8n o variables de entorno, nunca en JSON, documentación o GitHub. La arquitectura documentada no implica acceso del repositorio al VPS ni autorización para modificar servicios externos.

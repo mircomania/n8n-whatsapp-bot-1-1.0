@@ -1,10 +1,10 @@
-# Auditoría técnica v1.1
+# Auditoría histórica de mantenimiento avanzado v1.9
 
 Fecha de referencia: **21 de septiembre de 2026**.
 
 ## Objetivo
 
-Establecer una base verificable para endurecer el MVP antes de migrarlo al VPS de producción. Esta auditoría documenta hallazgos y criterios de cierre; no implementa correcciones.
+Esta auditoría fue elaborada durante la antigua planificación de hardening v1.1. Documenta hallazgos, riesgos y propuestas de mantenimiento avanzado; no implementa correcciones y no constituye un requisito previo para v1.2.
 
 ## Componentes revisados
 
@@ -86,9 +86,9 @@ Corrección propuesta: realizar una revisión de secretos y privacidad con alcan
 - Ejecutar pruebas de regresión de todas las rutas comerciales.
 - Resolver de forma autorizada la exposición potencial descrita, sin publicar valores en documentación.
 
-## Criterios de aceptación de v1.1
+## Criterios históricos de aceptación de la antigua v1.1
 
-v1.1 puede cerrarse cuando exista evidencia de que:
+Durante la planificación antigua, se propuso cerrar el hardening cuando existiera evidencia de que:
 
 - Cada `wamid` admitido produce como máximo un procesamiento efectivo, incluso con entregas duplicadas y ejecuciones concurrentes.
 - Los mensajes pendientes o fallidos tienen estados explícitos y un procedimiento de recuperación que no duplica efectos.
@@ -101,6 +101,10 @@ v1.1 puede cerrarse cuando exista evidencia de que:
 - Se verificó un respaldo actual y se documentó una restauración controlada satisfactoria.
 - Se revisaron las configuraciones relevantes de seguridad de Supabase y los valores sensibles en archivos versionados.
 - La documentación y los exportes autorizados reflejan la implementación final, sin marcar como cumplido lo que no tenga evidencia.
+
+## Estado y uso actual
+
+La migración a Contabo y el despliegue de producción corresponden ahora a la v1.1 completada del roadmap. Los criterios anteriores se conservan como referencia histórica y no deben marcarse como implementados por el solo hecho de que la migración haya finalizado. Los problemas que sigan siendo relevantes se atenderán individualmente según evidencia operativa y decisión aprobada.
 
 ## Fuera de alcance de esta auditoría documental
 
