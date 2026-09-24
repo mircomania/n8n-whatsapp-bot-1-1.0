@@ -118,7 +118,7 @@ Decisión: Una cita realmente confirmada generará una notificación por correo 
 
 Motivo: Sustituir la dependencia de la ventana de mensajería de WhatsApp para la comunicación interna sin crear inicialmente una integración con la tabla de la empresa.
 
-Consecuencias: El evento, los campos, la prevención de duplicados, los cambios posteriores, el tratamiento de fallos y la herramienta de envío quedan pendientes de definición en v1.2. No se ha configurado correo ni se ha elegido definitivamente n8n o Make.
+Consecuencias originales: En el alcance de entonces quedaban pendientes el evento, los campos, la prevención de duplicados, los cambios posteriores, el tratamiento de fallos y la herramienta de envío. Esa decisión fue sustituida antes de implementarse por DEC-011; no son pendientes vigentes de v1.2.
 
 ### DEC-010 — Modelo operativo previsto para v1.2
 
@@ -134,12 +134,26 @@ Consecuencia: El objetivo aproximado de 10 minutos diarios y la revisión diaria
 
 Fecha: 23 de septiembre de 2026.
 
-Estado: Aprobada / Planificada; pendiente de implementación.
+Estado: Implementada y publicada; modificación parcial posterior por DEC-012.
 
 Contexto: La empresa redefinió el alcance de la siguiente versión y necesita consultar y gestionar en Airtable los leads que solicitan cita tras superar la precalificación.
 
-Decisión: La v1.2 integrará Airtable en el tramo final del workflow existente `whatsapp-leads`. Cuando un usuario calificado solicite una cita, el flujo actualizará Supabase y creará un registro en Airtable, sustituyendo el aviso interno actual al agente por WhatsApp. Se conservarán los dos workflows actuales y Supabase como base principal. La creación del registro representa una solicitud de cita, no una cita confirmada.
+Decisión original: La v1.2 integraría Airtable en el tramo final del workflow existente `whatsapp-leads`. Cuando un usuario calificado solicitara una cita, el flujo actualizaría Supabase y crearía un registro en Airtable para sustituir el aviso interno al agente por WhatsApp. Se conservarían los dos workflows actuales y Supabase como base principal. La creación del registro representa una solicitud de cita, no una cita confirmada.
 
 Motivo: Incorporar al flujo existente el destino que la empresa utilizará para consultar y gestionar los leads recibidos, sin crear un sistema adicional de citas.
 
-Consecuencias: Se descartan del alcance aprobado de v1.2 la IA, el workflow `whatsapp-ia`, la coordinación automatizada de disponibilidad y las notificaciones por correo. La autenticación, base, tabla y mapeo de columnas de Airtable quedan pendientes de la implementación. Las reglas y etapas actuales de precalificación no cambian.
+Consecuencias: Se descartaron del alcance de v1.2 la IA, el workflow `whatsapp-ia`, la coordinación automatizada de disponibilidad y las notificaciones por correo. La integración Airtable fue implementada y publicada. DEC-012 aplazó la sustitución completa del aviso al agente: ambos mecanismos permanecen activos. La base, tabla y mapeo fueron configurados en producción; los JSON del repositorio aún no están sincronizados con esa publicación.
+
+### DEC-012 — Mantener temporalmente WhatsApp y Airtable
+
+Fecha: 23 de septiembre de 2026.
+
+Estado: Implementada.
+
+Contexto: La integración Airtable de v1.2 fue configurada, probada y publicada. La planificación original contemplaba reemplazar por completo el aviso interno mediante WhatsApp.
+
+Decisión: Mantener conectados y activos `Aviso agente` y `Create a record`. El flujo seguirá enviando la notificación al agente por WhatsApp y creando el registro correspondiente en Airtable. La retirada del aviso por WhatsApp se aplaza para una decisión posterior.
+
+Motivo: Conservar temporalmente el mecanismo de aviso existente mientras la empresa empieza a consultar los registros en Airtable.
+
+Consecuencias: Los dos mecanismos coexisten en producción. La retirada futura del aviso no es requisito para considerar v1.2 completada. La creación Airtable registra una solicitud de cita y no confirma fecha u horario.

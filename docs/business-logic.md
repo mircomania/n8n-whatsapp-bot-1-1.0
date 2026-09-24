@@ -6,7 +6,7 @@ Cada lead se identifica por su número de WhatsApp. Antes de interpretar una res
 
 La etapa persistida determina el significado de la siguiente respuesta. Una respuesta nunca debe interpretarse solo por su contenido sin considerar esa etapa.
 
-## Precalificación determinista actual
+## Precalificación determinista
 
 Si el teléfono no existe, se crea el registro, se guarda el teléfono y el mensaje original, se establece la etapa inicial `estado` y se envía la primera pregunta.
 
@@ -18,24 +18,31 @@ Las etapas comerciales actuales son:
 - `calificado` y `re_cita`: el usuario puede solicitar o rechazar una cita.
 - `cita`, `fin` y `rechazado`: estados de resultado, espera o reactivación observados en la operación.
 
-Una respuesta inválida vuelve a solicitar la opción correspondiente. Los motivos de rechazo y los datos comerciales se conservan en `public.leads` según la lógica actual. La integración planificada con Airtable no cambia las reglas ni las condiciones de calificación.
+Una respuesta inválida vuelve a solicitar la opción correspondiente. Los motivos de rechazo y los datos comerciales se conservan en `public.leads`. La implementación de Airtable no cambió las condiciones de calificación ni las etapas anteriores.
 
 ## Reset
 
 El reset se evalúa cuando el usuario vuelve a escribir después de que `fecha_reset` haya vencido. No es un proceso programado que cambie el estado exactamente en el instante del vencimiento.
 
-La semántica completa de los campos que deben limpiarse o conservarse no se modifica en esta actualización documental. Tampoco se modifica la estructura de Supabase.
+## Solicitud de cita y salidas actuales
 
-## Solicitud de cita y aviso actual
+La respuesta afirmativa a la solicitud de cita conduce a la etapa persistida `cita`; no debe asumirse que el valor guardado sea `cita_si`.
 
-La ruta actual registra la solicitud de cita y envía un aviso al agente mediante WhatsApp. La respuesta afirmativa conduce a la etapa persistida `cita`; no debe asumirse que el valor almacenado sea `cita_si`.
+Para un usuario que superó la precalificación y solicita cita, el tramo publicado realiza:
 
-Se reportaron ocho solicitudes de cita cuyos avisos no fueron recibidos por el agente. El dato no demuestra una causa común. El procedimiento temporal es que el agente inicie una interacción con el número del bot al menos una vez cada 24 horas, para mantener abierta su ventana de atención para mensajes normales. Es manual y no constituye una garantía permanente de entrega.
+1. Actualiza la información correspondiente del lead en Supabase (`Si cita`).
+2. Envía al usuario la respuesta de WhatsApp correspondiente (`Espera agente`).
+3. Envía el aviso interno al agente mediante WhatsApp (`Aviso agente`).
+4. Crea un registro comercial en Airtable (`Create a record`).
 
-## Salida comercial prevista en v1.2
+Los avisos por WhatsApp y la creación Airtable coexisten temporalmente. La retirada del aviso queda para una decisión posterior y no es requisito para el cierre de v1.2.
 
-Cuando un usuario que superó satisfactoriamente la precalificación solicite una cita, `whatsapp-leads` actualizará el lead en Supabase y creará el registro correspondiente en Airtable. Esa creación sustituirá el aviso actual al agente mediante WhatsApp una vez implementada la integración.
+El registro Airtable representa una solicitud de cita de un usuario calificado. No significa que la cita tenga fecha u horario confirmados.
 
-El evento es la solicitud de cita del usuario calificado. El registro de Airtable no significa que exista una cita confirmada con fecha y horario. Las reglas comerciales y las etapas actuales se mantienen sin cambios.
+## Configuración de campos Airtable reportada
 
-La base, tabla, columnas y mapeo de datos se definirán durante la implementación. Supabase continuará siendo la base principal comercial y conversacional.
+El nodo crea registros en “Base Leads Nueva” / “Leads global” con mapeo manual. Entre los campos documentados están `phone` desde el teléfono del lead, `state_google_ads` desde el estado, `source` con la etiqueta fija `BOT IA`, `Fuente_lead` con `Llamada IA`, `company` y `company_aux` con `Proconsultores`, y `no_llamar` activado. Las etiquetas `BOT IA` y `Llamada IA` identifican el origen comercial y no indican que el flujo use inteligencia artificial.
+
+## Mantenimiento de reglas
+
+La integración se añadió después de la precalificación. Las reglas comerciales existentes permanecen deterministas y no fueron redefinidas por la conexión con Airtable.

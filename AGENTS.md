@@ -45,7 +45,8 @@ Cuando se complete una etapa o cambie un hecho operativo, actualizar el document
 - En una tarea exclusivamente documental, no modificar los JSON de `workflows/`.
 - No ejecutar SQL, migraciones, importaciones, despliegues, reinicios de contenedores ni operaciones destructivas por iniciativa propia.
 - No contratar ni configurar infraestructura sin autorización.
-- La v1.1 de despliegue está completada; la v1.2 de integración con Airtable está planificada y la v1.9 queda reservada para mantenimiento avanzado. Respetar este orden y no presentar planes como implementación.
+- La v1.1 de despliegue y la v1.2 de integración con Airtable están completadas. La v1.2 mantiene temporalmente el aviso al agente por WhatsApp y la creación del registro en Airtable; retirar el aviso no es requisito de cierre. La v1.9 queda reservada para mantenimiento avanzado.
+- Para la integración Airtable, la versión publicada de `whatsapp-leads` en Contabo es la referencia operativa actual. Los JSON versionados en `workflows/` son exportes anteriores y su sincronización está pendiente; no afirmar que coinciden con producción ni modificarlos sin autorización y alcance explícitos.
 
 ## Seguridad y privacidad
 
@@ -66,3 +67,4 @@ Los respaldos históricos documentados no prueban que exista un respaldo actual,
 - Registrar fechas en métricas y observaciones que puedan cambiar.
 - Diseñar los reintentos junto con la idempotencia para no duplicar mensajes, escrituras ni avisos a agentes.
 - Preservar las reglas deterministas de precalificación y documentar explícitamente las transiciones comerciales aprobadas.
+- Distinguir un registro de lead en Airtable de una cita confirmada; no inferir fecha u horario confirmados.

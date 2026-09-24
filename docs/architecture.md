@@ -8,59 +8,49 @@ Usuario de WhatsApp
   -> https://bot.proconsultores.com.mx
   -> Caddy en Docker
   -> n8n en Contabo: whatsapp-webhook
-       -> recepción y enrutamiento del evento
   -> n8n: whatsapp-leads
-       -> consulta/actualización de public.leads
        -> precalificación determinista
-       -> respuestas por WhatsApp
-       -> aviso al agente cuando corresponde
-  -> Supabase PostgreSQL
+       -> persistencia comercial y conversacional en Supabase
+       -> respuesta al usuario por WhatsApp
+       -> aviso al agente por WhatsApp
+       -> creación de registro en Airtable
 ```
 
-El estado conversacional reside en Supabase. La instalación local de Windows conserva una copia independiente para desarrollo y pruebas; no es el punto de entrada operativo de Meta.
+La integración Airtable está implementada y publicada directamente en la instancia de n8n de producción en Contabo. El repositorio no se ha sincronizado todavía con los exportes de esa versión; por tanto, los JSON bajo `workflows/` representan exportaciones anteriores y no son la referencia operativa de la integración.
 
-## Componentes actuales
+## Workflows y responsabilidades
 
 ### `whatsapp-webhook`
 
-Es el punto de entrada de Meta. Recibe el evento y dirige los mensajes admitidos al workflow comercial.
+Punto de entrada de eventos de Meta y enrutamiento al workflow comercial. No se añadió un tercer workflow.
 
 ### `whatsapp-leads`
 
-Busca o crea el lead en `public.leads`, interpreta la etapa persistida, aplica las reglas deterministas, actualiza datos y responde al usuario. Cuando un usuario calificado solicita una cita, actualmente envía un aviso al agente por WhatsApp.
+Busca o crea el lead en `public.leads`, interpreta la etapa persistida, conserva las reglas deterministas, actualiza los datos y envía respuestas al usuario. El tramo de solicitud de cita publicado es:
+
+```text
+Si cita
+  -> Espera agente
+  -> Aviso agente
+  -> Create a record (Airtable)
+```
+
+`Si cita` actualiza la información correspondiente en Supabase. `Espera agente` envía la respuesta al usuario. `Aviso agente` conserva el aviso interno por WhatsApp. `Create a record` crea el registro en Airtable. Ambos últimos mecanismos están conectados y activos temporalmente, según DEC-012.
 
 ### Supabase
 
-`public.leads` mantiene la persistencia comercial y conversacional. No se modificó su estructura durante la migración a Contabo.
+`public.leads` sigue siendo la base principal para persistencia comercial y estado conversacional. Su estructura no cambió para esta integración.
 
 ### Airtable
 
-Airtable no forma parte de la instalación operativa actual. Su integración está planificada para v1.2.
+Airtable recibe registros comerciales de usuarios que superaron la precalificación y solicitaron una cita, para que la empresa los consulte y gestione. El registro no confirma una cita ni implica una fecha u horario acordados. La conexión usa el nodo nativo de Airtable de n8n y una credencial almacenada en n8n.
 
-## Arquitectura objetivo de v1.2
+La base configurada es “Base Leads Nueva” y la tabla es “Leads global”. Los campos exactos están resumidos en [Estado actual](current-state.md); los valores secretos de autenticación no se documentan.
 
-La arquitectura conservará los dos workflows existentes:
+## Validación reportada
 
-```text
-Usuario de WhatsApp
-  -> WhatsApp Cloud API
-  -> whatsapp-webhook
-  -> whatsapp-leads
-       -> precalificación determinista
-       -> actualización del lead en Supabase
-       -> creación del registro correspondiente en Airtable
-```
+La prueba manual recorrió los cuatro nodos finales. Tras corregir la validación de la opción `BOT IA` en el campo `source`, cada nodo terminó correctamente y el usuario confirmó que el registro apareció en Airtable con los valores esperados. Esta prueba no demuestra cobertura exhaustiva con múltiples leads ni funcionamiento a largo plazo.
 
-El punto de integración será el tramo final de `whatsapp-leads`, donde actualmente se envía el aviso al agente. La creación de un registro en Airtable sustituirá ese aviso interno. No se incorporará un tercer workflow.
+## Limitación operativa conocida
 
-Supabase permanecerá como base principal para datos comerciales y estado conversacional. Airtable recibirá los registros que la empresa necesita consultar y gestionar. Un registro creado a partir de una solicitud de cita no representa una cita confirmada ni implica fecha u horario confirmados.
-
-La credencial de Airtable, base, tabla, columnas y mapeo de campos están pendientes de definición y configuración durante la implementación. No se presuponen campos ni identificadores.
-
-## Limitación operativa actual
-
-Se reportaron ocho leads con solicitudes de cita cuyos avisos no fueron recibidos. No hay evidencia individual suficiente para atribuir todos los casos a una misma causa. Una causa operativa conocida es el rechazo de mensajes normales fuera de la ventana de atención de WhatsApp. El procedimiento temporal documentado es que el agente inicie una interacción con el bot al menos una vez cada 24 horas; es manual y no garantiza la entrega.
-
-## Seguridad y límites
-
-Las credenciales se gestionarán mediante el sistema de credenciales de n8n. No se documentan secretos ni identificadores privados de Airtable.
+Se reportaron ocho solicitudes de cita cuyos avisos no fueron recibidos. No hay evidencia individual suficiente para atribuir todos los casos a una misma causa. Una causa operativa conocida es el rechazo de mensajes normales fuera de la ventana de atención de WhatsApp. El procedimiento temporal documentado es que el agente inicie una interacción con el bot al menos una vez cada 24 horas; es manual y no garantiza la entrega.

@@ -2,7 +2,7 @@
 
 Fecha de referencia: **23 de septiembre de 2026**.
 
-Esta fotografía consolida la información operativa proporcionada para el cierre documental de v1.1. Describe producción en Contabo y conserva separada la instalación local de desarrollo. El repositorio no demuestra por sí mismo acceso directo al VPS, n8n publicado, Meta o Supabase. La decisión registrada el 23 de septiembre de 2026 planifica la integración con Airtable para v1.2; Airtable aún no forma parte de la operación.
+Esta fotografía incorpora la información de producción confirmada por el usuario el 23 de septiembre de 2026. El despliegue previo de v1.1 y la integración v1.2 con Airtable están publicados en Contabo. El repositorio no demuestra por sí mismo acceso directo al VPS, n8n publicado, Meta, Supabase o Airtable; el estado de publicación aquí consignado se basa en esa confirmación y en la prueba manual reportada.
 
 ## Producción en Contabo
 
@@ -39,11 +39,31 @@ En la instalación operativa existen actualmente dos workflows:
 | Workflow | Responsabilidad |
 |---|---|
 | `whatsapp-webhook` | Recibir eventos de Meta y dirigir los mensajes al flujo comercial. |
-| `whatsapp-leads` | Ejecutar la precalificación, persistir el estado, responder por WhatsApp y avisar al agente cuando corresponde. |
+| `whatsapp-leads` | Ejecutar la precalificación, persistir el estado, responder por WhatsApp, avisar al agente y crear registros en Airtable cuando corresponde. |
 
 La migración trasladó los datos persistentes de n8n desde la instalación local detenida hacia el VPS. Se conservaron la base interna de n8n, los workflows, la configuración, la clave de cifrado y las credenciales cifradas. La restauración fue comprobada mediante el funcionamiento de los workflows y una prueba comercial real.
 
 Los JSON versionados en `workflows/` son exportes del repositorio. No se afirma que sean idénticos a la última versión publicada en Contabo sin una comparación actual documentada.
+
+## Integración Airtable en producción
+
+La integración fue añadida manualmente a `whatsapp-leads` desde n8n en Contabo y la nueva versión del workflow fue publicada. El tramo final reportado es `Si cita -> Espera agente -> Aviso agente -> Create a record`. `Si cita` actualiza el lead en Supabase; `Espera agente` envía la respuesta al usuario; `Aviso agente` notifica al agente por WhatsApp; y `Create a record` crea el registro en Airtable. Ambos mecanismos de salida están activos temporalmente, conforme a DEC-012.
+
+Configuración reportada: nodo nativo Airtable, recurso `Record`, operación `Create`, base “Base Leads Nueva” y tabla “Leads global”. Se usa una credencial Airtable Personal Access Token guardada en n8n, con permisos `data.records:read`, `data.records:write` y `schema.bases:read`, limitada a esa base. No se documenta el token.
+
+El mapeo manual reportado incluye `phone` desde `Revisar tabla.telefono`; `state_google_ads` desde el estado del lead; `source` con valor fijo `BOT IA`; `Fuente_lead` con valor `Llamada IA`; `company` y `company_aux` con `Proconsultores`; y `no_llamar` activado. Se indicó que otros campos visibles (`name`, `email`, `phone to clean`, `Recepción del lead`, `source_aux`, `tipo_recluta`, `age`) estaban vacíos. Las etiquetas `BOT IA` y `Llamada IA` identifican el origen del registro y no significan que se use IA.
+
+El registro representa la solicitud de cita de un usuario que superó la precalificación. No significa que la cita tenga fecha u horario confirmados.
+
+### Validación reportada
+
+Durante las primeras pruebas, n8n rechazó el valor `BOT IA` de `source` porque no aparecía entre las opciones reconocidas por la configuración del nodo. Tras actualizar esa configuración, la prueba manual del tramo final terminó correctamente en los cuatro nodos. El usuario confirmó que el registro se creó en Airtable con los valores esperados.
+
+Esta es una prueba manual del flujo reportado. No se han documentado pruebas exhaustivas con múltiples leads, verificación automática de todos los registros de producción ni funcionamiento a largo plazo.
+
+## Estado de los exportes del repositorio
+
+Los JSON de `workflows/` no incluyen la actualización Airtable publicada y son exportes anteriores. La sincronización está aplazada para observar el funcionamiento y realizar posibles ajustes. Contabo es la referencia operativa actual para esta integración. La sincronización de los exportes es una tarea pendiente independiente y no impide considerar v1.2 completada.
 
 ## Validaciones operativas reportadas
 
@@ -89,10 +109,9 @@ No se contrató Auto Backup de Contabo ni se configuraron respaldos automáticos
 
 GitHub conserva documentación y exportes de workflows, pero no es un respaldo completo de n8n. No se incorporan bases internas, respaldos ni credenciales al repositorio.
 
-## Pendientes de verificar
+## Pendientes operativos y de control documental
 
 - Existencia de un respaldo actual, íntegro y restaurable de producción.
-- Comparación actual entre los exportes versionados y los workflows publicados.
+- Exportar y sincronizar los JSON afectados una vez estabilizada la versión publicada, con la revisión de seguridad indicada en [Roadmap](roadmap.md).
 - Política definitiva de idempotencia, reintentos, recuperación y notificaciones.
 - Origen individual de los avisos al agente no recibidos.
-- Credencial, base, tabla, columnas y mapeo que se utilizarán en Airtable durante v1.2.

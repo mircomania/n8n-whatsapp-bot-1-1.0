@@ -8,7 +8,7 @@ n8n recibe eventos, ejecuta la lógica de precalificación, consulta y actualiza
 - Producción reportada: **2.35.5**.
 - Imagen de producción: `n8nio/n8n:2.35.5`.
 - Workflows actuales: `whatsapp-webhook` y `whatsapp-leads`.
-- v1.2 planificada: integración de Airtable en el tramo final de `whatsapp-leads`.
+- La integración Airtable de v1.2 está implementada y publicada en `whatsapp-leads` en Contabo.
 
 ## Producción: Contabo, Docker y Caddy
 
@@ -30,9 +30,11 @@ Meta proporciona la recepción y el envío de mensajes de texto e interacciones 
 
 Supabase continúa funcionando como servicio externo. La tabla principal verificada es `public.leads`, que conserva los datos de precalificación, etapa, resultado, fechas y control de interacción/reset. La migración a Contabo no migró la base comercial ni cambió su estructura.
 
-## Destino empresarial planificado: Airtable
+## Destino empresarial: Airtable
 
-Airtable es una integración planificada para v1.2 y no forma parte del stack operativo actual. Recibirá un registro cuando un usuario calificado solicite una cita; ese registro no representa una cita confirmada. La credencial se gestionará en n8n. La base, tabla, columnas y mapeo se definirán durante la implementación.
+Airtable es un destino adicional operativo en producción. El nodo nativo de n8n crea registros cuando un usuario calificado solicita una cita; el registro no representa una cita confirmada. La configuración utiliza la base “Base Leads Nueva” y la tabla “Leads global”. La autenticación es una credencial de Airtable almacenada en n8n, con acceso acotado a esa base. No se documenta el token.
+
+El aviso al agente por WhatsApp continúa activo junto con la creación Airtable, según DEC-012. Supabase sigue como base principal comercial y conversacional. Los JSON del repositorio son exportes anteriores y la sincronización con lo publicado está pendiente.
 
 ## Control de versiones y seguridad
 

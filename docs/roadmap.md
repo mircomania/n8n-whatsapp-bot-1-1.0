@@ -2,56 +2,41 @@
 
 ## v1.0 — MVP
 
-**Estado: completada.**
-
-Desarrollo inicial del bot de atención y precalificación para Pro Consultores mediante n8n, WhatsApp Cloud API y Supabase. Incluyó el flujo determinista de precalificación y la derivación al agente.
+**Estado: completada.** Desarrollo inicial del bot de atención y precalificación mediante n8n, WhatsApp Cloud API y Supabase, con reglas deterministas y derivación al agente.
 
 ## v1.1 — Despliegue en producción
 
-**Estado: completada.**
-
-- Migrar el bot funcional a Contabo Cloud VPS 6.
-- Instalar Ubuntu, Docker y Docker Compose.
-- Restaurar n8n, sus workflows y credenciales cifradas.
-- Configurar `bot.proconsultores.com.mx` y HTTPS con Caddy.
-- Actualizar el webhook de Meta.
-- Configurar acceso SSH mediante claves y desactivar el acceso SSH por contraseña.
-- Validar el flujo comercial con tráfico real y con la computadora local apagada.
-
-La v1.1 no incorporó nuevas funcionalidades de precalificación ni cambios en la lógica comercial. La instalación de producción está operativa en Contabo.
+**Estado: completada.** El bot funcional fue migrado a Contabo, se configuraron dominio y HTTPS, se restauró n8n y se validó el recorrido comercial reportado.
 
 ## v1.2 — Integración con Airtable
 
-**Estado: planificada / pendiente de implementación.**
+**Estado: completada — implementada y publicada.**
 
-El objetivo es registrar en Airtable la información comercial de un usuario que completó satisfactoriamente la precalificación y solicitó una cita. El registro representa una solicitud de cita, no una cita confirmada con fecha y horario.
+- [x] Crear el Personal Access Token de Airtable con acceso limitado a la base necesaria y los permisos requeridos por la integración.
+- [x] Configurar la credencial en n8n y comprobar la conexión.
+- [x] Seleccionar la base y tabla de destino.
+- [x] Configurar el nodo nativo Airtable `Record` / `Create`.
+- [x] Mapear los campos comerciales definidos.
+- [x] Incorporar el nodo al tramo final de `whatsapp-leads`.
+- [x] Resolver la validación de la opción `BOT IA` en el campo `source`.
+- [x] Ejecutar correctamente la prueba manual y comprobar la creación del registro en Airtable.
+- [x] Publicar la nueva versión de `whatsapp-leads` en Contabo.
+- [x] Mantener temporalmente el aviso al agente por WhatsApp junto con la creación del registro, según DEC-012.
 
-Alcance previsto:
+La integración registra en Airtable la solicitud de cita de un usuario que superó la precalificación. El registro no implica que haya fecha u horario confirmados. Supabase continúa como base principal y las reglas comerciales no cambiaron. La validación fue manual; no se afirma que existan pruebas exhaustivas con múltiples leads o seguimiento de largo plazo.
 
-- Identificar el punto de `whatsapp-leads` donde actualmente se envía el aviso al agente.
-- Configurar la credencial de Airtable en n8n.
-- Añadir una operación de creación de registro con base, tabla y campos que se definirán durante la implementación.
-- Mapear los campos comerciales existentes a las columnas acordadas de Airtable.
-- Sustituir el aviso interno al agente por WhatsApp por la creación del registro en Airtable.
-- Validar la creación y recepción de registros mediante pruebas controladas.
-- Comprobar que la integración no altera las reglas comerciales ni las etapas anteriores y que el workflow funciona correctamente en producción.
+### Pendiente independiente: sincronizar exportes del repositorio
 
-La integración conservará los dos workflows actuales (`whatsapp-webhook` y `whatsapp-leads`). Supabase seguirá siendo la base principal comercial y conversacional. La configuración de autenticación, el destino y el mapeo están pendientes. La v1.2 no incluye IA, un tercer workflow, gestión adicional de citas ni notificaciones por correo.
+Los JSON versionados en `workflows/` son anteriores a la integración publicada. Su actualización no condiciona el cierre de v1.2. Cuando se autorice y el flujo esté estabilizado, se deberá exportar la versión definitiva, revisar que los archivos no contengan secretos ni datos personales, actualizar los JSON afectados y comprobar que la documentación corresponda a los exportes. Esta tarea está aplazada y no se realizó aquí.
 
 ## v1.3 a v1.8 — Evolución futura
 
-**Estado: sin definir.** Estas versiones quedan reservadas para funcionalidades y mejoras que se decidan posteriormente. No se inventan fechas, requisitos ni funcionalidades.
+**Estado: sin definir.** No se asignan funcionalidades ni fechas.
 
 ## v1.9 — Mantenimiento avanzado
 
-**Estado: reservada / no priorizada.**
-
-Esta versión reúne los hallazgos y propuestas de la antigua planificación de hardening v1.1. La auditoría histórica se conserva en [docs/audit-1.9.md](audit-1.9.md), con su fecha original.
-
-La v1.9 no es requisito previo para comenzar v1.2. Sus criterios no deben presentarse como implementados ni como una puerta obligatoria de desarrollo. Los problemas técnicos se atenderán individualmente, según evidencia operativa, impacto y decisiones aprobadas.
+**Estado: reservada / no priorizada.** La auditoría histórica se conserva en [docs/audit-1.9.md](audit-1.9.md). Sus propuestas no son requisitos obligatorios para las versiones posteriores.
 
 ## Metodología de mantenimiento
 
-El bot es una herramienta complementaria de captación y precalificación. Se mantendrá supervisión operativa; cada error o inconsistencia confirmada se investigará y corregirá de forma focalizada, comprobando el resultado. No se convertirán automáticamente todos los hallazgos de la auditoría histórica en trabajo obligatorio.
-
-La frecuencia definitiva y las responsabilidades operativas podrán ajustarse según la experiencia real.
+El bot es una herramienta complementaria de captación y precalificación. Los problemas observados se investigarán y corregirán de forma focalizada según su evidencia e impacto, comprobando el resultado. El seguimiento de los registros Airtable publicados forma parte del mantenimiento operativo habitual.
