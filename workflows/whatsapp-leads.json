@@ -30,10 +30,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -720,
-        -112
+        1056,
+        2192
       ],
-      "id": "b5fbd85a-4766-4dbd-8eaa-aadb8ee6703f",
+      "id": "56239574-e22f-4e5d-899d-8ffc0e81d91f",
       "name": "¿Usuario existe?"
     },
     {
@@ -54,10 +54,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -912,
-        -112
+        864,
+        2192
       ],
-      "id": "95674975-03a5-4fc6-9b41-9f79addfef97",
+      "id": "3ae56e16-ef5d-4822-a191-80d1ebeaf9ad",
       "name": "Revisar tabla",
       "alwaysOutputData": true,
       "credentials": {
@@ -86,10 +86,10 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        -1296,
-        -112
+        480,
+        2192
       ],
-      "id": "21716d62-77b3-4d5b-88f1-a3776b469951",
+      "id": "16e47099-05f7-4f10-848b-2a99b4c00a06",
       "name": "When Executed by Another Workflow"
     },
     {
@@ -240,10 +240,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        432,
-        -384
+        2208,
+        1920
       ],
-      "id": "997c2ea5-6ef5-472d-b099-65edf8546458",
+      "id": "bba0f793-b277-4130-8cab-159176f92cd6",
       "name": "¿Etapa?"
     },
     {
@@ -263,7 +263,7 @@
           "fieldValues": [
             {
               "fieldId": "estado",
-              "fieldValue": "=estado de mexico"
+              "fieldValue": "=Estado de México"
             },
             {
               "fieldId": "etapa",
@@ -275,10 +275,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        816,
-        -768
+        2592,
+        1536
       ],
-      "id": "3d10937a-9ab0-4c29-96fc-0e339a1d42be",
+      "id": "f256c0b8-1af9-4610-9e09-58f5fa57386c",
       "name": "Estado de mexico",
       "credentials": {
         "supabaseApi": {
@@ -304,7 +304,7 @@
           "fieldValues": [
             {
               "fieldId": "estado",
-              "fieldValue": "=ciudad de mexico"
+              "fieldValue": "=Ciudad de México"
             },
             {
               "fieldId": "etapa",
@@ -316,10 +316,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        816,
-        -912
+        2592,
+        1392
       ],
-      "id": "7d1e2bf3-2dfc-4c2c-b0a4-4649b330c26e",
+      "id": "3a0e6446-920a-499f-a7c8-d527a963f5e4",
       "name": "Ciudad de mexico",
       "credentials": {
         "supabaseApi": {
@@ -345,7 +345,7 @@
           "fieldValues": [
             {
               "fieldId": "estado",
-              "fieldValue": "=nuevo leon"
+              "fieldValue": "=Nuevo León"
             },
             {
               "fieldId": "etapa",
@@ -357,10 +357,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        816,
-        -1056
+        2592,
+        1248
       ],
-      "id": "8b5246e4-765f-47b7-9ec5-8c77f0aefc50",
+      "id": "010508b1-d494-43c8-a445-5735051eb3d5",
       "name": "Nuevo leon",
       "credentials": {
         "supabaseApi": {
@@ -398,10 +398,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -336,
-        -320
+        1440,
+        1984
       ],
-      "id": "1e2c44a4-df8b-4a18-8be7-d41c8938d829",
+      "id": "2b0505d7-52ef-4b4b-aa8d-c290274fb492",
       "name": "Guardar Mensaje",
       "credentials": {
         "supabaseApi": {
@@ -451,10 +451,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        816,
-        -624
+        2592,
+        1680
       ],
-      "id": "8a7f4501-118d-4964-9c8d-f17f32b1462f",
+      "id": "72067f27-6234-47ad-b244-935967cdb3d6",
       "name": "Otro",
       "credentials": {
         "supabaseApi": {
@@ -567,10 +567,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        624,
-        -928
+        2400,
+        1376
       ],
-      "id": "6da9379f-9bcd-4a80-a397-49f092e87dc3",
+      "id": "78d16554-478a-4f9e-9bbe-f464d528edf2",
       "name": "Estado"
     },
     {
@@ -631,10 +631,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        1504,
-        -384
+        3280,
+        1920
       ],
-      "id": "49320b29-02f5-4da2-9105-4ac2afde397e",
+      "id": "287e78a7-b9df-491c-a8db-8b542572bf44",
       "name": "Trabajo"
     },
     {
@@ -678,10 +678,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1696,
-        -368
+        3472,
+        1936
       ],
-      "id": "ffe56796-c9f8-4b5f-8511-72d922ec35bf",
+      "id": "be4c0bad-f2e6-4ed4-8a2d-d835f443cfdb",
       "name": "No trabajo",
       "credentials": {
         "supabaseApi": {
@@ -719,10 +719,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1696,
-        -512
+        3472,
+        1792
       ],
-      "id": "435b8420-b3ac-4d6c-bb84-029824e7a30b",
+      "id": "b94fbe9d-fbb1-46c5-a375-a3e1cd143669",
       "name": "Si trabajo",
       "credentials": {
         "supabaseApi": {
@@ -789,10 +789,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        624,
-        -64
+        2400,
+        2240
       ],
-      "id": "e616980b-544f-4add-b65c-3917da6513a8",
+      "id": "9a867cb3-3a78-4877-9265-225f1b75c517",
       "name": "Subcuenta"
     },
     {
@@ -832,10 +832,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        816,
-        -192
+        2592,
+        2112
       ],
-      "id": "5abbeea5-46b1-409a-a106-cbcec6cd6788",
+      "id": "40ff8728-dd1c-4ceb-a152-80f2dcd60b65",
       "name": "Si subcuenta",
       "credentials": {
         "supabaseApi": {
@@ -885,10 +885,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        816,
-        -48
+        2592,
+        2256
       ],
-      "id": "75968e57-f900-4f83-9675-0255ed83d6d1",
+      "id": "e4d23319-aab8-44e9-9788-a4e3634cdf66",
       "name": "No subcuenta",
       "credentials": {
         "supabaseApi": {
@@ -924,10 +924,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        1008,
-        -192
+        2784,
+        2112
       ],
-      "id": "f36f584c-ad58-4ce3-b145-13740a1555c2",
+      "id": "520328b3-0842-43ff-963c-94490fd0aa60",
       "name": "¿Estado?"
     },
     {
@@ -957,10 +957,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        240,
-        -96
+        2016,
+        2208
       ],
-      "id": "ff2d474c-9708-4c66-93a8-99296b8e07d4",
+      "id": "fff7369e-9b9a-46f6-9f11-3934f5a6d11b",
       "name": "Crear tabla",
       "credentials": {
         "supabaseApi": {
@@ -998,10 +998,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1104,
-        -112
+        672,
+        2192
       ],
-      "id": "36bd9b01-a775-4322-a6fd-1121032a04b0",
+      "id": "f8089ca0-b331-4c34-83e8-8e3d51b399cc",
       "name": "Obtener datos"
     },
     {
@@ -1062,10 +1062,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        624,
-        496
+        2400,
+        2800
       ],
-      "id": "5edc54fc-61d7-44db-bfc3-a1c4ad97b42c",
+      "id": "78f366c9-ce79-47a0-86c7-250d6eb35e20",
       "name": "calificado"
     },
     {
@@ -1101,10 +1101,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        816,
-        368
+        2592,
+        2672
       ],
-      "id": "5a942734-d63f-4251-bdca-8dd4af439f8c",
+      "id": "634d2d87-1b18-4f85-96e0-f25d1bf5cc99",
       "name": "Si cita",
       "credentials": {
         "supabaseApi": {
@@ -1150,10 +1150,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        816,
-        512
+        2592,
+        2816
       ],
-      "id": "7acb1c8f-8c0e-4bbe-beee-4e480c4fe4a7",
+      "id": "74f11ccf-9435-4cb8-ad0d-c4c44e9cc34e",
       "name": "No cita",
       "credentials": {
         "supabaseApi": {
@@ -1220,10 +1220,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        624,
-        1024
+        2400,
+        3328
       ],
-      "id": "223f0ee2-fa17-4580-9c9f-16a4ef75a723",
+      "id": "95c8a032-da32-4d18-a438-11d1530dd45b",
       "name": "Re cita"
     },
     {
@@ -1251,10 +1251,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        624,
-        800
+        2400,
+        3104
       ],
-      "id": "20a8fd7c-8201-47e1-9228-2368fbf33d52",
+      "id": "1246c5e5-0761-479d-8ff2-e85442dd1a28",
       "name": "Fin",
       "credentials": {
         "supabaseApi": {
@@ -1286,16 +1286,12 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        432,
-        -96
+        2208,
+        2208
       ],
-      "id": "3e199f34-db9e-402c-8790-250146a67d4c",
+      "id": "61dc0574-55f5-48a4-83f0-401c50e57f42",
       "name": "Pregunta estado",
       "credentials": {
-        "httpBearerAuth": {
-          "id": "18ZdsyhqGzQY3wkl",
-          "name": "Bearer Auth account"
-        },
         "httpHeaderAuth": {
           "id": "lqDafH23HRvPDNkv",
           "name": "WhatsApp Meta API"
@@ -1325,10 +1321,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1008,
-        -912
+        2784,
+        1392
       ],
-      "id": "ca751d9c-cf0a-4518-b92b-749ec60dc424",
+      "id": "5a01307c-b8b2-4aa0-9366-52e35a7b8734",
       "name": "Pregunta trabajo",
       "credentials": {
         "httpHeaderAuth": {
@@ -1360,10 +1356,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        816,
-        -480
+        2592,
+        1824
       ],
-      "id": "9e28b73c-3d4b-4d73-bd7f-2a2c80dac73f",
+      "id": "cac251ff-8094-4544-8b7f-9ca9f536c751",
       "name": "RE pregunta estado",
       "credentials": {
         "httpHeaderAuth": {
@@ -1395,10 +1391,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1008,
-        -624
+        2784,
+        1680
       ],
-      "id": "42750767-bd8d-4462-b7f1-1401212c8999",
+      "id": "5fa4b999-b713-43a1-a48a-180a72ed3a8d",
       "name": "Final estado",
       "credentials": {
         "httpHeaderAuth": {
@@ -1430,10 +1426,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1888,
-        -512
+        3664,
+        1792
       ],
-      "id": "c2a9a621-1a0e-48b7-ad21-228a713f40f5",
+      "id": "83898e1a-171d-4c0d-8a08-0f8059b1a932",
       "name": "Pregunta subcuenta",
       "credentials": {
         "httpHeaderAuth": {
@@ -1465,10 +1461,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1888,
-        -368
+        3664,
+        1936
       ],
-      "id": "2a554152-3061-478c-aced-51386ae37f4a",
+      "id": "1a8dee4c-c449-40a3-8281-b0d57ea21db8",
       "name": "Final trabajo",
       "credentials": {
         "httpHeaderAuth": {
@@ -1500,10 +1496,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1696,
-        -208
+        3472,
+        2096
       ],
-      "id": "c7f612f7-e0e0-4419-a9d5-6252ce1dfb39",
+      "id": "03205e0f-25e9-447c-900f-641684113dce",
       "name": "RE pregunta trabajo",
       "credentials": {
         "httpHeaderAuth": {
@@ -1535,10 +1531,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1200,
-        -272
+        2976,
+        2032
       ],
-      "id": "0940d69b-c936-47ac-959c-53525e32b2dd",
+      "id": "ea0eb6cb-a790-456c-9cad-d23c0addc221",
       "name": "Pregunta cita NL",
       "credentials": {
         "httpHeaderAuth": {
@@ -1570,10 +1566,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1200,
-        -112
+        2976,
+        2192
       ],
-      "id": "d02f5176-d3dc-497e-a53b-c461fb7b6594",
+      "id": "6ada682d-b93a-412a-9b5d-1abc8fff7028",
       "name": "Pregunta cita MX",
       "credentials": {
         "httpHeaderAuth": {
@@ -1605,10 +1601,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1008,
-        -48
+        2784,
+        2256
       ],
-      "id": "909f37f6-1b2b-4fc7-a2c7-4bd0d32b539c",
+      "id": "4fcc3a99-344e-407d-9d9c-324cf03913a5",
       "name": "Final subcuenta",
       "credentials": {
         "httpHeaderAuth": {
@@ -1640,10 +1636,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        816,
-        96
+        2592,
+        2400
       ],
-      "id": "4b4c2597-056e-4174-821f-6933b57b6c58",
+      "id": "61e61f69-ce73-422d-a8bf-095375d77afb",
       "name": "RE pregunta subcuenta",
       "credentials": {
         "httpHeaderAuth": {
@@ -1675,10 +1671,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        816,
-        800
+        2592,
+        3104
       ],
-      "id": "0e524b2f-b6fe-4ebf-b9e9-668d15290261",
+      "id": "42b74428-66e3-4a44-876e-bc75b4301129",
       "name": "Pregunta re cita",
       "credentials": {
         "httpHeaderAuth": {
@@ -1710,10 +1706,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        816,
-        656
+        2592,
+        2960
       ],
-      "id": "18facfcc-5676-4b87-bca8-f89e18ccdf3b",
+      "id": "43a47404-421e-4b89-b6fd-10cb3d555382",
       "name": "RE pregunta calificado",
       "credentials": {
         "httpHeaderAuth": {
@@ -1745,46 +1741,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1008,
-        512
+        2784,
+        2816
       ],
-      "id": "57ed79af-80f1-4b38-9de0-0edcb641cd4f",
+      "id": "f9584c30-dcb4-4b63-9c74-dbbae5837961",
       "name": "Final calificado",
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "lqDafH23HRvPDNkv",
-          "name": "WhatsApp Meta API"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Content-Type",
-              "value": "application/json"
-            }
-          ]
-        },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"528126023798\",\n  \"type\": \"text\",\n  \"text\": {\n    \"preview_url\": false,\n    \"body\": \"📅 NUEVA CITA SOLICITADA\\n\\n📞 Teléfono: {{ $('Revisar tabla').item.json.telefono }}\\n📍 Estado: {{ $('Revisar tabla').item.json.estado }}\\n\\nEl cliente desea agendar una cita.\"\n  }\n}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.4,
-      "position": [
-        1200,
-        368
-      ],
-      "id": "b34307ed-307c-46ee-bb4c-de6488b19868",
-      "name": "Aviso agente",
       "credentials": {
         "httpHeaderAuth": {
           "id": "lqDafH23HRvPDNkv",
@@ -1815,10 +1776,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1008,
-        368
+        2784,
+        2672
       ],
-      "id": "7f53d957-a54d-4441-ad11-6c427c74b7a9",
+      "id": "267431f3-bf2a-461a-baeb-a88da67ee7e8",
       "name": "Espera agente",
       "credentials": {
         "httpHeaderAuth": {
@@ -1852,10 +1813,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        240,
-        -464
+        2016,
+        1840
       ],
-      "id": "8c3dc23c-2b6b-478c-8855-0a0522f5890e",
+      "id": "4261110f-3319-4f46-99fe-e5ed2d6942ef",
       "name": "Reset estado",
       "credentials": {
         "supabaseApi": {
@@ -1893,10 +1854,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        48,
-        -336
+        1824,
+        1968
       ],
-      "id": "a31aa307-4d67-431e-9742-d0b4d3e46248",
+      "id": "24253795-1f18-4f6a-a7ef-20c98180cfc1",
       "name": "¿Debe reiniciarse?"
     },
     {
@@ -1927,10 +1888,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -144,
-        -320
+        1632,
+        1984
       ],
-      "id": "1a7d07e9-78c2-4039-8d3c-5391ab03f215",
+      "id": "6ff3aac2-7f2b-4732-b0a2-b3b3753e3e97",
       "name": "¿Tiene fecha reset?"
     },
     {
@@ -1961,11 +1922,1531 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -528,
-        -336
+        1248,
+        1968
       ],
-      "id": "ed8e37f9-9c39-40a8-9237-8b7a0e808dfe",
+      "id": "79c6431a-4bbc-48bf-9e74-9d9027d857e9",
       "name": "¿Muy rapido?"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "apps7SwjnxHkNjJvO",
+          "mode": "list",
+          "cachedResultName": "Base Leads Nueva",
+          "cachedResultUrl": "https://airtable.com/apps7SwjnxHkNjJvO"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblkn1XuqkuSHre8q",
+          "mode": "list",
+          "cachedResultName": "Leads global",
+          "cachedResultUrl": "https://airtable.com/apps7SwjnxHkNjJvO/tblkn1XuqkuSHre8q"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "no_llamar": true,
+            "Fuente_lead": "BOT IA",
+            "company": "Proconsultores",
+            "source": "BOT IA",
+            "phone": "=+{{ $('Revisar tabla').item.json.telefono }}",
+            "state_google_ads": "={{ $('Revisar tabla').item.json.estado }}",
+            "company_aux": "Proconsultores"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Id",
+              "displayName": "Id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "primer nombre",
+              "displayName": "primer nombre",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Fuente_lead",
+              "displayName": "Fuente_lead",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Externos",
+                  "value": "Externos"
+                },
+                {
+                  "name": "Formulario",
+                  "value": "Formulario"
+                },
+                {
+                  "name": "Google Ads",
+                  "value": "Google Ads"
+                },
+                {
+                  "name": "Internos",
+                  "value": "Internos"
+                },
+                {
+                  "name": "Whatsapp",
+                  "value": "Whatsapp"
+                },
+                {
+                  "name": "Llamada IA",
+                  "value": "Llamada IA"
+                },
+                {
+                  "name": "BOT IA",
+                  "value": "BOT IA"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "phone to clean",
+              "displayName": "phone to clean",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "retell phone",
+              "displayName": "retell phone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "record_id",
+              "displayName": "record_id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Fecha de Creación",
+              "displayName": "Fecha de Creación",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "now",
+              "displayName": "now",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Recepción del lead",
+              "displayName": "Recepción del lead",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "source",
+              "displayName": "source",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Facebook",
+                  "value": "Facebook"
+                },
+                {
+                  "name": "Google Ads",
+                  "value": "Google Ads"
+                },
+                {
+                  "name": "campaña_prueba_mejoravit_1_1",
+                  "value": "campaña_prueba_mejoravit_1_1"
+                },
+                {
+                  "name": "mejoravit.com.mx",
+                  "value": "mejoravit.com.mx"
+                },
+                {
+                  "name": "tramitemejoravit.com.mx",
+                  "value": "tramitemejoravit.com.mx"
+                },
+                {
+                  "name": "mejoravit_test_trafico_1_0",
+                  "value": "mejoravit_test_trafico_1_0"
+                },
+                {
+                  "name": "campaña_prueba_mejoravit_1_0",
+                  "value": "campaña_prueba_mejoravit_1_0"
+                },
+                {
+                  "name": "creditosoloparati.com.mx - Paga",
+                  "value": "creditosoloparati.com.mx - Paga"
+                },
+                {
+                  "name": "camp_mejoravit_3",
+                  "value": "camp_mejoravit_3"
+                },
+                {
+                  "name": "gastosmedicosmayores.com.mx",
+                  "value": "gastosmedicosmayores.com.mx"
+                },
+                {
+                  "name": "planprivadoderetiro.com.mx",
+                  "value": "planprivadoderetiro.com.mx"
+                },
+                {
+                  "name": "120230631982860056",
+                  "value": "120230631982860056"
+                },
+                {
+                  "name": "120230631399250056",
+                  "value": "120230631399250056"
+                },
+                {
+                  "name": "120230745876040056",
+                  "value": "120230745876040056"
+                },
+                {
+                  "name": "120230746522690056",
+                  "value": "120230746522690056"
+                },
+                {
+                  "name": "120231124075190056",
+                  "value": "120231124075190056"
+                },
+                {
+                  "name": "120231121474600056",
+                  "value": "120231121474600056"
+                },
+                {
+                  "name": "120231124020350056",
+                  "value": "120231124020350056"
+                },
+                {
+                  "name": "120231123920450056",
+                  "value": "120231123920450056"
+                },
+                {
+                  "name": "camp_gastosmedicos_1",
+                  "value": "camp_gastosmedicos_1"
+                },
+                {
+                  "name": "120231123824320056",
+                  "value": "120231123824320056"
+                },
+                {
+                  "name": "120231559527230056",
+                  "value": "120231559527230056"
+                },
+                {
+                  "name": "120231559368040056",
+                  "value": "120231559368040056"
+                },
+                {
+                  "name": "120231559254180056",
+                  "value": "120231559254180056"
+                },
+                {
+                  "name": "camp_planprivado_1",
+                  "value": "camp_planprivado_1"
+                },
+                {
+                  "name": "120231559354950056",
+                  "value": "120231559354950056"
+                },
+                {
+                  "name": "120232051041390056",
+                  "value": "120232051041390056"
+                },
+                {
+                  "name": "120232055464780056",
+                  "value": "120232055464780056"
+                },
+                {
+                  "name": "120232055362800056",
+                  "value": "120232055362800056"
+                },
+                {
+                  "name": "camp_mejoravit_1_1",
+                  "value": "camp_mejoravit_1_1"
+                },
+                {
+                  "name": "creditosoloparati.com.mx",
+                  "value": "creditosoloparati.com.mx"
+                },
+                {
+                  "name": "120232706202520056",
+                  "value": "120232706202520056"
+                },
+                {
+                  "name": "120232705649050056",
+                  "value": "120232705649050056"
+                },
+                {
+                  "name": "120232706318460056",
+                  "value": "120232706318460056"
+                },
+                {
+                  "name": "120232704918870056",
+                  "value": "120232704918870056"
+                },
+                {
+                  "name": "120233050518180056",
+                  "value": "120233050518180056"
+                },
+                {
+                  "name": "120233050352380056",
+                  "value": "120233050352380056"
+                },
+                {
+                  "name": "120233050601970056",
+                  "value": "120233050601970056"
+                },
+                {
+                  "name": "120233051325170056",
+                  "value": "120233051325170056"
+                },
+                {
+                  "name": "camp_gastosmedicos_1_1",
+                  "value": "camp_gastosmedicos_1_1"
+                },
+                {
+                  "name": "120233050892050056",
+                  "value": "120233050892050056"
+                },
+                {
+                  "name": "120233445441950056",
+                  "value": "120233445441950056"
+                },
+                {
+                  "name": "120233446641650056",
+                  "value": "120233446641650056"
+                },
+                {
+                  "name": "120233445982140056",
+                  "value": "120233445982140056"
+                },
+                {
+                  "name": "120233445787340056",
+                  "value": "120233445787340056"
+                },
+                {
+                  "name": "120233446096120056",
+                  "value": "120233446096120056"
+                },
+                {
+                  "name": "120233887243710056",
+                  "value": "120233887243710056"
+                },
+                {
+                  "name": "120233887175650056",
+                  "value": "120233887175650056"
+                },
+                {
+                  "name": "120233886976800056",
+                  "value": "120233886976800056"
+                },
+                {
+                  "name": "120233887343830056",
+                  "value": "120233887343830056"
+                },
+                {
+                  "name": "120233887445080056",
+                  "value": "120233887445080056"
+                },
+                {
+                  "name": "120234264575990056",
+                  "value": "120234264575990056"
+                },
+                {
+                  "name": "120234264544050056",
+                  "value": "120234264544050056"
+                },
+                {
+                  "name": "120234265030110056",
+                  "value": "120234265030110056"
+                },
+                {
+                  "name": "120234264636060056",
+                  "value": "120234264636060056"
+                },
+                {
+                  "name": "120234652670950056",
+                  "value": "120234652670950056"
+                },
+                {
+                  "name": "120234652589810056",
+                  "value": "120234652589810056"
+                },
+                {
+                  "name": "120234652713580056",
+                  "value": "120234652713580056"
+                },
+                {
+                  "name": "120234652983000056",
+                  "value": "120234652983000056"
+                },
+                {
+                  "name": "120234652751580056",
+                  "value": "120234652751580056"
+                },
+                {
+                  "name": "120235030480430056",
+                  "value": "120235030480430056"
+                },
+                {
+                  "name": "120235293828610056",
+                  "value": "120235293828610056"
+                },
+                {
+                  "name": "camp_mejoravit_tiktok_1",
+                  "value": "camp_mejoravit_tiktok_1"
+                },
+                {
+                  "name": "120235030695210056",
+                  "value": "120235030695210056"
+                },
+                {
+                  "name": "120235430908440056",
+                  "value": "120235430908440056"
+                },
+                {
+                  "name": "120235431266730056",
+                  "value": "120235431266730056"
+                },
+                {
+                  "name": "120235430792970056",
+                  "value": "120235430792970056"
+                },
+                {
+                  "name": "120235293488660056",
+                  "value": "120235293488660056"
+                },
+                {
+                  "name": "120235294294410056",
+                  "value": "120235294294410056"
+                },
+                {
+                  "name": "120235675801100056",
+                  "value": "120235675801100056"
+                },
+                {
+                  "name": "120235677623790056",
+                  "value": "120235677623790056"
+                },
+                {
+                  "name": "120235677706540056",
+                  "value": "120235677706540056"
+                },
+                {
+                  "name": "120235677555750056",
+                  "value": "120235677555750056"
+                },
+                {
+                  "name": "120236203450410056",
+                  "value": "120236203450410056"
+                },
+                {
+                  "name": "120236203571360056",
+                  "value": "120236203571360056"
+                },
+                {
+                  "name": "120236204169140056",
+                  "value": "120236204169140056"
+                },
+                {
+                  "name": "120236203722610056",
+                  "value": "120236203722610056"
+                },
+                {
+                  "name": "source",
+                  "value": "source"
+                },
+                {
+                  "name": "120236203945550056",
+                  "value": "120236203945550056"
+                },
+                {
+                  "name": "120236579293220056",
+                  "value": "120236579293220056"
+                },
+                {
+                  "name": "120236579606510056",
+                  "value": "120236579606510056"
+                },
+                {
+                  "name": "120236579095810056",
+                  "value": "120236579095810056"
+                },
+                {
+                  "name": "120236579159100056",
+                  "value": "120236579159100056"
+                },
+                {
+                  "name": "120236579326930056",
+                  "value": "120236579326930056"
+                },
+                {
+                  "name": "120236923960090056",
+                  "value": "120236923960090056"
+                },
+                {
+                  "name": "120236926109690056",
+                  "value": "120236926109690056"
+                },
+                {
+                  "name": "120236926025050056",
+                  "value": "120236926025050056"
+                },
+                {
+                  "name": "120236926051380056",
+                  "value": "120236926051380056"
+                },
+                {
+                  "name": "120236926160340056",
+                  "value": "120236926160340056"
+                },
+                {
+                  "name": "120237314777700056",
+                  "value": "120237314777700056"
+                },
+                {
+                  "name": "120237314467060056",
+                  "value": "120237314467060056"
+                },
+                {
+                  "name": "120237314709160056",
+                  "value": "120237314709160056"
+                },
+                {
+                  "name": "120237315070060056",
+                  "value": "120237315070060056"
+                },
+                {
+                  "name": "120237314574940056",
+                  "value": "120237314574940056"
+                },
+                {
+                  "name": "120238202417270056",
+                  "value": "120238202417270056"
+                },
+                {
+                  "name": "120238202586140056",
+                  "value": "120238202586140056"
+                },
+                {
+                  "name": "120238202766340056",
+                  "value": "120238202766340056"
+                },
+                {
+                  "name": "120238202468610056",
+                  "value": "120238202468610056"
+                },
+                {
+                  "name": "120238446502090056",
+                  "value": "120238446502090056"
+                },
+                {
+                  "name": "120238445840440056",
+                  "value": "120238445840440056"
+                },
+                {
+                  "name": "120238446357730056",
+                  "value": "120238446357730056"
+                },
+                {
+                  "name": "120238670197660056",
+                  "value": "120238670197660056"
+                },
+                {
+                  "name": "120238670203520056",
+                  "value": "120238670203520056"
+                },
+                {
+                  "name": "120238670849720056",
+                  "value": "120238670849720056"
+                },
+                {
+                  "name": "120238670193160056",
+                  "value": "120238670193160056"
+                },
+                {
+                  "name": "120238985973410056",
+                  "value": "120238985973410056"
+                },
+                {
+                  "name": "120238986836210056",
+                  "value": "120238986836210056"
+                },
+                {
+                  "name": "120238987473470056",
+                  "value": "120238987473470056"
+                },
+                {
+                  "name": "120239327614220056",
+                  "value": "120239327614220056"
+                },
+                {
+                  "name": "120239327598800056",
+                  "value": "120239327598800056"
+                },
+                {
+                  "name": "120239330111500056",
+                  "value": "120239330111500056"
+                },
+                {
+                  "name": "120239627697660056",
+                  "value": "120239627697660056"
+                },
+                {
+                  "name": "120239627828130056",
+                  "value": "120239627828130056"
+                },
+                {
+                  "name": "120239627922090056",
+                  "value": "120239627922090056"
+                },
+                {
+                  "name": "120239627864340056",
+                  "value": "120239627864340056"
+                },
+                {
+                  "name": "120239842177010056",
+                  "value": "120239842177010056"
+                },
+                {
+                  "name": "120239842710690056",
+                  "value": "120239842710690056"
+                },
+                {
+                  "name": "120239842254790056",
+                  "value": "120239842254790056"
+                },
+                {
+                  "name": "120239917997710056",
+                  "value": "120239917997710056"
+                },
+                {
+                  "name": "120239917955550056",
+                  "value": "120239917955550056"
+                },
+                {
+                  "name": "120239918046650056",
+                  "value": "120239918046650056"
+                },
+                {
+                  "name": "120239918106450056",
+                  "value": "120239918106450056"
+                },
+                {
+                  "name": "120240127539820056",
+                  "value": "120240127539820056"
+                },
+                {
+                  "name": "120240127614340056",
+                  "value": "120240127614340056"
+                },
+                {
+                  "name": "120240127738510056",
+                  "value": "120240127738510056"
+                },
+                {
+                  "name": "120240288204350056",
+                  "value": "120240288204350056"
+                },
+                {
+                  "name": "120240288147400056",
+                  "value": "120240288147400056"
+                },
+                {
+                  "name": "120240288245440056",
+                  "value": "120240288245440056"
+                },
+                {
+                  "name": "120240456367380056",
+                  "value": "120240456367380056"
+                },
+                {
+                  "name": "120240456377180056",
+                  "value": "120240456377180056"
+                },
+                {
+                  "name": "120240601081750056",
+                  "value": "120240601081750056"
+                },
+                {
+                  "name": "120240601117320056",
+                  "value": "120240601117320056"
+                },
+                {
+                  "name": "120240601147620056",
+                  "value": "120240601147620056"
+                },
+                {
+                  "name": "120240601003560056",
+                  "value": "120240601003560056"
+                },
+                {
+                  "name": "120240778939430056",
+                  "value": "120240778939430056"
+                },
+                {
+                  "name": "120240778975360056",
+                  "value": "120240778975360056"
+                },
+                {
+                  "name": "120240780453460056",
+                  "value": "120240780453460056"
+                },
+                {
+                  "name": "120240951033610056",
+                  "value": "120240951033610056"
+                },
+                {
+                  "name": "120240951219780056",
+                  "value": "120240951219780056"
+                },
+                {
+                  "name": "120240951205360056",
+                  "value": "120240951205360056"
+                },
+                {
+                  "name": "120241133976090056",
+                  "value": "120241133976090056"
+                },
+                {
+                  "name": "120241133965110056",
+                  "value": "120241133965110056"
+                },
+                {
+                  "name": "120241133897980056",
+                  "value": "120241133897980056"
+                },
+                {
+                  "name": "120241133846570056",
+                  "value": "120241133846570056"
+                },
+                {
+                  "name": "120241251201450056",
+                  "value": "120241251201450056"
+                },
+                {
+                  "name": "120241251189460056",
+                  "value": "120241251189460056"
+                },
+                {
+                  "name": "120241251214300056",
+                  "value": "120241251214300056"
+                },
+                {
+                  "name": "120241251210140056",
+                  "value": "120241251210140056"
+                },
+                {
+                  "name": "120241389700280056",
+                  "value": "120241389700280056"
+                },
+                {
+                  "name": "120241389643440056",
+                  "value": "120241389643440056"
+                },
+                {
+                  "name": "120241389951960056",
+                  "value": "120241389951960056"
+                },
+                {
+                  "name": "120241549923940056",
+                  "value": "120241549923940056"
+                },
+                {
+                  "name": "120241549958220056",
+                  "value": "120241549958220056"
+                },
+                {
+                  "name": "120241549903150056",
+                  "value": "120241549903150056"
+                },
+                {
+                  "name": "120241549972100056",
+                  "value": "120241549972100056"
+                },
+                {
+                  "name": "120241782053710056",
+                  "value": "120241782053710056"
+                },
+                {
+                  "name": "120241781755620056",
+                  "value": "120241781755620056"
+                },
+                {
+                  "name": "120241999899440056",
+                  "value": "120241999899440056"
+                },
+                {
+                  "name": "120241999746800056",
+                  "value": "120241999746800056"
+                },
+                {
+                  "name": "120242191917200056",
+                  "value": "120242191917200056"
+                },
+                {
+                  "name": "120242193517210056",
+                  "value": "120242193517210056"
+                },
+                {
+                  "name": "120242376471560056",
+                  "value": "120242376471560056"
+                },
+                {
+                  "name": "120242376425680056",
+                  "value": "120242376425680056"
+                },
+                {
+                  "name": "120242554188820056",
+                  "value": "120242554188820056"
+                },
+                {
+                  "name": "120242554132810056",
+                  "value": "120242554132810056"
+                },
+                {
+                  "name": "120242702413200056",
+                  "value": "120242702413200056"
+                },
+                {
+                  "name": "120242702389200056",
+                  "value": "120242702389200056"
+                },
+                {
+                  "name": "120242880001480056",
+                  "value": "120242880001480056"
+                },
+                {
+                  "name": "120242880080810056",
+                  "value": "120242880080810056"
+                },
+                {
+                  "name": "120243031775010056",
+                  "value": "120243031775010056"
+                },
+                {
+                  "name": "120243031890540056",
+                  "value": "120243031890540056"
+                },
+                {
+                  "name": "120243278968130056",
+                  "value": "120243278968130056"
+                },
+                {
+                  "name": "120243279080080056",
+                  "value": "120243279080080056"
+                },
+                {
+                  "name": "120243466836900056",
+                  "value": "120243466836900056"
+                },
+                {
+                  "name": "120243466912960056",
+                  "value": "120243466912960056"
+                },
+                {
+                  "name": "120243647812450056",
+                  "value": "120243647812450056"
+                },
+                {
+                  "name": "120243647496150056",
+                  "value": "120243647496150056"
+                },
+                {
+                  "name": "120243647842660056",
+                  "value": "120243647842660056"
+                },
+                {
+                  "name": "120243647594920056",
+                  "value": "120243647594920056"
+                },
+                {
+                  "name": "120243793200610056",
+                  "value": "120243793200610056"
+                },
+                {
+                  "name": "120243792741880056",
+                  "value": "120243792741880056"
+                },
+                {
+                  "name": "120243793532640056",
+                  "value": "120243793532640056"
+                },
+                {
+                  "name": "120243793601910056",
+                  "value": "120243793601910056"
+                },
+                {
+                  "name": "120244038934070056",
+                  "value": "120244038934070056"
+                },
+                {
+                  "name": "120244038665040056",
+                  "value": "120244038665040056"
+                },
+                {
+                  "name": "120244038761750056",
+                  "value": "120244038761750056"
+                },
+                {
+                  "name": "120244257909450056",
+                  "value": "120244257909450056"
+                },
+                {
+                  "name": "120244257778360056",
+                  "value": "120244257778360056"
+                },
+                {
+                  "name": "120244257948470056",
+                  "value": "120244257948470056"
+                },
+                {
+                  "name": "120244257966130056",
+                  "value": "120244257966130056"
+                },
+                {
+                  "name": "120244459803770056",
+                  "value": "120244459803770056"
+                },
+                {
+                  "name": "120244452443910056",
+                  "value": "120244452443910056"
+                },
+                {
+                  "name": "camp_facebook",
+                  "value": "camp_facebook"
+                },
+                {
+                  "name": "120244645201630056",
+                  "value": "120244645201630056"
+                },
+                {
+                  "name": "120244645378260056",
+                  "value": "120244645378260056"
+                },
+                {
+                  "name": "120244645599430056",
+                  "value": "120244645599430056"
+                },
+                {
+                  "name": "120244917077940056",
+                  "value": "120244917077940056"
+                },
+                {
+                  "name": "120244917065740056",
+                  "value": "120244917065740056"
+                },
+                {
+                  "name": "120244916981030056",
+                  "value": "120244916981030056"
+                },
+                {
+                  "name": "120245116869180056",
+                  "value": "120245116869180056"
+                },
+                {
+                  "name": "120245116936690056",
+                  "value": "120245116936690056"
+                },
+                {
+                  "name": "120245386561300056",
+                  "value": "120245386561300056"
+                },
+                {
+                  "name": "120245386741420056",
+                  "value": "120245386741420056"
+                },
+                {
+                  "name": "120245650188190056",
+                  "value": "120245650188190056"
+                },
+                {
+                  "name": "120245650711910056",
+                  "value": "120245650711910056"
+                },
+                {
+                  "name": "120245650335390056",
+                  "value": "120245650335390056"
+                },
+                {
+                  "name": "120245650396170056",
+                  "value": "120245650396170056"
+                },
+                {
+                  "name": "120245933509350056",
+                  "value": "120245933509350056"
+                },
+                {
+                  "name": "120245933559330056",
+                  "value": "120245933559330056"
+                },
+                {
+                  "name": "120245933599440056",
+                  "value": "120245933599440056"
+                },
+                {
+                  "name": "120246212275150056",
+                  "value": "120246212275150056"
+                },
+                {
+                  "name": "120246212373340056",
+                  "value": "120246212373340056"
+                },
+                {
+                  "name": "120246212320200056",
+                  "value": "120246212320200056"
+                },
+                {
+                  "name": "120246212345150056",
+                  "value": "120246212345150056"
+                },
+                {
+                  "name": "120246547899930056",
+                  "value": "120246547899930056"
+                },
+                {
+                  "name": "120246545812210056",
+                  "value": "120246545812210056"
+                },
+                {
+                  "name": "120246548017890056",
+                  "value": "120246548017890056"
+                },
+                {
+                  "name": "120246547961630056",
+                  "value": "120246547961630056"
+                },
+                {
+                  "name": "120246824903840056",
+                  "value": "120246824903840056"
+                },
+                {
+                  "name": "120246825517950056",
+                  "value": "120246825517950056"
+                },
+                {
+                  "name": "120246824809300056",
+                  "value": "120246824809300056"
+                },
+                {
+                  "name": "120246825217950056",
+                  "value": "120246825217950056"
+                },
+                {
+                  "name": "120247160815260056",
+                  "value": "120247160815260056"
+                },
+                {
+                  "name": "120247160897630056",
+                  "value": "120247160897630056"
+                },
+                {
+                  "name": "120247161633210056",
+                  "value": "120247161633210056"
+                },
+                {
+                  "name": "120247162040460056",
+                  "value": "120247162040460056"
+                },
+                {
+                  "name": "120247415792110056",
+                  "value": "120247415792110056"
+                },
+                {
+                  "name": "120247416262070056",
+                  "value": "120247416262070056"
+                },
+                {
+                  "name": "120247415298520056",
+                  "value": "120247415298520056"
+                },
+                {
+                  "name": "120247657587430056",
+                  "value": "120247657587430056"
+                },
+                {
+                  "name": "120247657643970056",
+                  "value": "120247657643970056"
+                },
+                {
+                  "name": "120247659734870056",
+                  "value": "120247659734870056"
+                },
+                {
+                  "name": "120247659661170056",
+                  "value": "120247659661170056"
+                },
+                {
+                  "name": "120247763332190056",
+                  "value": "120247763332190056"
+                },
+                {
+                  "name": "120247763663710056",
+                  "value": "120247763663710056"
+                },
+                {
+                  "name": "120247763490890056",
+                  "value": "120247763490890056"
+                },
+                {
+                  "name": "120247889060100056",
+                  "value": "120247889060100056"
+                },
+                {
+                  "name": "120247889040280056",
+                  "value": "120247889040280056"
+                },
+                {
+                  "name": "120247889085940056",
+                  "value": "120247889085940056"
+                },
+                {
+                  "name": "120247889094990056",
+                  "value": "120247889094990056"
+                },
+                {
+                  "name": "120247986849080056",
+                  "value": "120247986849080056"
+                },
+                {
+                  "name": "120247986938230056",
+                  "value": "120247986938230056"
+                },
+                {
+                  "name": "120247986915840056",
+                  "value": "120247986915840056"
+                },
+                {
+                  "name": "120247986897930056",
+                  "value": "120247986897930056"
+                },
+                {
+                  "name": "120248099754100056",
+                  "value": "120248099754100056"
+                },
+                {
+                  "name": "120248099929800056",
+                  "value": "120248099929800056"
+                },
+                {
+                  "name": "120248099776850056",
+                  "value": "120248099776850056"
+                },
+                {
+                  "name": "120248099946200056",
+                  "value": "120248099946200056"
+                },
+                {
+                  "name": "120248182201020056",
+                  "value": "120248182201020056"
+                },
+                {
+                  "name": "120248183083770056",
+                  "value": "120248183083770056"
+                },
+                {
+                  "name": "120248183370910056",
+                  "value": "120248183370910056"
+                },
+                {
+                  "name": "120248182718840056",
+                  "value": "120248182718840056"
+                },
+                {
+                  "name": "120248209837450056",
+                  "value": "120248209837450056"
+                },
+                {
+                  "name": "120248209894590056",
+                  "value": "120248209894590056"
+                },
+                {
+                  "name": "120248209874180056",
+                  "value": "120248209874180056"
+                },
+                {
+                  "name": "120248209919730056",
+                  "value": "120248209919730056"
+                },
+                {
+                  "name": "120248209904270056",
+                  "value": "120248209904270056"
+                },
+                {
+                  "name": "120248209859580056",
+                  "value": "120248209859580056"
+                },
+                {
+                  "name": "120248209885470056",
+                  "value": "120248209885470056"
+                },
+                {
+                  "name": "120248209927430056",
+                  "value": "120248209927430056"
+                },
+                {
+                  "name": "120248425719590056",
+                  "value": "120248425719590056"
+                },
+                {
+                  "name": "120248425749650056",
+                  "value": "120248425749650056"
+                },
+                {
+                  "name": "120248425766270056",
+                  "value": "120248425766270056"
+                },
+                {
+                  "name": "120248425728580056",
+                  "value": "120248425728580056"
+                },
+                {
+                  "name": "120248488101530056",
+                  "value": "120248488101530056"
+                },
+                {
+                  "name": "120248488134540056",
+                  "value": "120248488134540056"
+                },
+                {
+                  "name": "120248487916740056",
+                  "value": "120248487916740056"
+                },
+                {
+                  "name": "120248570105490056",
+                  "value": "120248570105490056"
+                },
+                {
+                  "name": "120248570177130056",
+                  "value": "120248570177130056"
+                },
+                {
+                  "name": "120248570140520056",
+                  "value": "120248570140520056"
+                },
+                {
+                  "name": "120248570199140056",
+                  "value": "120248570199140056"
+                },
+                {
+                  "name": "120248649986020056",
+                  "value": "120248649986020056"
+                },
+                {
+                  "name": "120248649918290056",
+                  "value": "120248649918290056"
+                },
+                {
+                  "name": "micuentamejoravit",
+                  "value": "micuentamejoravit"
+                },
+                {
+                  "name": "120248649934780056",
+                  "value": "120248649934780056"
+                },
+                {
+                  "name": "24115511192",
+                  "value": "24115511192"
+                },
+                {
+                  "name": "120248742963960056",
+                  "value": "120248742963960056"
+                },
+                {
+                  "name": "120248742974990056",
+                  "value": "120248742974990056"
+                },
+                {
+                  "name": "120248823023590056",
+                  "value": "120248823023590056"
+                },
+                {
+                  "name": "120248823074840056",
+                  "value": "120248823074840056"
+                },
+                {
+                  "name": "120248900700700056",
+                  "value": "120248900700700056"
+                },
+                {
+                  "name": "120248900684350056",
+                  "value": "120248900684350056"
+                },
+                {
+                  "name": "120248944231500056",
+                  "value": "120248944231500056"
+                },
+                {
+                  "name": "{campaignid}",
+                  "value": "{campaignid}"
+                },
+                {
+                  "name": "120248944330790056",
+                  "value": "120248944330790056"
+                },
+                {
+                  "name": "24173351469",
+                  "value": "24173351469"
+                },
+                {
+                  "name": "Facebook - Cerrador NL",
+                  "value": "Facebook - Cerrador NL"
+                },
+                {
+                  "name": "recuperaciondesubcuenta",
+                  "value": "recuperaciondesubcuenta"
+                },
+                {
+                  "name": "recuperacion_subcuenta",
+                  "value": "recuperacion_subcuenta"
+                },
+                {
+                  "name": "120251112461310062",
+                  "value": "120251112461310062"
+                },
+                {
+                  "name": "120251231773690062",
+                  "value": "120251231773690062"
+                },
+                {
+                  "name": "BOT IA",
+                  "value": "BOT IA"
+                },
+                {
+                  "name": "mejoravit4_pmax_precalificar",
+                  "value": "mejoravit4_pmax_precalificar"
+                },
+                {
+                  "name": "mejoravit4_max_1",
+                  "value": "mejoravit4_max_1"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "source_aux",
+              "displayName": "source_aux",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "company",
+              "displayName": "company",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Compramoscasa",
+                  "value": "Compramoscasa"
+                },
+                {
+                  "name": "Proconsultores",
+                  "value": "Proconsultores"
+                },
+                {
+                  "name": "Reclutamet",
+                  "value": "Reclutamet"
+                },
+                {
+                  "name": "Reclutavit",
+                  "value": "Reclutavit"
+                },
+                {
+                  "name": "Vitamet-GMM",
+                  "value": "Vitamet-GMM"
+                },
+                {
+                  "name": "Vitamet-PPR",
+                  "value": "Vitamet-PPR"
+                },
+                {
+                  "name": "Proconsultores-recuperación_subcuenta",
+                  "value": "Proconsultores-recuperación_subcuenta"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "periodo_fx",
+              "displayName": "periodo_fx",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "state_google_ads",
+              "displayName": "state_google_ads",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "company_aux",
+              "displayName": "company_aux",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "tipo_recluta",
+              "displayName": "tipo_recluta",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "age",
+              "displayName": "age",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "no_llamar",
+              "displayName": "no_llamar",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        2976,
+        2672
+      ],
+      "id": "37befed8-e141-4ba7-a193-039115b18f85",
+      "name": "Create a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "UtAT6gjSrG965PfQ",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -2371,7 +3852,7 @@
       "main": [
         [
           {
-            "node": "Aviso agente",
+            "node": "Create a record",
             "type": "main",
             "index": 0
           }
@@ -2443,11 +3924,12 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "b3329c03-de6f-4d72-af62-3448a8f6afce",
+  "versionId": "6ff3d2b3-8b06-4e86-8423-2f6945ded634",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "bf168903a33cfec42ff3ec307c6b8d46610847bf94dc4be799c84e8be60878c0"
   },
+  "nodeGroups": [],
   "id": "4grFx6GCtkfCtebO",
   "tags": []
 }

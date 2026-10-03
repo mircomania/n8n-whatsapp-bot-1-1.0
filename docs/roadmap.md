@@ -21,13 +21,11 @@
 - [x] Resolver la validación de la opción `BOT IA` en el campo `source`.
 - [x] Ejecutar correctamente la prueba manual y comprobar la creación del registro en Airtable.
 - [x] Publicar la nueva versión de `whatsapp-leads` en Contabo.
-- [x] Mantener temporalmente el aviso al agente por WhatsApp junto con la creación del registro, según DEC-012.
+- [x] Retirar el aviso al agente por WhatsApp y dejar Airtable como salida interna, según DEC-013.
 
 La integración registra en Airtable la solicitud de cita de un usuario que superó la precalificación. El registro no implica que haya fecha u horario confirmados. Supabase continúa como base principal y las reglas comerciales no cambiaron. La validación fue manual; no se afirma que existan pruebas exhaustivas con múltiples leads o seguimiento de largo plazo.
 
-### Pendiente independiente: sincronizar exportes del repositorio
-
-Los JSON versionados en `workflows/` son anteriores a la integración publicada. Su actualización no condiciona el cierre de v1.2. Cuando se autorice y el flujo esté estabilizado, se deberá exportar la versión definitiva, revisar que los archivos no contengan secretos ni datos personales, actualizar los JSON afectados y comprobar que la documentación corresponda a los exportes. Esta tarea está aplazada y no se realizó aquí.
+Los workflows finales fueron reportados como exportados desde producción y reemplazaron los archivos anteriores. El mapeo `Fuente_lead: BOT IA` fue confirmado como intencional.
 
 ## v1.3 a v1.8 — Evolución futura
 
@@ -39,4 +37,4 @@ Los JSON versionados en `workflows/` son anteriores a la integración publicada.
 
 ## Metodología de mantenimiento
 
-El bot es una herramienta complementaria de captación y precalificación. Los problemas observados se investigarán y corregirán de forma focalizada según su evidencia e impacto, comprobando el resultado. El seguimiento de los registros Airtable publicados forma parte del mantenimiento operativo habitual.
+El bot es una herramienta complementaria de captación y precalificación, en operación estable con mantenimiento por excepción. Se investigarán errores confirmados y casos excepcionales relevantes y se atenderán cambios comerciales o mantenimiento de credenciales/infraestructura cuando corresponda. No se planifican refactors preventivos sin evidencia.

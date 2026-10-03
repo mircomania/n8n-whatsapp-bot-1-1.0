@@ -45,8 +45,10 @@ Cuando se complete una etapa o cambie un hecho operativo, actualizar el document
 - En una tarea exclusivamente documental, no modificar los JSON de `workflows/`.
 - No ejecutar SQL, migraciones, importaciones, despliegues, reinicios de contenedores ni operaciones destructivas por iniciativa propia.
 - No contratar ni configurar infraestructura sin autorización.
-- La v1.1 de despliegue y la v1.2 de integración con Airtable están completadas. La v1.2 mantiene temporalmente el aviso al agente por WhatsApp y la creación del registro en Airtable; retirar el aviso no es requisito de cierre. La v1.9 queda reservada para mantenimiento avanzado.
-- Para la integración Airtable, la versión publicada de `whatsapp-leads` en Contabo es la referencia operativa actual. Los JSON versionados en `workflows/` son exportes anteriores y su sincronización está pendiente; no afirmar que coinciden con producción ni modificarlos sin autorización y alcance explícitos.
+- La v1.0 (MVP), v1.1 (despliegue) y v1.2 (integración Airtable) están completadas. Airtable es la salida interna automatizada vigente; el aviso interno al agente por WhatsApp fue retirado. Supabase continúa como base principal. La v1.9 queda reservada para mantenimiento avanzado.
+- Al 2 de octubre de 2026, el usuario reportó que los dos JSON de `workflows/` fueron exportados de la versión final publicada y estabilizada en Contabo. Son evidencia del export reportado, no prueba de la configuración viva. Conservarlos sin cambiar su lógica; cualquier diferencia encontrada debe reportarse y verificarse antes de declarar equivalencia.
+- La operación está estable y se mantiene por excepción: intervenir ante errores confirmados, casos excepcionales relevantes, cambios comerciales aprobados o mantenimiento necesario de credenciales/infraestructura.
+- La autenticación de Meta depende de un token con vigencia aproximada de seis meses según el procedimiento operativo reportado y requiere renovación periódica; no asumir renovación automática ni inventar fechas de expiración.
 
 ## Seguridad y privacidad
 

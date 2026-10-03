@@ -88,13 +88,13 @@ Consecuencia: Los problemas técnicos no se consideran resueltos por diseño; se
 
 Fecha: septiembre de 2026; fecha exacta de decisión no registrada.
 
-Estado: Aprobada / vigente temporalmente.
+Estado: Histórica; sustituida por DEC-013.
 
 Contexto: Se reportaron ocho solicitudes de cita cuyos avisos no fueron recibidos. No se ha demostrado que todos los casos compartan causa.
 
-Decisión: No modificar ahora el workflow. Como procedimiento temporal, el agente inicia una interacción con el número del bot al menos una vez cada 24 horas para mantener abierta la ventana de atención de WhatsApp.
+Decisión histórica: No modificar entonces el workflow. Como procedimiento temporal, el agente iniciaba una interacción con el número del bot al menos una vez cada 24 horas para mantener abierta la ventana de atención de WhatsApp.
 
-Consecuencia: El procedimiento es manual y no garantiza la entrega permanente. La ejecución exitosa de n8n no prueba la recepción externa.
+Consecuencia histórica: El procedimiento era manual y no garantizaba la entrega permanente. DEC-013 retiró posteriormente el aviso interno al agente, por lo que ese procedimiento ya no forma parte de la operación vigente.
 
 ### DEC-008 — Incorporar IA después de la precalificación
 
@@ -134,7 +134,7 @@ Consecuencia: El objetivo aproximado de 10 minutos diarios y la revisión diaria
 
 Fecha: 23 de septiembre de 2026.
 
-Estado: Implementada y publicada; modificación parcial posterior por DEC-012.
+Estado: Implementada y publicada; complementada por DEC-012 y actualizada por DEC-013.
 
 Contexto: La empresa redefinió el alcance de la siguiente versión y necesita consultar y gestionar en Airtable los leads que solicitan cita tras superar la precalificación.
 
@@ -142,18 +142,30 @@ Decisión original: La v1.2 integraría Airtable en el tramo final del workflow 
 
 Motivo: Incorporar al flujo existente el destino que la empresa utilizará para consultar y gestionar los leads recibidos, sin crear un sistema adicional de citas.
 
-Consecuencias: Se descartaron del alcance de v1.2 la IA, el workflow `whatsapp-ia`, la coordinación automatizada de disponibilidad y las notificaciones por correo. La integración Airtable fue implementada y publicada. DEC-012 aplazó la sustitución completa del aviso al agente: ambos mecanismos permanecen activos. La base, tabla y mapeo fueron configurados en producción; los JSON del repositorio aún no están sincronizados con esa publicación.
+Consecuencias: Se descartaron del alcance de v1.2 la IA, el workflow `whatsapp-ia`, la coordinación automatizada de disponibilidad y las notificaciones por correo. La integración Airtable fue implementada y publicada. DEC-012 mantuvo temporalmente ambos mecanismos; DEC-013 retiró después el aviso por WhatsApp. La base y tabla fueron configuradas en producción. Los exportes locales se reportaron como actualizados; `Fuente_lead: BOT IA` es el valor intencional confirmado por el usuario.
 
 ### DEC-012 — Mantener temporalmente WhatsApp y Airtable
 
 Fecha: 23 de septiembre de 2026.
 
-Estado: Implementada.
+Estado: Implementada históricamente; sustituida por DEC-013.
 
 Contexto: La integración Airtable de v1.2 fue configurada, probada y publicada. La planificación original contemplaba reemplazar por completo el aviso interno mediante WhatsApp.
 
-Decisión: Mantener conectados y activos `Aviso agente` y `Create a record`. El flujo seguirá enviando la notificación al agente por WhatsApp y creando el registro correspondiente en Airtable. La retirada del aviso por WhatsApp se aplaza para una decisión posterior.
+Decisión histórica: Mantener conectados y activos `Aviso agente` y `Create a record`, con retirada del aviso aplazada para una decisión posterior.
 
 Motivo: Conservar temporalmente el mecanismo de aviso existente mientras la empresa empieza a consultar los registros en Airtable.
 
-Consecuencias: Los dos mecanismos coexisten en producción. La retirada futura del aviso no es requisito para considerar v1.2 completada. La creación Airtable registra una solicitud de cita y no confirma fecha u horario.
+Consecuencias históricas: Ambos mecanismos coexistieron temporalmente. DEC-013 retiró el aviso por WhatsApp; la creación Airtable registra una solicitud de cita y no confirma fecha u horario.
+
+### DEC-013 — Retirar aviso interno por WhatsApp y dejar Airtable como salida única
+
+Fecha: 2 de octubre de 2026.
+
+Estado: Implementada, según confirmación del usuario sobre producción y los exportes finales.
+
+Contexto: Airtable operó durante más de una semana sin errores reportados y la empresa decidió retirar el aviso interno al agente por WhatsApp.
+
+Decisión: Eliminar del flujo productivo `Aviso agente`. Mantener la ruta `Si cita -> Espera agente -> Create a record`. Airtable queda como destino interno automatizado de usuarios calificados que solicitan cita.
+
+Consecuencias: El agente deja de recibir el aviso interno por WhatsApp y esa derivación ya no depende de su ventana de 24 horas. Supabase continúa como base comercial y conversacional principal. El registro de Airtable sigue representando una solicitud de cita, no una cita confirmada. DEC-012 queda como antecedente histórico sustituido. El valor `Fuente_lead: BOT IA` está confirmado como intencional.

@@ -34,7 +34,9 @@ Supabase continúa funcionando como servicio externo. La tabla principal verific
 
 Airtable es un destino adicional operativo en producción. El nodo nativo de n8n crea registros cuando un usuario calificado solicita una cita; el registro no representa una cita confirmada. La configuración utiliza la base “Base Leads Nueva” y la tabla “Leads global”. La autenticación es una credencial de Airtable almacenada en n8n, con acceso acotado a esa base. No se documenta el token.
 
-El aviso al agente por WhatsApp continúa activo junto con la creación Airtable, según DEC-012. Supabase sigue como base principal comercial y conversacional. Los JSON del repositorio son exportes anteriores y la sincronización con lo publicado está pendiente.
+Supabase sigue como base principal comercial y conversacional. Los JSON actuales fueron reportados como exportes finales de producción. `Fuente_lead: BOT IA` es el valor intencional confirmado por el usuario.
+
+La autenticación de Meta utiliza, según el procedimiento operativo reportado, un token con vigencia aproximada de seis meses que requiere renovación periódica. No se ha afirmado que se renueve automáticamente; es una dependencia operativa que debe vigilarse.
 
 ## Control de versiones y seguridad
 

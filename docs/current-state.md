@@ -1,8 +1,8 @@
 # Estado actual
 
-Fecha de referencia: **23 de septiembre de 2026**.
+Fecha de referencia: **2 de octubre de 2026**.
 
-Esta fotografía incorpora la información de producción confirmada por el usuario el 23 de septiembre de 2026. El despliegue previo de v1.1 y la integración v1.2 con Airtable están publicados en Contabo. El repositorio no demuestra por sí mismo acceso directo al VPS, n8n publicado, Meta, Supabase o Airtable; el estado de publicación aquí consignado se basa en esa confirmación y en la prueba manual reportada.
+Esta fotografía incorpora el estado operativo confirmado por el usuario el 2 de octubre de 2026. El despliegue v1.1 y la integración v1.2 con Airtable están publicados en Contabo. El usuario reporta que Airtable lleva más de una semana operando sin errores reportados y que los workflows locales se exportaron desde la versión publicada. El repositorio no demuestra por sí mismo acceso directo al VPS, n8n publicado, Meta, Supabase o Airtable; el estado vivo aquí consignado se basa en esa confirmación.
 
 ## Producción en Contabo
 
@@ -39,31 +39,33 @@ En la instalación operativa existen actualmente dos workflows:
 | Workflow | Responsabilidad |
 |---|---|
 | `whatsapp-webhook` | Recibir eventos de Meta y dirigir los mensajes al flujo comercial. |
-| `whatsapp-leads` | Ejecutar la precalificación, persistir el estado, responder por WhatsApp, avisar al agente y crear registros en Airtable cuando corresponde. |
+| `whatsapp-leads` | Ejecutar la precalificación, persistir el estado, responder por WhatsApp y crear registros en Airtable cuando corresponde. |
 
 La migración trasladó los datos persistentes de n8n desde la instalación local detenida hacia el VPS. Se conservaron la base interna de n8n, los workflows, la configuración, la clave de cifrado y las credenciales cifradas. La restauración fue comprobada mediante el funcionamiento de los workflows y una prueba comercial real.
 
-Los JSON versionados en `workflows/` son exportes del repositorio. No se afirma que sean idénticos a la última versión publicada en Contabo sin una comparación actual documentada.
+Los archivos `workflows/whatsapp-leads.json` y `workflows/whatsapp-webhook.json` fueron reportados por el usuario como exportes de la versión final estabilizada de producción y reemplazaron los exportes anteriores. Son exportes versionados, no prueba de la configuración viva ni de equivalencia exacta. El valor intencional de `Fuente_lead` es `BOT IA`.
 
 ## Integración Airtable en producción
 
-La integración fue añadida manualmente a `whatsapp-leads` desde n8n en Contabo y la nueva versión del workflow fue publicada. El tramo final reportado es `Si cita -> Espera agente -> Aviso agente -> Create a record`. `Si cita` actualiza el lead en Supabase; `Espera agente` envía la respuesta al usuario; `Aviso agente` notifica al agente por WhatsApp; y `Create a record` crea el registro en Airtable. Ambos mecanismos de salida están activos temporalmente, conforme a DEC-012.
+La integración fue añadida a `whatsapp-leads` desde n8n en Contabo y la versión final se reportó publicada. Airtable lleva más de una semana funcionando sin errores reportados. La empresa retiró el aviso interno al agente por WhatsApp. La ruta final reportada es `Si cita -> Espera agente -> Create a record`: `Si cita` actualiza el lead en Supabase, `Espera agente` responde al usuario y `Create a record` crea el registro en Airtable.
 
 Configuración reportada: nodo nativo Airtable, recurso `Record`, operación `Create`, base “Base Leads Nueva” y tabla “Leads global”. Se usa una credencial Airtable Personal Access Token guardada en n8n, con permisos `data.records:read`, `data.records:write` y `schema.bases:read`, limitada a esa base. No se documenta el token.
 
-El mapeo manual reportado incluye `phone` desde `Revisar tabla.telefono`; `state_google_ads` desde el estado del lead; `source` con valor fijo `BOT IA`; `Fuente_lead` con valor `Llamada IA`; `company` y `company_aux` con `Proconsultores`; y `no_llamar` activado. Se indicó que otros campos visibles (`name`, `email`, `phone to clean`, `Recepción del lead`, `source_aux`, `tipo_recluta`, `age`) estaban vacíos. Las etiquetas `BOT IA` y `Llamada IA` identifican el origen del registro y no significan que se use IA.
+El mapeo reportado incluye `phone` desde `Revisar tabla.telefono`; `state_google_ads` desde el estado del lead; `source` y `Fuente_lead` con valor fijo `BOT IA`; `company` y `company_aux` con `Proconsultores`; y `no_llamar` activado. El export coincide con esos valores. Otros campos visibles podían permanecer vacíos. `BOT IA` es una etiqueta comercial y no significa que se use IA.
 
 El registro representa la solicitud de cita de un usuario que superó la precalificación. No significa que la cita tenga fecha u horario confirmados.
 
 ### Validación reportada
 
-Durante las primeras pruebas, n8n rechazó el valor `BOT IA` de `source` porque no aparecía entre las opciones reconocidas por la configuración del nodo. Tras actualizar esa configuración, la prueba manual del tramo final terminó correctamente en los cuatro nodos. El usuario confirmó que el registro se creó en Airtable con los valores esperados.
+Durante las primeras pruebas, n8n rechazó el valor `BOT IA` de `source` porque no aparecía entre las opciones reconocidas por la configuración del nodo. Tras actualizar esa configuración, la prueba manual reportada creó un registro en Airtable. La observación de operación superior a una semana sin errores también fue reportada por el usuario; no equivale a una prueba exhaustiva.
 
 Esta es una prueba manual del flujo reportado. No se han documentado pruebas exhaustivas con múltiples leads, verificación automática de todos los registros de producción ni funcionamiento a largo plazo.
 
 ## Estado de los exportes del repositorio
 
-Los JSON de `workflows/` no incluyen la actualización Airtable publicada y son exportes anteriores. La sincronización está aplazada para observar el funcionamiento y realizar posibles ajustes. Contabo es la referencia operativa actual para esta integración. La sincronización de los exportes es una tarea pendiente independiente y no impide considerar v1.2 completada.
+Los dos JSON actuales fueron reportados como exportes de la versión de producción estabilizada y reemplazaron los archivos anteriores. La inspección local confirma JSON parseable, 44 nodos en `whatsapp-leads`, el nodo Airtable conectado desde `Espera agente` y ausencia del nodo `Aviso agente`; las conexiones referencian nodos existentes. El webhook usa un ID de workflow cuyo nombre cacheado es `whatsapp-leads`, aunque el nombre visible del nodo ejecutor contiene el sufijo `-test`. Estas comprobaciones del export no sustituyen una comparación con la instancia viva.
+
+El usuario confirmó que `Fuente_lead: BOT IA` es intencional. No se modificó el mapeo del export.
 
 ## Validaciones operativas reportadas
 
@@ -76,8 +78,9 @@ Se reportó la comprobación de:
 - ejecución del flujo de precalificación;
 - registro y actualización de datos en Supabase;
 - respuestas por WhatsApp;
-- recepción efectiva de un aviso al agente;
 - funcionamiento con la computadora local apagada.
+- Más de una semana de operación de Airtable sin errores reportados por el usuario, al 2 de octubre de 2026.
+- Volumen comercial observado aproximado: 8 leads precalificados por semana y alrededor de 30 por mes. Son observaciones operativas, no garantías ni métricas contractuales.
 
 También se ejecutó el recorrido comercial ideal hasta la solicitud de cita y se observó que las ejecuciones terminaron sin errores. Estas comprobaciones validan el recorrido realizado, pero no constituyen una validación exhaustiva de condiciones excepcionales ni garantizan la entrega de todos los mensajes externos.
 
@@ -88,6 +91,10 @@ El entorno local de Windows se conserva para desarrollo y pruebas. Las instalaci
 Ambos entornos pueden usar el mismo proyecto de Supabase y las mismas integraciones de Meta. Por ello, las pruebas locales con credenciales o datos reales pueden producir efectos comerciales. No deben iniciarse simultáneamente con el mismo webhook de producción.
 
 ngrok pertenece al flujo histórico local y no es el webhook operativo de producción.
+
+## Dependencia operativa de Meta
+
+Según el procedimiento operativo reportado, la autenticación de Meta utiliza un token con vigencia aproximada de seis meses y requiere renovación periódica. No se afirma que la renovación sea automática ni se consigna una fecha de expiración. Es una dependencia que debe vigilarse.
 
 ## Supabase
 
@@ -112,6 +119,4 @@ GitHub conserva documentación y exportes de workflows, pero no es un respaldo c
 ## Pendientes operativos y de control documental
 
 - Existencia de un respaldo actual, íntegro y restaurable de producción.
-- Exportar y sincronizar los JSON afectados una vez estabilizada la versión publicada, con la revisión de seguridad indicada en [Roadmap](roadmap.md).
 - Política definitiva de idempotencia, reintentos, recuperación y notificaciones.
-- Origen individual de los avisos al agente no recibidos.

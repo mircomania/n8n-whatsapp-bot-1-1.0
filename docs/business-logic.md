@@ -32,17 +32,18 @@ Para un usuario que superó la precalificación y solicita cita, el tramo public
 
 1. Actualiza la información correspondiente del lead en Supabase (`Si cita`).
 2. Envía al usuario la respuesta de WhatsApp correspondiente (`Espera agente`).
-3. Envía el aviso interno al agente mediante WhatsApp (`Aviso agente`).
-4. Crea un registro comercial en Airtable (`Create a record`).
+3. Crea un registro comercial en Airtable (`Create a record`).
 
-Los avisos por WhatsApp y la creación Airtable coexisten temporalmente. La retirada del aviso queda para una decisión posterior y no es requisito para el cierre de v1.2.
+La notificación interna al agente mediante WhatsApp fue retirada. Airtable es el destino interno automatizado vigente para esta derivación.
 
 El registro Airtable representa una solicitud de cita de un usuario calificado. No significa que la cita tenga fecha u horario confirmados.
 
 ## Configuración de campos Airtable reportada
 
-El nodo crea registros en “Base Leads Nueva” / “Leads global” con mapeo manual. Entre los campos documentados están `phone` desde el teléfono del lead, `state_google_ads` desde el estado, `source` con la etiqueta fija `BOT IA`, `Fuente_lead` con `Llamada IA`, `company` y `company_aux` con `Proconsultores`, y `no_llamar` activado. Las etiquetas `BOT IA` y `Llamada IA` identifican el origen comercial y no indican que el flujo use inteligencia artificial.
+El nodo crea registros en “Base Leads Nueva” / “Leads global” con mapeo manual. Entre los campos están `phone` desde el teléfono del lead, `state_google_ads` desde el estado, `source` y `Fuente_lead` con la etiqueta fija `BOT IA`, `company` y `company_aux` con `Proconsultores`, y `no_llamar` activado. `BOT IA` es una etiqueta comercial y no indica que el flujo use inteligencia artificial.
 
 ## Mantenimiento de reglas
 
 La integración se añadió después de la precalificación. Las reglas comerciales existentes permanecen deterministas y no fueron redefinidas por la conexión con Airtable.
+
+El valor intencional de `Fuente_lead` es `BOT IA`, igual que `source`. Son etiquetas comerciales heredadas y no indican que el workflow utilice inteligencia artificial.
