@@ -1,0 +1,373 @@
+{
+  "name": "whatsapp-incidentes",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "12fb80ca-191f-4acb-95cc-8584beacbf4f",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst evento = $input.first().json;\n\nconst error =\n  evento.execution?.error ??\n  evento.trigger?.error ??\n  {};\n\nconst textoError = [\n  error.message,\n  error.description,\n  error.name,\n  JSON.stringify(error.context ?? {}),\n  JSON.stringify(error.cause ?? {})\n].filter(Boolean).join(' ');\n\n// Identificar errores de autenticación\nconst esAutenticacion =\n  /authorization failed|authentication error|OAuthException|code.?190|invalid.*access.token|expired.*token/i\n    .test(textoError);\n\n// Solo monitoreamos whatsapp-webhook\nif (\n  evento.workflow?.name !== 'whatsapp-webhook' ||\n  !esAutenticacion\n) {\n  return [];\n}\n\nconst codigo190 = /code.?190/i.test(textoError);\n\nreturn [{\n  json: {\n    tipo_incidente: 'meta_autenticacion',\n    workflow: evento.workflow.name,\n    nodo: evento.execution?.lastNodeExecuted ?? 'Desconocido',\n    mensaje: String(error.message ?? 'Error de autenticación').slice(0, 250),\n    diagnostico: codigo190\n      ? 'Token Meta inválido o expirado (código 190)'\n      : 'Error de autenticación; verificar credenciales de Meta',\n    ejecucion_url: evento.execution?.url ?? '',\n    detectado_en: new Date().toISOString()\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "8dd4bdb1-45a1-4b45-a75e-8f9b935693cb",
+      "name": "Identificar error Meta"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://wmbyeqrjspanpowkgyad.supabase.co/rest/v1/rpc/reservar_alerta_incidente",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "=\n{{ JSON.stringify({\n  p_tipo_incidente: $json.tipo_incidente\n}) }}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        672,
+        0
+      ],
+      "id": "c12a92ed-d91a-4bf6-bcde-fe2ebb691bc1",
+      "name": "Reservar alerta 24h",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "39501f61-9e9d-4db0-959a-b1325d76ea61",
+              "leftValue": "={{ $json.debe_notificar }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        896,
+        0
+      ],
+      "id": "f387b423-e3b2-4ea8-bc21-97f87ccc85fc",
+      "name": "¿Notificar incidente?"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://slack.com/api/chat.postMessage",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "slackApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "=\n{{ JSON.stringify({\n  channel: 'C0CB6QHRLTB',\n  text: [\n    '🚨 *ALERTA CRÍTICA — WHATSAPP MEJORAVIT*',\n    '',\n    `*Incidente:* ${$('Preparar incidente').first().json.tipo_incidente}`,\n    `*Diagnóstico:* ${$('Preparar incidente').first().json.diagnostico}`,\n    '',\n    `*Workflow:* ${$('Preparar incidente').first().json.workflow}`,\n    `*Nodo:* ${$('Preparar incidente').first().json.nodo}`,\n    `*Error:* ${$('Preparar incidente').first().json.mensaje}`,\n    '',\n    `*Detectado:* ${$('Preparar incidente').first().json.detectado_en}`,\n    `*Ejecución:* ${$('Preparar incidente').first().json.ejecucion_url || 'No disponible'}`,\n    '',\n    `⚠️ ${$('Preparar incidente').first().json.accion}`,\n    '',\n    '_Máximo una alerta cada 24 horas por tipo de incidente._'\n  ].join('\\n')\n}) }}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1120,
+        -160
+      ],
+      "id": "349b24e7-f442-4e7b-b00b-e7f1044bdb9e",
+      "name": "Notificar incidente Slack",
+      "credentials": {
+        "slackApi": {
+          "id": "t2vCHmuN5pA7SzGT",
+          "name": "Slack Pro Consultores Monitor"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "12bf30e3-8c51-4d93-a25d-928a2da71ce6",
+              "leftValue": "={{ $json.ok === true }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1360,
+        -256
+      ],
+      "id": "a88f6ed8-bfb4-4c8d-afa8-31ca64b9ba02",
+      "name": "¿Slack confirmó?"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://wmbyeqrjspanpowkgyad.supabase.co/rest/v1/rpc/confirmar_alerta_incidente",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendBody": true,
+        "specifyBody": "=json",
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "jsonBody": "=\n{{ JSON.stringify({\n  p_tipo_incidente: $('Preparar incidente').first().json.tipo_incidente,\n  p_token_reserva: $('Reservar alerta 24h').first().json.token_reserva,\n  p_enviado: true\n}) }}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1584,
+        -352
+      ],
+      "id": "afdeb2de-529c-42cc-b31d-6eb4a28b1f38",
+      "name": "Confirmar alerta 24h",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://wmbyeqrjspanpowkgyad.supabase.co/rest/v1/rpc/confirmar_alerta_incidente",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendBody": true,
+        "specifyBody": "=json",
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "jsonBody": "=\n{{ JSON.stringify({\n  p_tipo_incidente: $('Preparar incidente').first().json.tipo_incidente,\n  p_token_reserva: $('Reservar alerta 24h').first().json.token_reserva,\n  p_enviado: false\n}) }}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1584,
+        -160
+      ],
+      "id": "0cc290c6-1d13-4626-b3ab-b2eca719c04b",
+      "name": "Liberar reserva 24h",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "errorMessage": "=\n{{ 'Slack rechazó la alerta de WhatsApp: ' + ($('Notificar incidente Slack').first().json.error || 'Error desconocido') }}\n"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        1808,
+        -160
+      ],
+      "id": "0ec81a9a-0156-4367-bd41-0a32043b3b6f",
+      "name": "Stop and Error"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        224,
+        -176
+      ],
+      "id": "6bdeb98f-09cc-4b6b-8b96-15a25b38c2ea",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst incidente = $input.first().json;\n\nconst tiposPermitidos = [\n  'meta_autenticacion',\n  'meta_facturacion'\n];\n\nif (!tiposPermitidos.includes(incidente.tipo_incidente)) {\n  return [];\n}\n\nconst esFacturacion =\n  incidente.tipo_incidente === 'meta_facturacion';\n\nreturn [{\n  json: {\n    tipo_incidente: incidente.tipo_incidente,\n    workflow: incidente.workflow || 'whatsapp-webhook',\n    nodo: incidente.nodo || 'Desconocido',\n    mensaje: incidente.mensaje || 'Error de Meta',\n    diagnostico: incidente.diagnostico || 'Revisar Meta',\n    ejecucion_url: incidente.ejecucion_url || '',\n    detectado_en: incidente.detectado_en || new Date().toISOString(),\n    accion: esFacturacion\n      ? 'Revisar los métodos de pago de WhatsApp Business en Meta.'\n      : 'Revisar las credenciales de Meta y las ejecuciones de n8n.'\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        0
+      ],
+      "id": "1b7c7b2c-7e17-4d0b-833e-20d9163ed3a1",
+      "name": "Preparar incidente"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Identificar error Meta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Identificar error Meta": {
+      "main": [
+        [
+          {
+            "node": "Preparar incidente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reservar alerta 24h": {
+      "main": [
+        [
+          {
+            "node": "¿Notificar incidente?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Notificar incidente?": {
+      "main": [
+        [
+          {
+            "node": "Notificar incidente Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notificar incidente Slack": {
+      "main": [
+        [
+          {
+            "node": "¿Slack confirmó?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Slack confirmó?": {
+      "main": [
+        [
+          {
+            "node": "Confirmar alerta 24h",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Liberar reserva 24h",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Liberar reserva 24h": {
+      "main": [
+        [
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Preparar incidente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar incidente": {
+      "main": [
+        [
+          {
+            "node": "Reservar alerta 24h",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "5277303b-8739-45d0-85b4-374625dbd8d3",
+  "meta": {
+    "instanceId": "bf168903a33cfec42ff3ec307c6b8d46610847bf94dc4be799c84e8be60878c0"
+  },
+  "nodeGroups": [],
+  "id": "7xMeGjyPHSF7anEo",
+  "tags": []
+}

@@ -32,6 +32,7 @@ No convertir propuestas en decisiones ni pendientes en hechos. No marcar una tar
 - `docs/architecture.md`: componentes, responsabilidades y flujo entre sistemas.
 - `docs/business-logic.md`: reglas de conversación y precalificación.
 - `docs/decisions.md`: decisiones técnicas, comerciales y operativas y sus consecuencias.
+- `docs/audit-2026-11-02.md`: auditoría local de los cuatro exports, seguridad y diferencias.
 - `docs/audit-1.9.md`: auditoría histórica de mantenimiento avanzado, elaborada durante la antigua planificación v1.1.
 - `docs/roadmap.md`: trabajo completado, actual y futuro.
 - `docs/stack.md`: tecnologías y responsabilidades.
@@ -47,6 +48,7 @@ Cuando se complete una etapa o cambie un hecho operativo, actualizar el document
 - No contratar ni configurar infraestructura sin autorización.
 - La v1.0 (MVP), v1.1 (despliegue) y v1.2 (integración Airtable) están completadas. Airtable es la salida interna automatizada vigente; el aviso interno al agente por WhatsApp fue retirado. Supabase continúa como base principal. La v1.9 queda reservada para mantenimiento avanzado.
 - Al 2 de octubre de 2026, el usuario reportó que los dos JSON de `workflows/` fueron exportados de la versión final publicada y estabilizada en Contabo. Son evidencia del export reportado, no prueba de la configuración viva. Conservarlos sin cambiar su lógica; cualquier diferencia encontrada debe reportarse y verificarse antes de declarar equivalencia.
+- Al 2 de noviembre de 2026, el usuario reportó cuatro workflows publicados: `whatsapp-webhook`, `whatsapp-leads`, `whatsapp-monitor` y `whatsapp-incidentes`. Consultar `docs/current-state.md` y `docs/audit-2026-11-02.md` para separar pruebas operativas reportadas de comprobaciones locales y pendientes. No asignar una nueva versión por inferencia ni asumir que las RPC de Supabase están versionadas.
 - La operación está estable y se mantiene por excepción: intervenir ante errores confirmados, casos excepcionales relevantes, cambios comerciales aprobados o mantenimiento necesario de credenciales/infraestructura.
 - La autenticación de Meta depende de un token con vigencia aproximada de seis meses según el procedimiento operativo reportado y requiere renovación periódica; no asumir renovación automática ni inventar fechas de expiración.
 

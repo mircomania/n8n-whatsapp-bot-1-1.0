@@ -3,38 +3,6 @@
   "nodes": [
     {
       "parameters": {
-        "httpMethod": "POST",
-        "path": "whatsapp-leads",
-        "responseMode": "responseNode",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2.1,
-      "position": [
-        -240,
-        224
-      ],
-      "id": "c681b3ef-23cb-4c7e-a3d3-a59606958792",
-      "name": "Webhook1",
-      "webhookId": "ac25bbdc-1110-40b3-9027-3e7379599067"
-    },
-    {
-      "parameters": {
-        "respondWith": "text",
-        "responseBody": "={{$json.query[\"hub.challenge\"]}}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1.5,
-      "position": [
-        592,
-        64
-      ],
-      "id": "bd3a03a7-fa12-47fc-97ac-639bbf8b915d",
-      "name": "Respond to Webhook1"
-    },
-    {
-      "parameters": {
         "assignments": {
           "assignments": [
             {
@@ -62,11 +30,62 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -32,
-        224
+        -16,
+        112
       ],
       "id": "1de50a81-b5ca-42dc-b4d7-6ee94441179c",
-      "name": "Edit Fields1"
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "whatsapp-leads",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -240,
+        224
+      ],
+      "id": "c681b3ef-23cb-4c7e-a3d3-a59606958792",
+      "name": "Webhook",
+      "webhookId": "ac25bbdc-1110-40b3-9027-3e7379599067"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "d53c516f-bc1b-4483-87e0-8f3546a086fb",
+              "leftValue": "={{ $json.tipo }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        192,
+        112
+      ],
+      "id": "196f791e-d059-44af-b1c4-84280f931f76",
+      "name": "mensaje"
     },
     {
       "parameters": {
@@ -125,87 +144,128 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        384,
-        64
+        400,
+        -48
       ],
       "id": "d3114c0b-0f6e-4ea2-a6f7-e6c342eaf433",
-      "name": "Call 'whatsapp-leads-test'1"
+      "name": "Call 'whatsapp-leads'"
     },
     {
       "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 3
-          },
-          "conditions": [
-            {
-              "id": "d53c516f-bc1b-4483-87e0-8f3546a086fb",
-              "leftValue": "={{ $json.tipo }}",
-              "rightValue": "",
-              "operator": {
-                "type": "string",
-                "operation": "exists",
-                "singleValue": true
-              }
-            }
-          ],
-          "combinator": "and"
-        },
+        "respondWith": "text",
+        "responseBody": "={{$json.query[\"hub.challenge\"]}}",
         "options": {}
       },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.3,
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
       "position": [
-        176,
-        224
+        608,
+        -48
       ],
-      "id": "196f791e-d059-44af-b1c4-84280f931f76",
-      "name": "mensaje1"
+      "id": "bd3a03a7-fa12-47fc-97ac-639bbf8b915d",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst evento = $input.first().json;\nconst entradas = evento.body?.entry ?? [];\n\nfor (const entrada of entradas) {\n  for (const cambio of entrada.changes ?? []) {\n    const estados = cambio.value?.statuses ?? [];\n\n    for (const estado of estados) {\n      if (estado.status !== 'failed') continue;\n\n      const error = (estado.errors ?? []).find(\n        e => Number(e.code) === 131042\n      );\n\n      if (!error) continue;\n\n      const detalles = String(\n        error.error_data?.details ?? ''\n      );\n\n      const faltaMetodoPago =\n        /no payment method|método de pago/i.test(detalles);\n\n      return [{\n        json: {\n          tipo_incidente: 'meta_facturacion',\n          workflow: 'whatsapp-webhook',\n          nodo: 'Webhook1 - Estado de entrega',\n          mensaje: String(\n            error.message ??\n            error.title ??\n            'Meta rechazó el mensaje'\n          ).slice(0, 250),\n          diagnostico: faltaMetodoPago\n            ? 'Meta rechazó el envío: no hay un método de pago configurado (131042)'\n            : 'Meta reportó un problema de elegibilidad de pago (131042)',\n          ejecucion_url: '',\n          detectado_en: new Date().toISOString()\n        }\n      }];\n    }\n  }\n}\n\n// No hay errores de facturación relevantes\nreturn [];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -16,
+        352
+      ],
+      "id": "639efd76-68e7-489f-86ab-8308b4372b3d",
+      "name": "Detectar fallo Meta 131042"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "7xMeGjyPHSF7anEo",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/7xMeGjyPHSF7anEo",
+          "cachedResultName": "whatsapp-incidentes"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        208,
+        352
+      ],
+      "id": "5ddd6950-31b3-4733-b9a1-d4d41fff4d2f",
+      "name": "Call 'whatsapp-incidentes'",
+      "onError": "continueRegularOutput"
     }
   ],
   "pinData": {},
   "connections": {
-    "Webhook1": {
+    "Edit Fields": {
       "main": [
         [
           {
-            "node": "Edit Fields1",
+            "node": "mensaje",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Edit Fields1": {
+    "Webhook": {
       "main": [
         [
           {
-            "node": "mensaje1",
+            "node": "Detectar fallo Meta 131042",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Call 'whatsapp-leads-test'1": {
+    "mensaje": {
       "main": [
         [
           {
-            "node": "Respond to Webhook1",
+            "node": "Call 'whatsapp-leads'",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "mensaje1": {
+    "Call 'whatsapp-leads'": {
       "main": [
         [
           {
-            "node": "Call 'whatsapp-leads-test'1",
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Detectar fallo Meta 131042": {
+      "main": [
+        [
+          {
+            "node": "Call 'whatsapp-incidentes'",
             "type": "main",
             "index": 0
           }
@@ -216,9 +276,13 @@
   "active": true,
   "settings": {
     "executionOrder": "v1",
-    "binaryMode": "separate"
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "7xMeGjyPHSF7anEo",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
   },
-  "versionId": "5c2343de-d973-4c6b-95d3-cf0a8d17ca21",
+  "versionId": "88889725-94ab-4c80-a28b-4392ce220a6e",
   "meta": {
     "instanceId": "bf168903a33cfec42ff3ec307c6b8d46610847bf94dc4be799c84e8be60878c0"
   },

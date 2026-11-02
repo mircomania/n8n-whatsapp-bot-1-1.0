@@ -69,6 +69,8 @@ Corrección propuesta: modelar el estado de la notificación, impedir envíos du
 
 ### F. Datos potencialmente sensibles en exportes versionados
 
+**Reclasificación del 2 de noviembre de 2026:** la inspección específica de `dockers-run.txt:5` confirmó que su URL es un placeholder, no un endpoint operativo literal. La afirmación histórica sobre exposición de una URL temporal se descarta para ese archivo. El [cierre de seguridad actual](audit-2026-11-02.md) documenta la revisión de los exports y la anonimización preventiva de dos valores de caché; no certifica todo el historial.
+
 La inspección detectó identificadores numéricos fijos y destinos configurados dentro de nodos HTTP, incluido el nodo de aviso al agente. También `dockers-run.txt` contiene un endpoint temporal de ngrok. No se reproducen aquí sus valores.
 
 Riesgo: el repositorio es público y estos valores pueden revelar identificadores de integración, datos de contacto o endpoints de desarrollo aunque los tokens se administren como credenciales de n8n.

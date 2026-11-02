@@ -169,3 +169,37 @@ Contexto: Airtable operó durante más de una semana sin errores reportados y la
 Decisión: Eliminar del flujo productivo `Aviso agente`. Mantener la ruta `Si cita -> Espera agente -> Create a record`. Airtable queda como destino interno automatizado de usuarios calificados que solicitan cita.
 
 Consecuencias: El agente deja de recibir el aviso interno por WhatsApp y esa derivación ya no depende de su ventana de 24 horas. Supabase continúa como base comercial y conversacional principal. El registro de Airtable sigue representando una solicitud de cita, no una cita confirmada. DEC-012 queda como antecedente histórico sustituido. El valor `Fuente_lead: BOT IA` está confirmado como intencional.
+
+### DEC-014 — Monitorear consumo de Meta por mes y notificar umbrales en Slack
+
+Fecha: implementación y pruebas reportadas entre el 21 de octubre y el 2 de noviembre de 2026; fecha exacta de decisión no registrada.
+
+Estado: Implementada y publicada según reporte del usuario; comprobada parcialmente con pruebas operativas y exports.
+
+Contexto: Se necesita observar consumo y costo estimado de Meta sin alterar las reglas comerciales.
+
+Decisión: Incorporar `whatsapp-monitor`, con consulta diaria del mes actual en `America/Mexico_City`, registro mensual en Supabase y alertas mediante Slack API cada 1.000 mensajes y US$20 acumulados. Registrar los umbrales avisados después de la confirmación de Slack.
+
+Consecuencias: El monitoreo es independiente del recorrido comercial y no reemplaza Supabase ni Airtable. Se comprobó una alerta real de 1.000 mensajes y su registro; el consumo real de US$20 sigue sin probarse. El control por umbral no garantiza entrega única ante concurrencia o fallos parciales. Este mantenimiento no asigna una versión nueva ni cambia la reserva de v1.9.
+
+### DEC-015 — Centralizar incidentes de autenticación y facturación de Meta
+
+Fecha: implementación y pruebas reportadas entre el 21 de octubre y el 2 de noviembre de 2026; fecha exacta de decisión no registrada.
+
+Estado: Implementada y publicada según reporte del usuario; con validación de casos simulados y pruebas SQL de bloqueo.
+
+Decisión: Incorporar `whatsapp-incidentes`, asociado al receptor como workflow de errores y llamado directamente ante estados de facturación `131042`. Enviar a Slack los tipos `meta_autenticacion` y `meta_facturacion`, limitados mediante reserva en Supabase a una alerta cada 24 horas por tipo. Confirmar el envío solo si Slack lo acepta e intentar liberar la reserva si lo rechaza.
+
+Consecuencias: El filtro de autenticación del export se restringe a errores de `whatsapp-webhook`. No se afirma cobertura general de `whatsapp-leads` o `whatsapp-monitor`, ni resolución de todos los hallazgos históricos. Las pruebas SQL se revirtieron; falta comprobar el ciclo real de 24 horas y la recuperación de fallos parciales. La ventana es propia de incidentes y no se aplica a los umbrales mensuales de consumo.
+
+### DEC-016 — Admitir estadísticas ausentes de Meta y proteger los valores existentes
+
+Fecha: 2 de noviembre de 2026.
+
+Estado: Implementada según el código exportado y la comprobación operativa reportada de Supabase; validación parcial.
+
+Contexto: Las ejecuciones automáticas del monitor del 1 y 2 de noviembre fallaron porque Meta respondió solo con el ID de cuenta, sin `pricing_analytics.data`.
+
+Decisión: Aceptar provisionalmente esa respuesta con ceros y `sin_datos_meta: true`, manteniendo error para otras estructuras inesperadas. Actualizar `public.guardar_resumen_whatsapp` para impedir que una nueva consulta con cero mensajes y cero costo sobrescriba estadísticas positivas existentes.
+
+Consecuencias: Se creó manualmente el registro de noviembre y se comprobó la separación respecto de octubre. Los ceros no se consideran consumo real confirmado. La marca provisional no se envía en el cuerpo de la RPC del export. La protección SQL está implementada y fue comprobada como actualizada según el usuario, pero no está versionada ni tiene una prueba específica de sobrescritura. Quedan pendientes esa prueba, la respuesta de n8n cuando no se devuelven filas y la siguiente ejecución automática completa.

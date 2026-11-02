@@ -1,12 +1,14 @@
 # Estado actual
 
-Fecha de referencia: **2 de octubre de 2026**.
+Fecha de referencia documental y de los exports inspeccionados: **2 de noviembre de 2026**.
 
-Esta fotografía incorpora el estado operativo confirmado por el usuario el 2 de octubre de 2026. El despliegue v1.1 y la integración v1.2 con Airtable están publicados en Contabo. El usuario reporta que Airtable lleva más de una semana operando sin errores reportados y que los workflows locales se exportaron desde la versión publicada. El repositorio no demuestra por sí mismo acceso directo al VPS, n8n publicado, Meta, Supabase o Airtable; el estado vivo aquí consignado se basa en esa confirmación.
+El usuario reporta publicados en Contabo `whatsapp-webhook`, `whatsapp-leads`, `whatsapp-monitor` y `whatsapp-incidentes`. Esta actualización incorpora su reporte de pruebas operativas realizadas entre el **21 de octubre y el 2 de noviembre de 2026**, además de la inspección local de los cuatro JSON. Las capturas, resultados de n8n y consultas SQL de esas pruebas se encuentran en la conversación de trabajo; no se han incorporado como archivos de evidencia al repositorio.
+
+Se distingue **evidencia operativa reportada por el usuario**, **hechos comprobados localmente en los exports** y **pendientes**. No hubo acceso directo a producción ni consultas a servicios durante esta revisión. Los exports, incluido su campo `active`, no prueban la configuración viva ni su equivalencia exacta. La infraestructura y los antecedentes de migración conservan como referencia la confirmación del **2 de octubre de 2026**; no se revalidaron versiones, recursos o respaldos en noviembre.
 
 ## Producción en Contabo
 
-El bot funciona con tráfico real y no depende de que la computadora local permanezca encendida.
+Estado reportado al 2 de octubre de 2026: el bot funciona con tráfico real y no depende de que la computadora local permanezca encendida. La tabla siguiente conserva esa fecha de referencia.
 
 | Elemento | Estado operativo reportado |
 |---|---|
@@ -34,20 +36,22 @@ Meta utiliza el dominio de Contabo como destino del webhook. Supabase continúa 
 
 ## Workflows y migración
 
-En la instalación operativa existen actualmente dos workflows:
+Al 2 de noviembre se reportan cuatro workflows publicados:
 
-| Workflow | Responsabilidad |
+| Workflow | Responsabilidad observada en el export |
 |---|---|
-| `whatsapp-webhook` | Recibir eventos de Meta y dirigir los mensajes al flujo comercial. |
+| `whatsapp-webhook` | Recibir mensajes, invocar el flujo comercial y detectar estados fallidos de Meta con código `131042`. Tiene asociado `whatsapp-incidentes` como workflow de errores. |
 | `whatsapp-leads` | Ejecutar la precalificación, persistir el estado, responder por WhatsApp y crear registros en Airtable cuando corresponde. |
+| `whatsapp-monitor` | Consultar diariamente consumo de Meta, guardar el resumen mensual en Supabase y alertar umbrales mediante Slack API. |
+| `whatsapp-incidentes` | Clasificar incidentes de autenticación/facturación y reservar, enviar y confirmar alertas por tipo. |
 
 La migración trasladó los datos persistentes de n8n desde la instalación local detenida hacia el VPS. Se conservaron la base interna de n8n, los workflows, la configuración, la clave de cifrado y las credenciales cifradas. La restauración fue comprobada mediante el funcionamiento de los workflows y una prueba comercial real.
 
-Los archivos `workflows/whatsapp-leads.json` y `workflows/whatsapp-webhook.json` fueron reportados por el usuario como exportes de la versión final estabilizada de producción y reemplazaron los exportes anteriores. Son exportes versionados, no prueba de la configuración viva ni de equivalencia exacta. El valor intencional de `Fuente_lead` es `BOT IA`.
+Como antecedente, el 2 de octubre los archivos `workflows/whatsapp-leads.json` y `workflows/whatsapp-webhook.json` fueron reportados por el usuario como exportes de la versión final estabilizada de producción y reemplazaron los exportes anteriores. Son exportes versionados, no prueba de la configuración viva ni de equivalencia exacta. El valor intencional de `Fuente_lead` es `BOT IA`.
 
 ## Integración Airtable en producción
 
-La integración fue añadida a `whatsapp-leads` desde n8n en Contabo y la versión final se reportó publicada. Airtable lleva más de una semana funcionando sin errores reportados. La empresa retiró el aviso interno al agente por WhatsApp. La ruta final reportada es `Si cita -> Espera agente -> Create a record`: `Si cita` actualiza el lead en Supabase, `Espera agente` responde al usuario y `Create a record` crea el registro en Airtable.
+Antecedente reportado al **2 de octubre de 2026**: la integración fue añadida a `whatsapp-leads` desde n8n en Contabo y la versión final se reportó publicada. En esa fecha Airtable llevaba más de una semana funcionando sin errores reportados. La empresa retiró el aviso interno al agente por WhatsApp. La ruta final reportada es `Si cita -> Espera agente -> Create a record`: `Si cita` actualiza el lead en Supabase, `Espera agente` responde al usuario y `Create a record` crea el registro en Airtable.
 
 Configuración reportada: nodo nativo Airtable, recurso `Record`, operación `Create`, base “Base Leads Nueva” y tabla “Leads global”. Se usa una credencial Airtable Personal Access Token guardada en n8n, con permisos `data.records:read`, `data.records:write` y `schema.bases:read`, limitada a esa base. No se documenta el token.
 
@@ -61,13 +65,59 @@ Durante las primeras pruebas, n8n rechazó el valor `BOT IA` de `source` porque 
 
 Esta es una prueba manual del flujo reportado. No se han documentado pruebas exhaustivas con múltiples leads, verificación automática de todos los registros de producción ni funcionamiento a largo plazo.
 
+## Monitoreo diario y registro mensual de Meta
+
+**Implementación publicada reportada; configuración inspeccionada localmente al 2 de noviembre.** `whatsapp-monitor` contiene un Schedule Trigger a las 09:00 y zona `America/Mexico_City`, además de entrada manual. El usuario comprobó ejecución diaria hasta el 31 de octubre y ejecuciones automáticas fallidas el 1 y 2 de noviembre. La siguiente ejecución automática completa tras la corrección sigue pendiente.
+
+La consulta de `pricing_analytics` usa el inicio del mes y el instante actual en esa zona, con granularidad `DAILY` y dimensiones `PRICING_CATEGORY,PRICING_TYPE`. `Resumen mensual` valida la cuenta consultada, suma mensajes gratuitos, regulares y otros, y calcula costo estimado y mes. Estos volúmenes corresponden a las estadísticas consultadas de Meta; no se equiparan al total de ejecuciones de n8n ni de leads.
+
+La RPC `public.guardar_resumen_whatsapp` recibe el resumen. El usuario verificó registros separados por mes en `whatsapp_monitor_monthly` y reportó estos valores:
+
+| Mes | Mensajes totales | Gratuitos | Regulares | Costo estimado (USD) | Umbral de mensajes avisado |
+|---|---:|---:|---:|---:|---:|
+| Octubre de 2026 | 1.871 | 1.000 | 871 | 7,3984 | 1.000 |
+| Noviembre de 2026 | 0, provisional | Sin desglose operativo reportado | Sin desglose operativo reportado | 0, provisional | 0 |
+
+Fotografía reportada al **2 de noviembre de 2026**, no consulta ejecutada durante esta auditoría. El umbral de costo avisado de noviembre también es 0.
+
+### Alertas de consumo mediante Slack API
+
+`Evaluar alertas` compara el consumo con los últimos umbrales notificados: pasos de **1.000 mensajes** y **US$20 acumulados**. Si se cruzan varios pasos entre consultas, genera una alerta para el umbral más alto detectado; los dos motivos pueden compartir una notificación. Se usa Slack API con credencial administrada por n8n y el canal operativo reportado `#whatsapp-monitor`.
+
+El workflow comprueba `ok` en la respuesta de Slack antes de llamar a `registrar_alerta_whatsapp`. Una respuesta sin confirmación toma la ruta `Stop and Error`. El usuario confirmó una alerta real al superar 1.000 mensajes en octubre y su registro en Supabase. No se ha probado consumo real de US$20. Las alertas de consumo se controlan por umbral mensual: **el bloqueo de 24 horas corresponde a incidentes, no a estos umbrales**.
+
+### Corrección de noviembre y estadísticas provisionales
+
+El 1 y 2 de noviembre el monitor se ejecutó automáticamente, pero `Resumen mensual` falló porque Meta devolvió solo el WABA ID, sin `pricing_analytics.data`. El **2 de noviembre** se corrigió el código para aceptar exclusivamente esa forma de respuesta sin estadísticas y producir ceros con `sin_datos_meta: true`. Otras estructuras inesperadas siguen provocando error; una matriz de estadísticas vacía se procesa por una rama distinta y no lleva esa marca.
+
+El usuario ejecutó manualmente `Resumen mensual` y `HTTP Request1`, comprobó la creación de noviembre y verificó que octubre conservaba sus estadísticas. Esto verifica parcialmente el cambio de mes; no acredita todavía una ejecución automática completa tras el ajuste. Los ceros provisionales no demuestran consumo real nulo ni explican por qué Meta omitió las estadísticas.
+
+El mismo día se actualizó en Supabase `public.guardar_resumen_whatsapp`. Según la comprobación operativa reportada, la condición `ON CONFLICT ... DO UPDATE ... WHERE NOT (...)` impide sustituir estadísticas positivas existentes cuando la nueva consulta trae cero mensajes y cero costos. **Protección implementada según el reporte; prueba específica pendiente.** Crear noviembre y conservar octubre no prueba el intento de sobrescritura sobre un registro positivo del mismo mes.
+
+El export envía los valores numéricos a la RPC, pero no envía `sin_datos_meta`; esa marca es local a `Resumen mensual` y no consta su persistencia. No hay definición SQL ni migraciones confirmadas en el repositorio. Falta probar el intento de sobrescritura y cómo continúa n8n si la RPC omite la actualización y no devuelve filas.
+
+## Incidentes de Meta y límite de 24 horas
+
+`whatsapp-incidentes` admite `meta_autenticacion` y `meta_facturacion`:
+
+- **Autenticación:** su Error Trigger clasifica errores de autenticación solo cuando el workflow del evento es `whatsapp-webhook`; reconoce texto como `Authorization failed` y referencias a código 190. El export receptor lo configura como workflow de errores. No se demuestra cobertura directa de errores de `whatsapp-leads` o `whatsapp-monitor`.
+- **Facturación `131042`:** una rama del receptor recorre estados de entrega `failed`, detecta el código y llama a `whatsapp-incidentes` sin esperar su finalización. Distingue la referencia a falta de método de pago de un diagnóstico general de elegibilidad de pago. Devuelve el primer caso coincidente del evento.
+
+El flujo utiliza las RPC `reservar_alerta_incidente` y `confirmar_alerta_incidente` para limitar las notificaciones a **una cada 24 horas por tipo**. Solo envía si `debe_notificar` lo autoriza. Tras `ok === true` confirma la reserva; si Slack no confirma, intenta liberarla y termina con error. La lógica SQL del bloqueo y la recuperación de reservas no puede auditarse desde estos exports.
+
+**Pruebas operativas reportadas:** se simuló `Authorization failed` y se recibió la alerta en Slack; también se simuló `131042`, se comprobó el recorrido receptor → incidentes → Slack y su registro en Supabase, y se restableció el estado de esa prueba. En una transacción SQL revertida se verificaron primera reserva autorizada, segunda reserva del mismo tipo rechazada, confirmación y nuevo rechazo durante el bloqueo, sin registros permanentes de esa prueba SQL. Falta observar un ciclo completo de 24 horas con incidentes reales separados por ese intervalo.
+
 ## Estado de los exportes del repositorio
 
-Los dos JSON actuales fueron reportados como exportes de la versión de producción estabilizada y reemplazaron los archivos anteriores. La inspección local confirma JSON parseable, 44 nodos en `whatsapp-leads`, el nodo Airtable conectado desde `Espera agente` y ausencia del nodo `Aviso agente`; las conexiones referencian nodos existentes. El webhook usa un ID de workflow cuyo nombre cacheado es `whatsapp-leads`, aunque el nombre visible del nodo ejecutor contiene el sufijo `-test`. Estas comprobaciones del export no sustituyen una comparación con la instancia viva.
+La inspección del 2 de noviembre confirma cuatro JSON parseables: `whatsapp-webhook` (7 nodos), `whatsapp-leads` (44), `whatsapp-monitor` (11) y `whatsapp-incidentes` (11). No se encontraron nombres o IDs de nodo duplicados, conexiones a nodos inexistentes ni referencias estáticas a nodos o workflows ausentes. Los cuatro contienen `pinData: {}` y no incluyen `staticData`.
 
-El usuario confirmó que `Fuente_lead: BOT IA` es intencional. No se modificó el mapeo del export.
+En la auditoría inicial, `whatsapp-leads` era idéntico a Git HEAD. En el cierre de seguridad autorizado se anonimizaron dos opciones ambiguas del catálogo cacheado `source` (sus campos `name` y `value`), sin cambiar mapeos activos, IDs técnicos, conexiones ni lógica comercial. El webhook conserva parámetros de sus cinco nodos previos, con renombrado y cambios de posición; añade dos nodos para facturación y la referencia al workflow de incidentes. El nombre visible de la llamada comercial ya no contiene `-test`. Monitor e incidentes son archivos nuevos en el árbol de trabajo. Fuera de esos cuatro textos de caché en `whatsapp-leads`, los JSON conservan el contenido recibido.
+
+La [auditoría local fechada](audit-2026-11-02.md) registra comprobaciones, diferencias y el cierre de seguridad, sin reproducir valores sensibles. El endpoint de `dockers-run.txt` es un placeholder; se descarta la interpretación inicial de URL operativa. El dictamen es **APTO PARA PUSH PÚBLICO para el árbol de trabajo revisado**, pendiente de autorización del usuario. La anonimización local no borra los valores ambiguos de versiones previas de Git ni equivale a una auditoría integral de su historial.
 
 ## Validaciones operativas reportadas
+
+### Antecedentes al 2 de octubre de 2026
 
 Se reportó la comprobación de:
 
@@ -84,6 +134,10 @@ Se reportó la comprobación de:
 
 También se ejecutó el recorrido comercial ideal hasta la solicitud de cita y se observó que las ejecuciones terminaron sin errores. Estas comprobaciones validan el recorrido realizado, pero no constituyen una validación exhaustiva de condiciones excepcionales ni garantizan la entrega de todos los mensajes externos.
 
+### Recorrido comercial entre el 21 de octubre y el 2 de noviembre
+
+El usuario reportó una prueba completa del recorrido comercial: el bot respondió, llegó el registro correspondiente a Airtable y no se observaron errores nuevos en los workflows comerciales durante esa prueba. La caída de volumen de ejecuciones se explicó por una pausa de campañas publicitarias; no se infiere una falla del bot a partir de ese descenso. Sigue siendo una prueba del recorrido realizado, no una regresión exhaustiva.
+
 ## Migración y entorno local
 
 El entorno local de Windows se conserva para desarrollo y pruebas. Las instalaciones local y de Contabo son independientes: modificar un workflow local no modifica automáticamente producción.
@@ -98,7 +152,7 @@ Según el procedimiento operativo reportado, la autenticación de Meta utiliza u
 
 ## Supabase
 
-La base de datos comercial no fue migrada. La tabla principal continúa siendo `public.leads`, con el esquema comercial existente y sin cambios de estructura introducidos durante este cierre documental. No se ejecutó SQL ni se modificaron datos o políticas.
+La base de datos comercial no fue migrada. La tabla principal continúa siendo `public.leads`, con el esquema comercial existente. El monitoreo añade persistencia mensual y RPC operativas reportadas, descritas arriba, sin sustituir `public.leads`. Durante esta revisión documental no se ejecutó SQL ni se modificaron datos o políticas.
 
 La etapa persistida que se observa actualmente después de una respuesta afirmativa a la solicitud de cita es `cita`. No debe asumirse que el valor `cita_si` sea el valor almacenado.
 
@@ -119,4 +173,10 @@ GitHub conserva documentación y exportes de workflows, pero no es un respaldo c
 ## Pendientes operativos y de control documental
 
 - Existencia de un respaldo actual, íntegro y restaurable de producción.
-- Política definitiva de idempotencia, reintentos, recuperación y notificaciones.
+- Siguiente ejecución automática completa de `whatsapp-monitor` después de la corrección del 2 de noviembre.
+- Prueba específica de protección de un registro positivo frente a ceros y respuesta de n8n cuando la RPC no devuelve filas.
+- Recepción posterior de estadísticas reales de noviembre; los ceros actuales son provisionales.
+- Consumo real que alcance US$20 y ciclo operativo completo de 24 horas entre incidentes reales.
+- Revisión de cobertura de errores, concurrencia y recuperación de reservas/alertas; no hay garantía general de idempotencia o reintentos.
+- Versionado autorizado de las funciones SQL y conservación de evidencia operativa sin datos sensibles.
+- Aprobación del usuario antes de commit o push. Los dos valores ambiguos ya fueron anonimizados en el árbol de trabajo; su naturaleza y eventual tratamiento en versiones previas de Git no se han confirmado.
