@@ -33,6 +33,7 @@ La instalación local de Windows es independiente de producción y puede compart
 - [Roadmap](docs/roadmap.md): versiones completadas y trabajo futuro.
 - [Registro de decisiones](docs/decisions.md): decisiones técnicas, comerciales y operativas.
 - [Stack](docs/stack.md): tecnologías y responsabilidades.
+- [Respaldo SQL](supabase/README.md): tablas, funciones y permisos reportados al 3 de noviembre; restauración todavía no probada.
 - [Auditoría de exports del 2 de noviembre](docs/audit-2026-11-02.md): seguridad, diferencias y comprobaciones locales.
 - [Auditoría histórica v1.9](docs/audit-1.9.md): hallazgos y propuestas de mantenimiento avanzado.
 - [Instrucciones para agentes](AGENTS.md): reglas permanentes para futuras sesiones.
@@ -53,6 +54,11 @@ La instalación local de Windows es independiente de producción y puede compart
 │   ├── project.md
 │   ├── roadmap.md
 │   └── stack.md
+├── supabase/
+│   ├── README.md
+│   ├── schema.sql
+│   ├── monitor-functions.sql
+│   └── incident-functions.sql
 └── workflows/
     ├── whatsapp-incidentes.json
     ├── whatsapp-leads.json

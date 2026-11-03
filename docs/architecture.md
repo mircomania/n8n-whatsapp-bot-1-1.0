@@ -72,7 +72,7 @@ Las alertas comparan múltiplos de 1.000 mensajes y US$20 con los últimos umbra
 
 Tiene Error Trigger y entrada desde otro workflow. El filtro de errores de autenticación admite solo eventos cuyo workflow sea `whatsapp-webhook`; no constituye cobertura general de todos los workflows. La entrada directa permite procesar el incidente de facturación detectado por el receptor.
 
-La reserva y confirmación de Supabase controlan una alerta cada 24 horas por `meta_autenticacion` o `meta_facturacion`. Si Slack confirma `ok === true`, registra envío; si no confirma, intenta liberar la reserva y termina con error. Las pruebas SQL reportadas validan el bloqueo en una transacción revertida. No se ha observado aún el ciclo real completo de 24 horas ni se dispone de SQL versionado para revisar la recuperación ante fallos parciales.
+La reserva y confirmación de Supabase controlan una alerta cada 24 horas por `meta_autenticacion` o `meta_facturacion`. Si Slack confirma `ok === true`, registra envío; si no confirma, intenta liberar la reserva y termina con error. Las pruebas SQL reportadas validan el bloqueo en una transacción revertida. No se ha observado aún el ciclo real completo de 24 horas. El SQL original suministrado al 3 de noviembre está preparado en `supabase/incident-functions.sql`: la reserva dura 5 minutos y la confirmación valida tipo/UUID sin comprobar su vigencia. No se probó la recuperación ante fallos parciales.
 
 ## Persistencia e integraciones
 
@@ -86,7 +86,7 @@ La reserva y confirmación de Supabase controlan una alerta cada 24 horas por `m
 | Airtable | Recibir solicitudes de cita calificadas para gestión interna. |
 | Slack API | Notificar consumo e incidentes en el canal operativo reportado `#whatsapp-monitor`. |
 
-No hay definiciones SQL o migraciones confirmadas de las RPC en el repositorio. Los nombres se observan en las llamadas exportadas; la tabla mensual y la protección SQL están respaldadas por el reporte operativo del usuario. No se infieren esquemas adicionales, permisos, RLS o garantías de concurrencia.
+Las dos tablas y cuatro RPC se conservan como [respaldo SQL estructural](../supabase/README.md), con fuente y permisos suministrados por el usuario y referencia al 3 de noviembre. No son migraciones de Supabase CLI. Las funciones mantienen `search_path` vacío y seguridad invocadora; ambas tablas tienen RLS sin FORCE RLS ni políticas explícitas según el reporte. El resumen devuelve la fila existente si bloquea ceros. La comparación local con las cinco llamadas RPC de n8n es coherente; no se validaron restauración, permisos efectivos o concurrencia mediante ejecución.
 
 Airtable conserva “Base Leads Nueva” / “Leads global” y el valor intencional `Fuente_lead: BOT IA`. Es una etiqueta comercial, no uso de inteligencia artificial. Las credenciales de Meta, Supabase, Airtable y Slack se referencian mediante n8n; los exports no contienen sus valores de autenticación según la revisión local.
 

@@ -30,7 +30,7 @@ Meta proporciona la recepción y el envío de mensajes de texto e interacciones 
 
 Supabase continúa funcionando como servicio externo. La tabla principal verificada es `public.leads`, que conserva los datos de precalificación, etapa, resultado, fechas y control de interacción/reset. La migración a Contabo no migró la base comercial ni cambió su estructura.
 
-El monitoreo utiliza además `whatsapp_monitor_monthly` según verificación operativa reportada. Los exports llaman a `guardar_resumen_whatsapp`, `registrar_alerta_whatsapp`, `reservar_alerta_incidente` y `confirmar_alerta_incidente`. No hay definiciones SQL ni migraciones confirmadas en el repositorio; la inspección de las llamadas no valida permisos, RLS o implementación de las funciones.
+El monitoreo utiliza además `whatsapp_monitor_monthly` según verificación operativa reportada. Los exports llaman a `guardar_resumen_whatsapp`, `registrar_alerta_whatsapp`, `reservar_alerta_incidente` y `confirmar_alerta_incidente`. Sus definiciones originales, junto con el esquema y los permisos reportados al 3 de noviembre, están preparadas en [supabase/](../supabase/README.md). No son migraciones administradas por Supabase CLI. La revisión fue estática; no valida restauración ni permisos efectivos contra la instancia viva.
 
 ## Notificaciones operativas: Slack API
 

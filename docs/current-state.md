@@ -1,6 +1,6 @@
 # Estado actual
 
-Fecha de revisión documental: **3 de noviembre de 2026**. La evidencia operativa reportada conserva su referencia al **2 de noviembre**; la revisión del día 3 corresponde únicamente al nuevo export local del webhook.
+Fecha de revisión documental: **3 de noviembre de 2026**. La evidencia operativa de workflows conserva su referencia al **2 de noviembre**. El día 3 se revisaron el nuevo export local del webhook y el respaldo SQL suministrado; el usuario reportó la verificación directa de tablas y permisos en Supabase al **3 de noviembre**.
 
 El usuario reporta publicados en Contabo `whatsapp-webhook`, `whatsapp-leads`, `whatsapp-monitor` y `whatsapp-incidentes`. Esta actualización incorpora su reporte de pruebas operativas realizadas entre el **21 de octubre y el 2 de noviembre de 2026**, además de la inspección local de los cuatro JSON. Las capturas, resultados de n8n y consultas SQL de esas pruebas se encuentran en la conversación de trabajo; no se han incorporado como archivos de evidencia al repositorio.
 
@@ -96,7 +96,7 @@ El usuario ejecutó manualmente `Resumen mensual` y `HTTP Request1`, comprobó l
 
 El mismo día se actualizó en Supabase `public.guardar_resumen_whatsapp`. Según la comprobación operativa reportada, la condición `ON CONFLICT ... DO UPDATE ... WHERE NOT (...)` impide sustituir estadísticas positivas existentes cuando la nueva consulta trae cero mensajes y cero costos. **Protección implementada según el reporte; prueba específica pendiente.** Crear noviembre y conservar octubre no prueba el intento de sobrescritura sobre un registro positivo del mismo mes.
 
-El export envía los valores numéricos a la RPC, pero no envía `sin_datos_meta`; esa marca es local a `Resumen mensual` y no consta su persistencia. No hay definición SQL ni migraciones confirmadas en el repositorio. Falta probar el intento de sobrescritura y cómo continúa n8n si la RPC omite la actualización y no devuelve filas.
+El export envía los valores numéricos a la RPC, pero no envía `sin_datos_meta`; esa marca es local a `Resumen mensual` y no consta su persistencia. La definición original suministrada el 3 de noviembre se conserva en [monitor-functions.sql](../supabase/monitor-functions.sql): si el bloqueo impide actualizar, `IF NOT FOUND` devuelve la fila existente. Esto resuelve la incertidumbre por inspección del SQL; siguen pendientes el intento de sobrescritura y la comprobación de la respuesta en n8n. No son migraciones de Supabase CLI.
 
 ## Incidentes de Meta y límite de 24 horas
 
@@ -105,7 +105,7 @@ El export envía los valores numéricos a la RPC, pero no envía `sin_datos_meta
 - **Autenticación:** su Error Trigger clasifica errores de autenticación solo cuando el workflow del evento es `whatsapp-webhook`; reconoce texto como `Authorization failed` y referencias a código 190. El export receptor lo configura como workflow de errores. No se demuestra cobertura directa de errores de `whatsapp-leads` o `whatsapp-monitor`.
 - **Facturación `131042`:** una rama del receptor recorre estados de entrega `failed`, detecta el código y llama a `whatsapp-incidentes` sin esperar su finalización. Distingue la referencia a falta de método de pago de un diagnóstico general de elegibilidad de pago. Devuelve el primer caso coincidente del evento.
 
-El flujo utiliza las RPC `reservar_alerta_incidente` y `confirmar_alerta_incidente` para limitar las notificaciones a **una cada 24 horas por tipo**. Solo envía si `debe_notificar` lo autoriza. Tras `ok === true` confirma la reserva; si Slack no confirma, intenta liberarla y termina con error. La lógica SQL del bloqueo y la recuperación de reservas no puede auditarse desde estos exports.
+El flujo utiliza las RPC `reservar_alerta_incidente` y `confirmar_alerta_incidente` para limitar las notificaciones a **una cada 24 horas por tipo**. Solo envía si `debe_notificar` lo autoriza. Tras `ok === true` confirma la reserva; si Slack no confirma, intenta liberarla y termina con error. Los exports no incluyen esa lógica SQL; la fuente original suministrada el 3 de noviembre se conserva en [incident-functions.sql](../supabase/incident-functions.sql). La reserva dura 5 minutos y el bloqueo de 24 horas se mide desde el aviso confirmado. La confirmación exige tipo y UUID, pero no comprueba que la reserva siga vigente; no se alteró ese comportamiento.
 
 **Pruebas operativas reportadas:** se simuló `Authorization failed` y se recibió la alerta en Slack; también se simuló `131042`, se comprobó el recorrido receptor → incidentes → Slack y su registro en Supabase, y se restableció el estado de esa prueba. En una transacción SQL revertida se verificaron primera reserva autorizada, segunda reserva del mismo tipo rechazada, confirmación y nuevo rechazo durante el bloqueo, sin registros permanentes de esa prueba SQL. Falta observar un ciclo completo de 24 horas con incidentes reales separados por ese intervalo.
 
@@ -166,6 +166,8 @@ Según el procedimiento operativo reportado, la autenticación de Meta utiliza u
 
 La base de datos comercial no fue migrada. La tabla principal continúa siendo `public.leads`, con el esquema comercial existente. El monitoreo añade persistencia mensual y RPC operativas reportadas, descritas arriba, sin sustituir `public.leads`. Durante esta revisión documental no se ejecutó SQL ni se modificaron datos o políticas.
 
+Se prepararon en [supabase/](../supabase/README.md) las dos tablas y cuatro funciones del monitoreo/incidentes con referencia al 3 de noviembre. El esquema y los permisos proceden de la configuración verificada y reportada por el usuario; las funciones proceden de las definiciones suministradas de `pg_get_functiondef()`. Se conservaron firmas, cuerpos, retornos y `search_path` vacío; las ACL reflejan EXECUTE para `service_role`/`postgres` y ausencia de acceso para `PUBLIC`, `anon` y `authenticated`. Ambas tablas tienen RLS activado, sin FORCE RLS ni políticas explícitas. La revisión fue estática, sin ejecutar SQL ni probar restauración; no es una copia de los datos o de todo el proyecto.
+
 La etapa persistida que se observa actualmente después de una respuesta afirmativa a la solicitud de cita es `cita`. No debe asumirse que el valor `cita_si` sea el valor almacenado.
 
 ## Acceso administrativo
@@ -186,9 +188,9 @@ GitHub conserva documentación y exportes de workflows, pero no es un respaldo c
 
 - Existencia de un respaldo actual, íntegro y restaurable de producción.
 - Siguiente ejecución automática completa de `whatsapp-monitor` después de la corrección del 2 de noviembre.
-- Prueba específica de protección de un registro positivo frente a ceros y respuesta de n8n cuando la RPC no devuelve filas.
+- Prueba específica de protección de un registro positivo frente a ceros y consumo por n8n de la fila existente que devuelve el SQL suministrado.
 - Recepción posterior de estadísticas reales de noviembre; los ceros actuales son provisionales.
 - Consumo real que alcance US$20 y ciclo operativo completo de 24 horas entre incidentes reales.
 - Revisión de cobertura de errores, concurrencia y recuperación de reservas/alertas; no hay garantía general de idempotencia o reintentos.
-- Versionado autorizado de las funciones SQL y conservación de evidencia operativa sin datos sensibles.
+- Revisión/aprobación del respaldo SQL preparado y prueba de restauración en un entorno aislado; conservación de evidencia operativa sin datos sensibles.
 - Aprobación del usuario antes de commit o push. Los dos valores ambiguos ya fueron anonimizados en el árbol de trabajo; su naturaleza y eventual tratamiento en versiones previas de Git no se han confirmado.
