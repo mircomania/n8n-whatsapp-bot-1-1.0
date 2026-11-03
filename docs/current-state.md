@@ -1,8 +1,10 @@
 # Estado actual
 
-Fecha de referencia documental y de los exports inspeccionados: **2 de noviembre de 2026**.
+Fecha de revisión documental: **3 de noviembre de 2026**. La evidencia operativa reportada conserva su referencia al **2 de noviembre**; la revisión del día 3 corresponde únicamente al nuevo export local del webhook.
 
 El usuario reporta publicados en Contabo `whatsapp-webhook`, `whatsapp-leads`, `whatsapp-monitor` y `whatsapp-incidentes`. Esta actualización incorpora su reporte de pruebas operativas realizadas entre el **21 de octubre y el 2 de noviembre de 2026**, además de la inspección local de los cuatro JSON. Las capturas, resultados de n8n y consultas SQL de esas pruebas se encuentran en la conversación de trabajo; no se han incorporado como archivos de evidencia al repositorio.
+
+El **3 de noviembre** se inspeccionó el nuevo `workflows/whatsapp-webhook.json` frente a Git HEAD `bec3a33`: incorpora un filtro previo de mensaje entrante y un acuse explícito para la rama sin mensaje. No se comprobó su publicación ni se ejecutaron workflows en producción.
 
 Se distingue **evidencia operativa reportada por el usuario**, **hechos comprobados localmente en los exports** y **pendientes**. No hubo acceso directo a producción ni consultas a servicios durante esta revisión. Los exports, incluido su campo `active`, no prueban la configuración viva ni su equivalencia exacta. La infraestructura y los antecedentes de migración conservan como referencia la confirmación del **2 de octubre de 2026**; no se revalidaron versiones, recursos o respaldos en noviembre.
 
@@ -109,11 +111,21 @@ El flujo utiliza las RPC `reservar_alerta_incidente` y `confirmar_alerta_inciden
 
 ## Estado de los exportes del repositorio
 
-La inspección del 2 de noviembre confirma cuatro JSON parseables: `whatsapp-webhook` (7 nodos), `whatsapp-leads` (44), `whatsapp-monitor` (11) y `whatsapp-incidentes` (11). No se encontraron nombres o IDs de nodo duplicados, conexiones a nodos inexistentes ni referencias estáticas a nodos o workflows ausentes. Los cuatro contienen `pinData: {}` y no incluyen `staticData`.
+La [auditoría del 2 de noviembre](audit-2026-11-02.md) conserva la fotografía de cuatro exports y el cierre de privacidad de ese día: dos opciones ambiguas del catálogo cacheado `source` de Airtable fueron anonimizadas sin alterar lógica comercial; el endpoint histórico de `dockers-run.txt` se reclasificó como placeholder. La anonimización no borra versiones anteriores de Git ni equivale a auditar todo su historial.
 
-En la auditoría inicial, `whatsapp-leads` era idéntico a Git HEAD. En el cierre de seguridad autorizado se anonimizaron dos opciones ambiguas del catálogo cacheado `source` (sus campos `name` y `value`), sin cambiar mapeos activos, IDs técnicos, conexiones ni lógica comercial. El webhook conserva parámetros de sus cinco nodos previos, con renombrado y cambios de posición; añade dos nodos para facturación y la referencia al workflow de incidentes. El nombre visible de la llamada comercial ya no contiene `-test`. Monitor e incidentes son archivos nuevos en el árbol de trabajo. Fuera de esos cuatro textos de caché en `whatsapp-leads`, los JSON conservan el contenido recibido.
+### Nuevo webhook revisado el 3 de noviembre
 
-La [auditoría local fechada](audit-2026-11-02.md) registra comprobaciones, diferencias y el cierre de seguridad, sin reproducir valores sensibles. El endpoint de `dockers-run.txt` es un placeholder; se descarta la interpretación inicial de URL operativa. El dictamen es **APTO PARA PUSH PÚBLICO para el árbol de trabajo revisado**, pendiente de autorización del usuario. La anonimización local no borra los valores ambiguos de versiones previas de Git ni equivale a una auditoría integral de su historial.
+**Hecho verificado localmente:** JSON válido con 9 nodos, frente a 7 en HEAD `bec3a33`. Los siete nodos anteriores conservan todos sus parámetros y ajustes; tres cambian de posición. Se añade `¿Es mensaje entrante?` antes de extraer los campos comerciales:
+
+- **True:** `Edit Fields -> mensaje -> Call 'whatsapp-leads' -> Respond to Webhook`, sin cambios en los parámetros o conexiones internas del recorrido previo.
+- **False:** `Confirmar evento Meta`, con respuesta configurada HTTP 200 y sin cuerpo (`respondWith: noData`).
+- **Rama independiente:** `Detectar fallo Meta 131042 -> Call 'whatsapp-incidentes'`, con código, destino y opciones de ejecución idénticos a HEAD. También se conserva el workflow de errores configurado.
+
+El IF comprueba que `body.entry[0].changes[0].value.messages[0].from` tenga un valor verdadero mediante acceso opcional. Evita dirigir a `Edit Fields` los eventos sin ese remitente, incluidos estados habituales de entrega. No valida por completo el payload o el tipo de mensaje ni procesa mensajes de entradas/cambios posteriores del lote.
+
+Las conexiones y referencias a workflows apuntan a elementos existentes. `pinData` **existe como objeto vacío**; no contiene datos fijados. `staticData` está ausente. No se detectaron credenciales, tokens, datos personales literales o payloads de prueba en este export. Los identificadores de nodos, workflows e instancia son metadatos técnicos.
+
+Se comprobaron **30 casos locales** sobre la condición exportada, el detector `131042` y las conexiones, con entradas sintéticas fuera del repositorio. Pasaron mensajes, estados de entrega y casos sin campos; también se constató la limitación de la primera entrada/cambio y el paso de un remitente sin tipo. Estas pruebas no ejecutan n8n ni acreditan recepción HTTP real, notificación Slack o publicación. Falta verificar el recorrido completo en una instancia autorizada. No se modificó ningún JSON durante esta revisión; el diff del webhook procede del archivo entregado por el usuario. El detalle está en el [seguimiento de la auditoría](audit-2026-11-02.md#seguimiento-del-webhook--3-de-noviembre-de-2026).
 
 ## Validaciones operativas reportadas
 
