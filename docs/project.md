@@ -31,7 +31,11 @@ El registro de Airtable se genera cuando un usuario calificado solicita una cita
 
 Al 2 de noviembre de 2026 el usuario reporta publicados los cuatro workflows: recepción, precalificación, monitoreo e incidentes. `whatsapp-monitor` consulta diariamente consumo de Meta, conserva resúmenes mensuales en Supabase y notifica pasos de 1.000 mensajes y US$20 mediante Slack API. `whatsapp-incidentes` gestiona autenticación y facturación `131042`, con reserva de una alerta cada 24 horas por tipo.
 
-La corrección de noviembre admite estadísticas ausentes como ceros provisionales. La protección SQL contra sobrescribir valores positivos está implementada según comprobación reportada, con prueba específica pendiente. La siguiente ejecución automática completa también está pendiente. [Estado actual](current-state.md) distingue lo implementado, las pruebas operativas reportadas y las limitaciones; este mantenimiento no recibe una versión nueva por inferencia.
+La corrección de noviembre admite estadísticas ausentes como ceros provisionales. **Antecedente al 2 de noviembre:** estaban pendientes la prueba específica de protección SQL contra ceros y la siguiente ejecución automática completa.
+
+**Actualización confirmada por el usuario el 3 de noviembre:** la prueba real en Supabase con `BEGIN`/`ROLLBACK` conservó 1.871 mensajes y US$7,3984 y devolvió el registro existente ante una actualización con ceros ([evidencia SQL](../supabase/README.md#prueba-ejecutada-en-supabase--3-de-noviembre-de-2026)); el monitor completó su ejecución automática del día; el webhook fue probado en producción y su recorrido comercial llegó a Airtable; y el respaldo de dos tablas y cuatro funciones SQL quedó versionado en GitHub.
+
+Siguen pendientes la restauración y compilación SQL en PostgreSQL aislado, los permisos efectivos en esa restauración, la integración n8n específica ante bloqueo de ceros y los demás escenarios no verificados. Los ceros provisionales de noviembre no son consumo real confirmado. [Estado actual](current-state.md) distingue las pruebas reportadas de las validaciones estáticas de Codex; no se cambia el alcance ni se asigna una versión nueva.
 
 ## Operación y mantenimiento
 

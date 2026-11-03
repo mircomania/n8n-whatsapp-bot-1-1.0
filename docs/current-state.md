@@ -1,12 +1,12 @@
 # Estado actual
 
-Fecha de revisión documental: **3 de noviembre de 2026**. La evidencia operativa de workflows conserva su referencia al **2 de noviembre**. El día 3 se revisaron el nuevo export local del webhook y el respaldo SQL suministrado; el usuario reportó la verificación directa de tablas y permisos en Supabase al **3 de noviembre**.
+Fecha de revisión documental: **3 de noviembre de 2026**. Se conservan los antecedentes del **2 de noviembre** y se incorporan las comprobaciones operativas confirmadas por el usuario el **3 de noviembre**: protección SQL contra ceros, ejecución automática del monitor, recorrido comercial del webhook hasta Airtable y respaldo SQL versionado en GitHub. La verificación de tablas y permisos en Supabase también fue reportada al día 3.
 
-El usuario reporta publicados en Contabo `whatsapp-webhook`, `whatsapp-leads`, `whatsapp-monitor` y `whatsapp-incidentes`. Esta actualización incorpora su reporte de pruebas operativas realizadas entre el **21 de octubre y el 2 de noviembre de 2026**, además de la inspección local de los cuatro JSON. Las capturas, resultados de n8n y consultas SQL de esas pruebas se encuentran en la conversación de trabajo; no se han incorporado como archivos de evidencia al repositorio.
+El usuario reporta publicados en Contabo `whatsapp-webhook`, `whatsapp-leads`, `whatsapp-monitor` y `whatsapp-incidentes`. Esta actualización incorpora su reporte de pruebas operativas realizadas entre el **21 de octubre y el 3 de noviembre de 2026**, además de la inspección local de los cuatro JSON. Las capturas, resultados de n8n y consultas SQL de esas pruebas se encuentran en la conversación de trabajo; no se han incorporado como archivos de evidencia al repositorio.
 
-El **3 de noviembre** se inspeccionó el nuevo `workflows/whatsapp-webhook.json` frente a Git HEAD `bec3a33`: incorpora un filtro previo de mensaje entrante y un acuse explícito para la rama sin mensaje. No se comprobó su publicación ni se ejecutaron workflows en producción.
+El **3 de noviembre** se inspeccionó el nuevo `workflows/whatsapp-webhook.json` frente a Git HEAD `bec3a33`: incorpora un filtro previo de mensaje entrante y un acuse explícito para la rama sin mensaje. Esa inspección local no comprobó su publicación ni ejecutó workflows en producción. Posteriormente, el usuario confirmó la prueba de `whatsapp-webhook` en producción el mismo día, con recorrido comercial correcto hasta Airtable; no se infiere equivalencia exacta entre export e instancia viva.
 
-Se distingue **evidencia operativa reportada por el usuario**, **hechos comprobados localmente en los exports** y **pendientes**. No hubo acceso directo a producción ni consultas a servicios durante esta revisión. Los exports, incluido su campo `active`, no prueban la configuración viva ni su equivalencia exacta. La infraestructura y los antecedentes de migración conservan como referencia la confirmación del **2 de octubre de 2026**; no se revalidaron versiones, recursos o respaldos en noviembre.
+Se distingue **evidencia operativa reportada por el usuario**, **hechos comprobados localmente en los exports** y **pendientes**. Codex no accedió directamente a producción ni consultó servicios durante esta revisión documental; las pruebas operativas descritas fueron ejecutadas y confirmadas por el usuario. Los exports, incluido su campo `active`, no prueban la configuración viva ni su equivalencia exacta. La infraestructura y los antecedentes de migración conservan como referencia la confirmación del **2 de octubre de 2026**; no se revalidaron versiones, recursos o respaldos en noviembre.
 
 ## Producción en Contabo
 
@@ -69,7 +69,7 @@ Esta es una prueba manual del flujo reportado. No se han documentado pruebas exh
 
 ## Monitoreo diario y registro mensual de Meta
 
-**Implementación publicada reportada; configuración inspeccionada localmente al 2 de noviembre.** `whatsapp-monitor` contiene un Schedule Trigger a las 09:00 y zona `America/Mexico_City`, además de entrada manual. El usuario comprobó ejecución diaria hasta el 31 de octubre y ejecuciones automáticas fallidas el 1 y 2 de noviembre. La siguiente ejecución automática completa tras la corrección sigue pendiente.
+**Implementación publicada reportada; configuración inspeccionada localmente al 2 de noviembre.** `whatsapp-monitor` contiene un Schedule Trigger a las 09:00 y zona `America/Mexico_City`, además de entrada manual. El usuario comprobó ejecución diaria hasta el 31 de octubre y ejecuciones automáticas fallidas el 1 y 2 de noviembre. Al cierre del 2 de noviembre seguía pendiente la siguiente ejecución automática completa tras la corrección. **Actualización del 3 de noviembre:** el usuario confirmó que `whatsapp-monitor` completó correctamente su ejecución automática de ese día. No se reportaron nuevas cifras de consumo real de noviembre.
 
 La consulta de `pricing_analytics` usa el inicio del mes y el instante actual en esa zona, con granularidad `DAILY` y dimensiones `PRICING_CATEGORY,PRICING_TYPE`. `Resumen mensual` valida la cuenta consultada, suma mensajes gratuitos, regulares y otros, y calcula costo estimado y mes. Estos volúmenes corresponden a las estadísticas consultadas de Meta; no se equiparan al total de ejecuciones de n8n ni de leads.
 
@@ -92,11 +92,13 @@ El workflow comprueba `ok` en la respuesta de Slack antes de llamar a `registrar
 
 El 1 y 2 de noviembre el monitor se ejecutó automáticamente, pero `Resumen mensual` falló porque Meta devolvió solo el WABA ID, sin `pricing_analytics.data`. El **2 de noviembre** se corrigió el código para aceptar exclusivamente esa forma de respuesta sin estadísticas y producir ceros con `sin_datos_meta: true`. Otras estructuras inesperadas siguen provocando error; una matriz de estadísticas vacía se procesa por una rama distinta y no lleva esa marca.
 
-El usuario ejecutó manualmente `Resumen mensual` y `HTTP Request1`, comprobó la creación de noviembre y verificó que octubre conservaba sus estadísticas. Esto verifica parcialmente el cambio de mes; no acredita todavía una ejecución automática completa tras el ajuste. Los ceros provisionales no demuestran consumo real nulo ni explican por qué Meta omitió las estadísticas.
+El usuario ejecutó manualmente `Resumen mensual` y `HTTP Request1`, comprobó la creación de noviembre y verificó que octubre conservaba sus estadísticas. Al cierre del 2 de noviembre esto verificaba parcialmente el cambio de mes y todavía no acreditaba una ejecución automática completa tras el ajuste; esa ejecución quedó confirmada el 3 de noviembre, como se indica arriba. Los ceros provisionales no demuestran consumo real nulo ni explican por qué Meta omitió las estadísticas.
 
-El mismo día se actualizó en Supabase `public.guardar_resumen_whatsapp`. Según la comprobación operativa reportada, la condición `ON CONFLICT ... DO UPDATE ... WHERE NOT (...)` impide sustituir estadísticas positivas existentes cuando la nueva consulta trae cero mensajes y cero costos. **Protección implementada según el reporte; prueba específica pendiente.** Crear noviembre y conservar octubre no prueba el intento de sobrescritura sobre un registro positivo del mismo mes.
+El mismo día se actualizó en Supabase `public.guardar_resumen_whatsapp`. Según la comprobación operativa reportada, la condición `ON CONFLICT ... DO UPDATE ... WHERE NOT (...)` impide sustituir estadísticas positivas existentes cuando la nueva consulta trae cero mensajes y cero costos. **Antecedente al 2 de noviembre:** protección implementada según el reporte, con prueba específica entonces pendiente. Crear noviembre y conservar octubre no probaba el intento de sobrescritura sobre un registro positivo del mismo mes.
 
-El export envía los valores numéricos a la RPC, pero no envía `sin_datos_meta`; esa marca es local a `Resumen mensual` y no consta su persistencia. La definición original suministrada el 3 de noviembre se conserva en [monitor-functions.sql](../supabase/monitor-functions.sql): si el bloqueo impide actualizar, `IF NOT FOUND` devuelve la fila existente. Esto resuelve la incertidumbre por inspección del SQL; siguen pendientes el intento de sobrescritura y la comprobación de la respuesta en n8n. No son migraciones de Supabase CLI.
+**Actualización del 3 de noviembre — PASS:** el usuario confirmó una prueba real de `public.guardar_resumen_whatsapp` en Supabase con `BEGIN`/`ROLLBACK`. Frente al intento de actualizar octubre con cero mensajes y cero costo, la función conservó **1.871 mensajes y US$7,3984**, devolvió el registro existente y la verificación posterior confirmó datos y fechas intactos. La evidencia y su alcance se registran en [supabase/README.md](../supabase/README.md#prueba-ejecutada-en-supabase--3-de-noviembre-de-2026). La prueba SQL está completada; no acredita todavía la integración completa de n8n bajo este escenario.
+
+El export envía los valores numéricos a la RPC, pero no envía `sin_datos_meta`; esa marca es local a `Resumen mensual` y no consta su persistencia. La definición original suministrada el 3 de noviembre se conserva en [monitor-functions.sql](../supabase/monitor-functions.sql): si el bloqueo impide actualizar, `IF NOT FOUND` devuelve la fila existente. La inspección del SQL y el PASS reportado confirman ese retorno; sigue pendiente la validación de integración completa con n8n ante el bloqueo de ceros. No son migraciones de Supabase CLI.
 
 ## Incidentes de Meta y límite de 24 horas
 
@@ -125,7 +127,7 @@ El IF comprueba que `body.entry[0].changes[0].value.messages[0].from` tenga un v
 
 Las conexiones y referencias a workflows apuntan a elementos existentes. `pinData` **existe como objeto vacío**; no contiene datos fijados. `staticData` está ausente. No se detectaron credenciales, tokens, datos personales literales o payloads de prueba en este export. Los identificadores de nodos, workflows e instancia son metadatos técnicos.
 
-Se comprobaron **30 casos locales** sobre la condición exportada, el detector `131042` y las conexiones, con entradas sintéticas fuera del repositorio. Pasaron mensajes, estados de entrega y casos sin campos; también se constató la limitación de la primera entrada/cambio y el paso de un remitente sin tipo. Estas pruebas no ejecutan n8n ni acreditan recepción HTTP real, notificación Slack o publicación. Falta verificar el recorrido completo en una instancia autorizada. No se modificó ningún JSON durante esta revisión; el diff del webhook procede del archivo entregado por el usuario. El detalle está en el [seguimiento de la auditoría](audit-2026-11-02.md#seguimiento-del-webhook--3-de-noviembre-de-2026).
+Se comprobaron **30 casos locales** sobre la condición exportada, el detector `131042` y las conexiones, con entradas sintéticas fuera del repositorio. Pasaron mensajes, estados de entrega y casos sin campos; también se constató la limitación de la primera entrada/cambio y el paso de un remitente sin tipo. Estas pruebas no ejecutan n8n ni acreditan recepción HTTP real, notificación Slack o publicación. El usuario confirmó después el recorrido comercial en producción hasta Airtable el 3 de noviembre. No se han reportado pruebas nuevas específicas del acuse HTTP de la rama False o de la detección `131042`; esas comprobaciones no se deducen del recorrido comercial. No se modificó ningún JSON durante esta revisión; el diff del webhook procede del archivo entregado por el usuario. El detalle está en el [seguimiento de la auditoría](audit-2026-11-02.md#seguimiento-del-webhook--3-de-noviembre-de-2026).
 
 ## Validaciones operativas reportadas
 
@@ -150,6 +152,10 @@ También se ejecutó el recorrido comercial ideal hasta la solicitud de cita y s
 
 El usuario reportó una prueba completa del recorrido comercial: el bot respondió, llegó el registro correspondiente a Airtable y no se observaron errores nuevos en los workflows comerciales durante esa prueba. La caída de volumen de ejecuciones se explicó por una pausa de campañas publicitarias; no se infiere una falla del bot a partir de ese descenso. Sigue siendo una prueba del recorrido realizado, no una regresión exhaustiva.
 
+### Recorrido comercial del 3 de noviembre
+
+El usuario confirmó que `whatsapp-webhook` fue probado en producción y que el recorrido comercial llegó correctamente hasta Airtable. Se registra como prueba operativa del recorrido realizado, separada de los 30 casos locales y de la prueba SQL de ceros; no valida por sí sola los demás escenarios pendientes.
+
 ## Migración y entorno local
 
 El entorno local de Windows se conserva para desarrollo y pruebas. Las instalaciones local y de Contabo son independientes: modificar un workflow local no modifica automáticamente producción.
@@ -166,7 +172,7 @@ Según el procedimiento operativo reportado, la autenticación de Meta utiliza u
 
 La base de datos comercial no fue migrada. La tabla principal continúa siendo `public.leads`, con el esquema comercial existente. El monitoreo añade persistencia mensual y RPC operativas reportadas, descritas arriba, sin sustituir `public.leads`. Durante esta revisión documental no se ejecutó SQL ni se modificaron datos o políticas.
 
-Se prepararon en [supabase/](../supabase/README.md) las dos tablas y cuatro funciones del monitoreo/incidentes con referencia al 3 de noviembre. El esquema y los permisos proceden de la configuración verificada y reportada por el usuario; las funciones proceden de las definiciones suministradas de `pg_get_functiondef()`. Se conservaron firmas, cuerpos, retornos y `search_path` vacío; las ACL reflejan EXECUTE para `service_role`/`postgres` y ausencia de acceso para `PUBLIC`, `anon` y `authenticated`. Ambas tablas tienen RLS activado, sin FORCE RLS ni políticas explícitas. La revisión fue estática, sin ejecutar SQL ni probar restauración; no es una copia de los datos o de todo el proyecto.
+El usuario confirmó el **3 de noviembre** que el respaldo estructural de las dos tablas y cuatro funciones del monitoreo/incidentes en [supabase/](../supabase/README.md) está **versionado en GitHub**. El esquema y los permisos proceden de la configuración verificada y reportada por el usuario; las funciones proceden de las definiciones suministradas de `pg_get_functiondef()`. Se conservaron firmas, cuerpos, retornos y `search_path` vacío; las ACL reflejan EXECUTE para `service_role`/`postgres` y ausencia de acceso para `PUBLIC`, `anon` y `authenticated`. Ambas tablas tienen RLS activado, sin FORCE RLS ni políticas explícitas. La revisión de Codex fue estática y no ejecutó SQL ni probó restauración; la prueba real de protección contra ceros en Supabase fue confirmada por el usuario por separado. El respaldo no es una copia de los datos o de todo el proyecto y no tiene una restauración validada.
 
 La etapa persistida que se observa actualmente después de una respuesta afirmativa a la solicitud de cita es `cita`. No debe asumirse que el valor `cita_si` sea el valor almacenado.
 
@@ -182,15 +188,15 @@ Existe una copia local de la instalación de n8n realizada el **21 de septiembre
 
 No se contrató Auto Backup de Contabo ni se configuraron respaldos automáticos periódicos de producción. Tampoco se realizó una prueba independiente de restauración del respaldo histórico. La copia de Windows no debe presentarse como respaldo actualizado de datos generados posteriormente en producción.
 
-GitHub conserva documentación y exportes de workflows, pero no es un respaldo completo de n8n. No se incorporan bases internas, respaldos ni credenciales al repositorio.
+GitHub conserva documentación, exportes de workflows y el respaldo estructural SQL reportado como versionado al 3 de noviembre, pero no es un respaldo completo de n8n o de los datos de Supabase. No se incorporan bases internas, respaldos de datos ni credenciales al repositorio.
 
 ## Pendientes operativos y de control documental
 
 - Existencia de un respaldo actual, íntegro y restaurable de producción.
-- Siguiente ejecución automática completa de `whatsapp-monitor` después de la corrección del 2 de noviembre.
-- Prueba específica de protección de un registro positivo frente a ceros y consumo por n8n de la fila existente que devuelve el SQL suministrado.
+- Validación de integración completa con n8n ante bloqueo de ceros y retorno del registro existente; la prueba SQL y la ejecución automática del monitor del 3 de noviembre ya están confirmadas.
 - Recepción posterior de estadísticas reales de noviembre; los ceros actuales son provisionales.
 - Consumo real que alcance US$20 y ciclo operativo completo de 24 horas entre incidentes reales.
 - Revisión de cobertura de errores, concurrencia y recuperación de reservas/alertas; no hay garantía general de idempotencia o reintentos.
-- Revisión/aprobación del respaldo SQL preparado y prueba de restauración en un entorno aislado; conservación de evidencia operativa sin datos sensibles.
-- Aprobación del usuario antes de commit o push. Los dos valores ambiguos ya fueron anonimizados en el árbol de trabajo; su naturaleza y eventual tratamiento en versiones previas de Git no se han confirmado.
+- Restauración y compilación de los archivos SQL en un entorno PostgreSQL aislado.
+- Verificación de permisos efectivos en esa restauración; conservación de evidencia operativa sin datos sensibles.
+- Autorización del usuario antes de nuevos commits o push. Los dos valores ambiguos ya fueron anonimizados; su naturaleza y eventual tratamiento en versiones previas de Git no se han confirmado.

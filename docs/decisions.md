@@ -170,6 +170,8 @@ Decisión: Eliminar del flujo productivo `Aviso agente`. Mantener la ruta `Si ci
 
 Consecuencias: El agente deja de recibir el aviso interno por WhatsApp y esa derivación ya no depende de su ventana de 24 horas. Supabase continúa como base comercial y conversacional principal. El registro de Airtable sigue representando una solicitud de cita, no una cita confirmada. DEC-012 queda como antecedente histórico sustituido. El valor `Fuente_lead: BOT IA` está confirmado como intencional.
 
+Actualización de verificación — 3 de noviembre de 2026: el usuario confirmó una prueba de `whatsapp-webhook` en producción cuyo recorrido comercial llegó correctamente hasta Airtable. Confirma el recorrido realizado, sin introducir una decisión nueva ni validar todos los escenarios.
+
 ### DEC-014 — Monitorear consumo de Meta por mes y notificar umbrales en Slack
 
 Fecha: implementación y pruebas reportadas entre el 21 de octubre y el 2 de noviembre de 2026; fecha exacta de decisión no registrada.
@@ -181,6 +183,8 @@ Contexto: Se necesita observar consumo y costo estimado de Meta sin alterar las 
 Decisión: Incorporar `whatsapp-monitor`, con consulta diaria del mes actual en `America/Mexico_City`, registro mensual en Supabase y alertas mediante Slack API cada 1.000 mensajes y US$20 acumulados. Registrar los umbrales avisados después de la confirmación de Slack.
 
 Consecuencias: El monitoreo es independiente del recorrido comercial y no reemplaza Supabase ni Airtable. Se comprobó una alerta real de 1.000 mensajes y su registro; el consumo real de US$20 sigue sin probarse. El control por umbral no garantiza entrega única ante concurrencia o fallos parciales. Este mantenimiento no asigna una versión nueva ni cambia la reserva de v1.9.
+
+Actualización de verificación — 3 de noviembre de 2026: el usuario confirmó que `whatsapp-monitor` completó correctamente su ejecución automática del día tras la corrección. No se confirman nuevas cifras reales de consumo de noviembre; sus ceros provisionales no se convierten en consumo real verificado.
 
 ### DEC-015 — Centralizar incidentes de autenticación y facturación de Meta
 
@@ -196,10 +200,12 @@ Consecuencias: El filtro de autenticación del export se restringe a errores de 
 
 Fecha: 2 de noviembre de 2026.
 
-Estado: Implementada según el código exportado y la comprobación operativa reportada de Supabase; validación parcial.
+Estado: Implementada según el código exportado y la comprobación operativa reportada de Supabase. La prueba específica de protección contra ceros quedó completada con PASS el 3 de noviembre; permanecen pendientes las validaciones indicadas abajo.
 
 Contexto: Las ejecuciones automáticas del monitor del 1 y 2 de noviembre fallaron porque Meta respondió solo con el ID de cuenta, sin `pricing_analytics.data`.
 
 Decisión: Aceptar provisionalmente esa respuesta con ceros y `sin_datos_meta: true`, manteniendo error para otras estructuras inesperadas. Actualizar `public.guardar_resumen_whatsapp` para impedir que una nueva consulta con cero mensajes y cero costo sobrescriba estadísticas positivas existentes.
 
-Consecuencias: Se creó manualmente el registro de noviembre y se comprobó la separación respecto de octubre. Los ceros no se consideran consumo real confirmado. La marca provisional no se envía en el cuerpo de la RPC del export. Al cierre del 2 de noviembre la protección SQL estaba implementada según el reporte, sin una copia SQL en el repositorio ni prueba específica de sobrescritura. Actualización documental del 3 de noviembre: se preparó el [respaldo SQL original](../supabase/README.md), que incluye `IF NOT FOUND` para devolver la fila existente si se bloquean los ceros. No consta la fecha de incorporación de ese bloque a producción. Siguen pendientes la prueba específica, el consumo de esa respuesta en n8n y la siguiente ejecución automática completa.
+Consecuencias: Se creó manualmente el registro de noviembre y se comprobó la separación respecto de octubre. Los ceros no se consideran consumo real confirmado. La marca provisional no se envía en el cuerpo de la RPC del export. Al cierre del 2 de noviembre la protección SQL estaba implementada según el reporte, sin una copia SQL en el repositorio ni prueba específica de sobrescritura. Actualización confirmada por el usuario — 3 de noviembre de 2026: el [respaldo SQL original](../supabase/README.md) de las dos tablas y cuatro funciones está versionado en GitHub. La [prueba real en Supabase](../supabase/README.md#prueba-ejecutada-en-supabase--3-de-noviembre-de-2026), con `BEGIN`/`ROLLBACK`, conservó **1.871 mensajes y US$7,3984** ante el intento de sobrescribir octubre con ceros y devolvió el registro existente; la verificación posterior mantuvo datos y fechas intactos. Resultado: **PASS**. El monitor también completó su ejecución automática del día. El SQL incluye `IF NOT FOUND`; no consta la fecha de incorporación de ese bloque a producción.
+
+Siguen pendientes restauración y compilación SQL en PostgreSQL aislado, permisos efectivos en esa restauración e integración completa con n8n bajo el escenario de bloqueo de ceros. Estas confirmaciones operativas se distinguen de las validaciones estáticas de Codex y no introducen decisiones técnicas nuevas.
