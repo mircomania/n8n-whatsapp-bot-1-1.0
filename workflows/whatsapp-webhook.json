@@ -89,69 +89,6 @@
     },
     {
       "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "4grFx6GCtkfCtebO",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/4grFx6GCtkfCtebO",
-          "cachedResultName": "whatsapp-leads"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "telefono": "={{ $json.telefono }}",
-            "tipo": "={{ $json.tipo }}",
-            "mensaje": "={{ $json.mensaje }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "telefono",
-              "displayName": "telefono",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "mensaje",
-              "displayName": "mensaje",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "tipo",
-              "displayName": "tipo",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.3,
-      "position": [
-        400,
-        -48
-      ],
-      "id": "d3114c0b-0f6e-4ea2-a6f7-e6c342eaf433",
-      "name": "Call 'whatsapp-leads'"
-    },
-    {
-      "parameters": {
         "respondWith": "text",
         "responseBody": "={{$json.query[\"hub.challenge\"]}}",
         "options": {}
@@ -257,6 +194,69 @@
       ],
       "id": "8026bef4-8a45-4cb4-ac9e-c23854405081",
       "name": "Confirmar evento Meta"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "1kC2Z69ssI0xMWtK",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/1kC2Z69ssI0xMWtK",
+          "cachedResultName": "whatsapp-router"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefono": "={{ $json.telefono }}",
+            "tipo": "={{ $json.tipo }}",
+            "mensaje": "={{ $json.mensaje }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "mensaje",
+              "displayName": "mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        400,
+        -48
+      ],
+      "id": "d3114c0b-0f6e-4ea2-a6f7-e6c342eaf433",
+      "name": "Call 'whatsapp-router'"
     }
   ],
   "pinData": {},
@@ -292,18 +292,7 @@
       "main": [
         [
           {
-            "node": "Call 'whatsapp-leads'",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Call 'whatsapp-leads'": {
-      "main": [
-        [
-          {
-            "node": "Respond to Webhook",
+            "node": "Call 'whatsapp-router'",
             "type": "main",
             "index": 0
           }
@@ -338,6 +327,17 @@
           }
         ]
       ]
+    },
+    "Call 'whatsapp-router'": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -349,7 +349,7 @@
     "callerPolicy": "workflowsFromSameOwner",
     "availableInMCP": false
   },
-  "versionId": "61bf6075-e1bc-471e-a73e-422fdda69340",
+  "versionId": "48c10c2f-b51e-42b7-acb9-69ad6bae67c0",
   "meta": {
     "instanceId": "bf168903a33cfec42ff3ec307c6b8d46610847bf94dc4be799c84e8be60878c0"
   },

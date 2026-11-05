@@ -1954,7 +1954,8 @@
             "source": "BOT IA",
             "phone": "=+{{ $('Revisar tabla').item.json.telefono }}",
             "state_google_ads": "={{ $('Revisar tabla').item.json.estado }}",
-            "company_aux": "Proconsultores"
+            "company_aux": "Proconsultores",
+            "source_aux": "whatsapp_mejoravit"
           },
           "matchingColumns": [],
           "schema": [
@@ -3230,8 +3231,8 @@
                   "value": "120248649934780056"
                 },
                 {
-                  "name": "REDACTED_SOURCE_001",
-                  "value": "REDACTED_SOURCE_001"
+                  "name": "24115511192",
+                  "value": "24115511192"
                 },
                 {
                   "name": "120248742963960056",
@@ -3270,8 +3271,8 @@
                   "value": "120248944330790056"
                 },
                 {
-                  "name": "REDACTED_SOURCE_002",
-                  "value": "REDACTED_SOURCE_002"
+                  "name": "24173351469",
+                  "value": "24173351469"
                 },
                 {
                   "name": "Facebook - Cerrador NL",
@@ -3924,7 +3925,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "6ff3d2b3-8b06-4e86-8423-2f6945ded634",
+  "versionId": "aac2f7f8-ee6c-4ef9-b6ef-7c979f505fa1",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "bf168903a33cfec42ff3ec307c6b8d46610847bf94dc4be799c84e8be60878c0"

@@ -1,0 +1,914 @@
+{
+  "name": "whatsapp-router",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "telefono"
+            },
+            {
+              "name": "mensaje"
+            },
+            {
+              "name": "tipo"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6f152e9d-9773-4755-80a9-e2fcd74bf63d",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "610c5a6a-16b2-4dd6-9bea-934aaa87eea4",
+              "name": "telefono",
+              "value": "={{ $json.telefono }}",
+              "type": "string"
+            },
+            {
+              "id": "08c676f7-78c0-4762-8bfa-d1fb6787c07c",
+              "name": "mensaje",
+              "value": "={{ $json.mensaje }}",
+              "type": "string"
+            },
+            {
+              "id": "2834b25a-7f46-4f0f-a845-0e7a05708f73",
+              "name": "tipo",
+              "value": "={{ $json.tipo }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        0
+      ],
+      "id": "fbd5d900-2eff-460c-8d9b-dc0f52ec1d6a",
+      "name": "Obtener datos"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "whatsapp_routing",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefono",
+              "condition": "eq",
+              "keyValue": "={{ $json.telefono }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        480,
+        0
+      ],
+      "id": "3a31c25c-cfe5-4139-aa78-364449b4fca2",
+      "name": "Consultar contexto",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7301e737-699d-4575-b1f5-1c8dbafeef36",
+              "name": "servicio_explicito",
+              "value": "={{ (() => { const palabras = String($('Obtener datos').first().json.mensaje ?? '').toLowerCase().split(/[^\\p{L}\\p{M}\\p{N}_]+/u); const laudo = palabras.includes('laudo') || palabras.includes('servicio_laudo'); const mejoravit = palabras.includes('mejoravit') || palabras.includes('servicio_mejoravit'); return laudo === mejoravit ? '' : laudo ? 'laudo' : 'mejoravit'; })() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        720,
+        0
+      ],
+      "id": "a65c071c-2f24-4f9a-b74a-11880bca5fdc",
+      "name": "Detectar servicio explícito"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a491f42d-c62a-4b32-a7b5-832a88ee93b7",
+              "name": "servicio_resuelto",
+              "value": "={{ (() => { const explicito = $json.servicio_explicito; if (explicito === 'laudo' || explicito === 'mejoravit') return explicito; const activo = $json.servicio_activo; if (activo !== 'laudo' && activo !== 'mejoravit') return ''; const fecha = $json.ultima_interaccion; if (typeof fecha !== 'string' || fecha.trim() === '') return ''; const instante = Date.parse(fecha); const antiguedad = Date.now() - instante; return Number.isFinite(instante) && antiguedad >= 0 && antiguedad < 24 * 60 * 60 * 1000 ? activo : ''; })() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        960,
+        0
+      ],
+      "id": "b66cf33d-7711-414b-96a0-411e1c0c26db",
+      "name": "Resolver servicio prioritario"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b68ffbbd-74c6-4e02-84b4-3033f18eb378",
+              "leftValue": "={{ $json.servicio_resuelto }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1200,
+        0
+      ],
+      "id": "4722889e-68d7-4dd2-899c-142b6dc27849",
+      "name": "¿Falta servicio?"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "leads",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefono",
+              "condition": "eq",
+              "keyValue": "={{ $('Obtener datos').first().json.telefono }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        -96
+      ],
+      "id": "a0dde6d9-d146-4979-9aa6-5f4d1676c199",
+      "name": "Consultar lead Mejoravit",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "leads_laudo",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefono",
+              "condition": "eq",
+              "keyValue": "={{ $('Obtener datos').first().json.telefono }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        -96
+      ],
+      "id": "5c7621f8-fde8-4e7c-b105-385d8fe0ccd5",
+      "name": "Consultar lead Laudo",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "34407071-cde9-4f1e-b728-563ec4984640",
+              "name": "servicio_resuelto",
+              "value": "={{ (() => { const tieneId = (lead) => { const id = lead?.id; return (typeof id === 'number' && Number.isInteger(id)) || (typeof id === 'string' && id.trim() !== ''); }; const mejoravit = tieneId($('Consultar lead Mejoravit').first().json); const laudo = tieneId($('Consultar lead Laudo').first().json); return mejoravit === laudo ? '' : mejoravit ? 'mejoravit' : 'laudo'; })() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1920,
+        -96
+      ],
+      "id": "1350d491-d9d8-42ca-9bf8-8f32d9335569",
+      "name": "Resolver historial"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "414301a5-ef84-4932-8177-55a98bb52d48",
+                    "leftValue": "={{ typeof $json.servicio_resuelto === 'string' ? $json.servicio_resuelto : '' }}",
+                    "rightValue": "mejoravit",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "8cba7b39-b876-4f7d-a7c5-4978ae780386",
+                    "leftValue": "={{ typeof $json.servicio_resuelto === 'string' ? $json.servicio_resuelto : '' }}",
+                    "rightValue": "laudo",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        2160,
+        0
+      ],
+      "id": "5ad155cc-2cb6-4246-9c19-1d12ca853714",
+      "name": "Distribuir servicio"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').first().json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"📋 Seleccionar servicio\"\n    },\n    \"body\": {\n      \"text\": \"Hola 👋\\n\\nPara poder ayudarte, selecciona el servicio sobre el que deseas recibir información.\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"servicio_mejoravit\",\n            \"title\": \"Mejoravit\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"servicio_laudo\",\n            \"title\": \"Laudo\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        2400,
+        144
+      ],
+      "id": "d18d70a4-b346-49cb-9e9a-1a42a1703016",
+      "name": "Seleccionar servicio",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "cc06ffb0-1029-451b-a915-4ecb401ba920",
+              "leftValue": "={{ (() => { const contexto = $('Consultar contexto').first().json.telefono; const original = $('Obtener datos').first().json.telefono; return typeof contexto === 'string' && contexto.trim() !== '' && typeof original === 'string' && original.trim() !== '' && contexto === original; })() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2400,
+        -144
+      ],
+      "id": "f272d68b-9fb3-4fc5-8142-497b9f12fdd6",
+      "name": "¿Existe contexto?"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "whatsapp_routing",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefono",
+              "condition": "eq",
+              "keyValue": "={{ $('Obtener datos').first().json.telefono }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "servicio_activo",
+              "fieldValue": "={{ $json.servicio_resuelto }}"
+            },
+            {
+              "fieldId": "ultima_interaccion",
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2640,
+        -240
+      ],
+      "id": "61b65867-1efd-4f6c-9e1d-e7d82e8d7856",
+      "name": "Actualizar contexto",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "tableId": "whatsapp_routing",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "telefono",
+              "fieldValue": "={{ $('Obtener datos').first().json.telefono }}"
+            },
+            {
+              "fieldId": "servicio_activo",
+              "fieldValue": "={{ $json.servicio_resuelto }}"
+            },
+            {
+              "fieldId": "ultima_interaccion",
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2640,
+        -48
+      ],
+      "id": "a76472fa-d0fd-4b5f-aa7f-3c0aa8a63d2f",
+      "name": "Crear contexto",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "edaca71c-d26e-4135-800c-fb08cdbaa29d",
+              "name": "telefono",
+              "value": "={{ $('Obtener datos').first().json.telefono }}",
+              "type": "string"
+            },
+            {
+              "id": "9c6ad23e-5517-47d0-a922-20a312197180",
+              "name": "mensaje",
+              "value": "={{ $('Obtener datos').first().json.mensaje }}",
+              "type": "string"
+            },
+            {
+              "id": "a8d11d31-f020-475f-a63c-2140b7d57a0c",
+              "name": "tipo",
+              "value": "={{ $('Obtener datos').first().json.tipo }}",
+              "type": "string"
+            },
+            {
+              "id": "1d8604ff-8e23-48b1-9705-592a058adfb2",
+              "name": "servicio_resuelto",
+              "value": "={{ (() => { const itemsTrue = $('¿Existe contexto?').all(0); const itemsFalse = $('¿Existe contexto?').all(1); const servicio = (itemsTrue[0] ?? itemsFalse[0])?.json?.servicio_resuelto; return servicio === 'mejoravit' || servicio === 'laudo' ? servicio : ''; })() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": false,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2880,
+        -144
+      ],
+      "id": "d925d566-03cc-4530-8ba4-c5b7eb086366",
+      "name": "Preparar despacho"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "726fc1d6-7280-481e-8989-21cf7c7b1d5f",
+                    "leftValue": "={{ typeof $json.servicio_resuelto === 'string' ? $json.servicio_resuelto : '' }}",
+                    "rightValue": "mejoravit",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "eb228e8e-35b3-4ba1-bbdb-4b4ee154b42d",
+                    "leftValue": "={{ typeof $json.servicio_resuelto === 'string' ? $json.servicio_resuelto : '' }}",
+                    "rightValue": "laudo",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        3120,
+        -144
+      ],
+      "id": "675eacd9-d7fc-44f6-954c-ebe431418993",
+      "name": "Destino final"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "4grFx6GCtkfCtebO",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/4grFx6GCtkfCtebO",
+          "cachedResultName": "whatsapp-leads"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefono": "={{ $json.telefono }}",
+            "mensaje": "={{ $json.mensaje }}",
+            "tipo": "={{ $json.tipo }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "mensaje",
+              "displayName": "mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {},
+        "source": "database"
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        3360,
+        -240
+      ],
+      "id": "0b2fa272-8a1c-4aa5-9639-07b94f91322c",
+      "name": "Ejecutar Mejoravit"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "jcaIuhviy427ailO",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/jcaIuhviy427ailO",
+          "cachedResultName": "whatsapp-laudo"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefono": "={{ $json.telefono }}",
+            "mensaje": "={{ $json.mensaje }}",
+            "tipo": "={{ $json.tipo }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "mensaje",
+              "displayName": "mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {},
+        "source": "database"
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        3360,
+        -48
+      ],
+      "id": "005a09bc-035b-4650-a3e6-b4958fe07a13",
+      "name": "Ejecutar Laudo"
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Obtener datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener datos": {
+      "main": [
+        [
+          {
+            "node": "Consultar contexto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultar contexto": {
+      "main": [
+        [
+          {
+            "node": "Detectar servicio explícito",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Detectar servicio explícito": {
+      "main": [
+        [
+          {
+            "node": "Resolver servicio prioritario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resolver servicio prioritario": {
+      "main": [
+        [
+          {
+            "node": "¿Falta servicio?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Falta servicio?": {
+      "main": [
+        [
+          {
+            "node": "Consultar lead Mejoravit",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Distribuir servicio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultar lead Mejoravit": {
+      "main": [
+        [
+          {
+            "node": "Consultar lead Laudo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultar lead Laudo": {
+      "main": [
+        [
+          {
+            "node": "Resolver historial",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resolver historial": {
+      "main": [
+        [
+          {
+            "node": "Distribuir servicio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Distribuir servicio": {
+      "main": [
+        [
+          {
+            "node": "¿Existe contexto?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "¿Existe contexto?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Seleccionar servicio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Existe contexto?": {
+      "main": [
+        [
+          {
+            "node": "Actualizar contexto",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Crear contexto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar contexto": {
+      "main": [
+        [
+          {
+            "node": "Preparar despacho",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crear contexto": {
+      "main": [
+        [
+          {
+            "node": "Preparar despacho",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar despacho": {
+      "main": [
+        [
+          {
+            "node": "Destino final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Destino final": {
+      "main": [
+        [
+          {
+            "node": "Ejecutar Mejoravit",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ejecutar Laudo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "7b02dec9-239f-4576-a38f-0e6bde129065",
+  "tags": []
+}

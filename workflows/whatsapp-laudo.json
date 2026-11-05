@@ -1,0 +1,4334 @@
+{
+  "name": "whatsapp-laudo",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "206fe8eb-8eff-4b54-8a3b-432a6f42ad85",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": "={{ true }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -416,
+        2256
+      ],
+      "id": "0b2efb9c-c9c6-4668-b4e7-bb96e8e61d07",
+      "name": "¿Usuario existe?"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "leads_laudo",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefono",
+              "condition": "eq",
+              "keyValue": "={{ $json.telefono }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        2256
+      ],
+      "id": "3ae5256b-d5d8-47a4-8ada-9512d372c3cc",
+      "name": "Revisar tabla",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "telefono"
+            },
+            {
+              "name": "mensaje"
+            },
+            {
+              "name": "tipo"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -992,
+        2256
+      ],
+      "id": "190fee14-466f-457b-9642-08a5a5022db5",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.etapa }}",
+                    "rightValue": "estado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "6d28761a-aded-4b59-b8e3-697c7c1c639b"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "360918e8-bb10-4759-b3f0-3e6155045373",
+                    "leftValue": "={{ $json.etapa }}",
+                    "rightValue": "mayor_48",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "e22bd7f7-a5d6-4226-82e8-54273c821654",
+                    "leftValue": "={{ $json.etapa }}",
+                    "rightValue": "pensionado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "022a8df8-f737-40e1-aa3a-ab9437ea91cf",
+                    "leftValue": "={{ $json.etapa }}",
+                    "rightValue": "credito_infonavit_activo",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "82b5f1b4-cc80-4f43-9b4b-ebe47ec27cbe",
+                    "leftValue": "={{ $json.etapa }}",
+                    "rightValue": "calificado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "60ec1af1-f006-42c8-b135-7b1f8513986b",
+                    "leftValue": "={{ $json.etapa }}",
+                    "rightValue": "fin",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "400e20ac-0deb-44ec-b64a-2c47b32644ee",
+                    "leftValue": "={{ $json.etapa }}",
+                    "rightValue": "re_cita",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        736,
+        1984
+      ],
+      "id": "4e6f5972-db5a-4206-b103-7d5edcf1507d",
+      "name": "¿Etapa?"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads_laudo",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "estado",
+              "fieldValue": "=Estado de México"
+            },
+            {
+              "fieldId": "etapa",
+              "fieldValue": "mayor_48"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        1600
+      ],
+      "id": "784882f4-e2a7-4f86-9b6e-df0e230beac8",
+      "name": "Estado de mexico",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads_laudo",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "estado",
+              "fieldValue": "=Ciudad de México"
+            },
+            {
+              "fieldId": "etapa",
+              "fieldValue": "mayor_48"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        1456
+      ],
+      "id": "7c43f901-6c90-4882-aa0c-3aa4d62293ed",
+      "name": "Ciudad de mexico",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads_laudo",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "estado",
+              "fieldValue": "=Nuevo León"
+            },
+            {
+              "fieldId": "etapa",
+              "fieldValue": "mayor_48"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        1312
+      ],
+      "id": "4ca80186-72d4-484a-ba28-f998efd0efb8",
+      "name": "Nuevo leon",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads_laudo",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "mensaje_original",
+              "fieldValue": "={{ $('Obtener datos').item.json.mensaje }}"
+            },
+            {
+              "fieldId": "ultima_interaccion",
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        2048
+      ],
+      "id": "544f8712-10f1-4939-9cc9-32d79e447978",
+      "name": "Guardar Mensaje",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads_laudo",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "etapa",
+              "fieldValue": "mayor_48"
+            },
+            {
+              "fieldId": "estado",
+              "fieldValue": "otro"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        1744
+      ],
+      "id": "89ecc93f-ea26-4709-930e-39abf774a200",
+      "name": "Otro",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "estado_1",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "bf24eedc-2036-4df0-bb75-9d93ddd25df2"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5a8a0b0b-a886-41bc-8374-4fa53b0091a4",
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "estado_2",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "696ebda9-221f-4b69-bb7e-9246f5047f38",
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "estado_3",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "b7b647f9-30bb-4409-ba90-5d1176ecc774",
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "estado_4",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        928,
+        1440
+      ],
+      "id": "621656dc-5b26-4220-b6b3-4914bb31103d",
+      "name": "Estado"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "laudo_edad_si",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "bf24eedc-2036-4df0-bb75-9d93ddd25df2"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5a8a0b0b-a886-41bc-8374-4fa53b0091a4",
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "laudo_edad_no",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1808,
+        1984
+      ],
+      "id": "3a31ff0d-3c0a-422c-a79e-0027b6dc1df5",
+      "name": "Edad"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads_laudo",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "calificado",
+              "fieldValue": false
+            },
+            {
+              "fieldId": "etapa",
+              "fieldValue": "rechazado"
+            },
+            {
+              "fieldId": "motivo_rechazo",
+              "fieldValue": "edad_no_supera_48"
+            },
+            {
+              "fieldId": "mayor_48",
+              "fieldValue": false
+            },
+            {
+              "fieldId": "fecha_reset",
+              "fieldValue": "={{ new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2000,
+        2000
+      ],
+      "id": "2b767740-d7b7-467b-a17d-ad92ea4d7287",
+      "name": "No mayor de 48",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads_laudo",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "mayor_48",
+              "fieldValue": true
+            },
+            {
+              "fieldId": "etapa",
+              "fieldValue": "pensionado"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2000,
+        1856
+      ],
+      "id": "f50eb3af-759b-4dee-b0e3-00f58653069a",
+      "name": "Si mayor de 48",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "laudo_pensionado_si",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "bf24eedc-2036-4df0-bb75-9d93ddd25df2"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5a8a0b0b-a886-41bc-8374-4fa53b0091a4",
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "laudo_pensionado_no",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        928,
+        2304
+      ],
+      "id": "f809c61a-5313-493d-b080-7da64f10a80b",
+      "name": "Pensionado"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads_laudo",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "pensionado",
+              "fieldValue": true
+            },
+            {
+              "fieldId": "etapa",
+              "fieldValue": "rechazado"
+            },
+            {
+              "fieldId": "calificado",
+              "fieldValue": false
+            },
+            {
+              "fieldId": "motivo_rechazo",
+              "fieldValue": "pensionado"
+            },
+            {
+              "fieldId": "fecha_reset",
+              "fieldValue": "={{ new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        2176
+      ],
+      "id": "3ba22d4a-283d-42cb-b5af-cace37cd53d6",
+      "name": "Si pensionado",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads_laudo",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "pensionado",
+              "fieldValue": false
+            },
+            {
+              "fieldId": "etapa",
+              "fieldValue": "credito_infonavit_activo"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        2320
+      ],
+      "id": "502fb500-764d-4b9a-af8a-541308afd830",
+      "name": "No pensionado",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Revisar tabla').item.json.estado }}",
+                    "rightValue": "Nuevo León",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "fcbdb9e0-2f11-468f-929d-8e879a14fd11"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Revisar tabla').item.json.estado }}",
+                    "rightValue": "Ciudad de México",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "43604246-1b28-40fa-b6c9-2e2b00379a72"
+                  },
+                  {
+                    "leftValue": "={{ $('Revisar tabla').item.json.estado }}",
+                    "rightValue": "Estado de México",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "d28afa5b-5aff-4bd0-9be1-df41349a8dad"
+                  }
+                ],
+                "combinator": "or"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Revisar tabla').item.json.estado }}",
+                    "rightValue": "otro",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "5e6f1ab2-d135-42b3-ae12-5ee1e518ac48"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1312,
+        2176
+      ],
+      "id": "4608487c-6d26-4cba-af68-8861a8131e76",
+      "name": "¿Estado?"
+    },
+    {
+      "parameters": {
+        "tableId": "leads_laudo",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "telefono",
+              "fieldValue": "={{ $('Obtener datos').item.json.telefono }}"
+            },
+            {
+              "fieldId": "etapa",
+              "fieldValue": "estado"
+            },
+            {
+              "fieldId": "mensaje_original",
+              "fieldValue": "={{ $('Obtener datos').item.json.mensaje }}"
+            },
+            {
+              "fieldId": "ultima_interaccion",
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        544,
+        2272
+      ],
+      "id": "f4fd9c87-82ac-4d26-86f5-83097008b23b",
+      "name": "Crear tabla",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cf470d51-cb10-4017-91c6-b2b3c4e5457a",
+              "name": "telefono",
+              "value": "={{ $json.telefono }}",
+              "type": "string"
+            },
+            {
+              "id": "796bd800-d464-4c48-a70e-13fbb1f83608",
+              "name": "mensaje",
+              "value": "={{ $json.mensaje }}",
+              "type": "string"
+            },
+            {
+              "id": "e0db4e8a-8b07-475e-95ff-7f559c23b80c",
+              "name": "tipo",
+              "value": "={{ $json.tipo }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -800,
+        2256
+      ],
+      "id": "833d48a7-a66a-47e2-858b-b66ad1ce38fe",
+      "name": "Obtener datos"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "cita_si",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "bf24eedc-2036-4df0-bb75-9d93ddd25df2"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5a8a0b0b-a886-41bc-8374-4fa53b0091a4",
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "cita_no",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        928,
+        2864
+      ],
+      "id": "c0eb90d8-ce6d-4eed-a1ee-aeec77a7f11d",
+      "name": "calificado"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads_laudo",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "etapa",
+              "fieldValue": "cita"
+            },
+            {
+              "fieldId": "fecha_solicitud_cita",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "fecha_reset",
+              "fieldValue": "={{ new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        2736
+      ],
+      "id": "4cd07f83-556e-485e-ba0b-c9901a4f888b",
+      "name": "Si cita",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads_laudo",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "etapa",
+              "fieldValue": "fin"
+            },
+            {
+              "fieldId": "motivo_rechazo",
+              "fieldValue": "rechaza_cita"
+            },
+            {
+              "fieldId": "fecha_fin",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "fecha_reset",
+              "fieldValue": "={{ new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        2880
+      ],
+      "id": "9086c468-bf0d-4775-87ff-36b7af8a37ea",
+      "name": "No cita",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "cita_si",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "bf24eedc-2036-4df0-bb75-9d93ddd25df2"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5a8a0b0b-a886-41bc-8374-4fa53b0091a4",
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "cita_no",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        928,
+        3392
+      ],
+      "id": "b3e939ca-d10a-4e05-9712-e98e52799a26",
+      "name": "Re cita"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads_laudo",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "etapa",
+              "fieldValue": "re_cita"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        928,
+        3168
+      ],
+      "id": "807f8600-26ee-4538-9271-4504a1e7639f",
+      "name": "Fin",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"list\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"📍 Ubicación\"\n    },\n    \"body\": {\n      \"text\": \"Hola 👋\\n\\nPara verificar si podemos ayudarte, selecciona el estado donde vives.\"\n    },\n    \"action\": {\n      \"button\": \"Elegir estado\",\n      \"sections\": [\n        {\n          \"title\": \"Estados disponibles\",\n          \"rows\": [\n            {\n              \"id\": \"estado_1\",\n              \"title\": \"Nuevo León\"\n            },\n            {\n              \"id\": \"estado_2\",\n              \"title\": \"CDMX\"\n            },\n            {\n              \"id\": \"estado_3\",\n              \"title\": \"Estado de México\"\n            },\n            {\n              \"id\": \"estado_4\",\n              \"title\": \"Otro\"\n            }\n          ]\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        736,
+        2272
+      ],
+      "id": "9d0a850d-770d-40dd-97f5-47b083609cf2",
+      "name": "Pregunta estado",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"🎂 Edad\"\n    },\n    \"body\": {\n      \"text\": \"¿Tienes más de 48 años?\\n\\nSi tienes exactamente 48 años, selecciona No.\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_edad_si\",\n            \"title\": \"Sí\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_edad_no\",\n            \"title\": \"No\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1312,
+        1456
+      ],
+      "id": "47969a69-c617-492a-b654-6cbe9dcc73f5",
+      "name": "Pregunta edad",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"list\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"⚠️ Respuesta inválida\"\n    },\n    \"body\": {\n      \"text\": \"Por favor selecciona una de las opciones disponibles para continuar.\\n\\n¿De qué estado eres?\"\n    },\n    \"action\": {\n      \"button\": \"Seleccionar estado\",\n      \"sections\": [\n        {\n          \"title\": \"Estados disponibles\",\n          \"rows\": [\n            {\n              \"id\": \"estado_1\",\n              \"title\": \"Nuevo León\"\n            },\n            {\n              \"id\": \"estado_2\",\n              \"title\": \"CDMX\"\n            },\n            {\n              \"id\": \"estado_3\",\n              \"title\": \"Estado de México\"\n            },\n            {\n              \"id\": \"estado_4\",\n              \"title\": \"Otro\"\n            }\n          ]\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1120,
+        1888
+      ],
+      "id": "5ebd5f93-1603-442e-bd67-707e06b4999f",
+      "name": "RE pregunta estado",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"preview_url\": false,\n    \"body\": \"Gracias por tu interés 🙏\\n\\nPara continuar con la precalificación de Laudo es necesario no tener actualmente un crédito activo con Infonavit.\\n\\nComo nos indicas que tienes uno, por el momento no cumples con este requisito.\\n\\nGracias por contactarnos.\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1312,
+        1744
+      ],
+      "id": "defdab82-40d2-4ece-a82a-2b536b5e40fd",
+      "name": "Final credito activo",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"📋 Pensión\"\n    },\n    \"body\": {\n      \"text\": \"¿Actualmente estás pensionado?\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_pensionado_si\",\n            \"title\": \"Sí\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_pensionado_no\",\n            \"title\": \"No\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        2192,
+        1856
+      ],
+      "id": "96f9b6ba-ef06-48f3-94ed-3b3f781e3c56",
+      "name": "Pregunta pensionado",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"preview_url\": false,\n    \"body\": \"Gracias por tu interés 🙏\\n\\nPara continuar con la precalificación de Laudo es necesario tener más de 48 años. Si tienes 48 años o menos, por el momento no cumples con este requisito.\\n\\nGracias por contactarnos.\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        2192,
+        2000
+      ],
+      "id": "75cd78c7-b7c9-433a-ac7c-0fe7eb02c094",
+      "name": "Final edad",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"⚠️ Respuesta inválida\"\n    },\n    \"body\": {\n      \"text\": \"Por favor selecciona una de las opciones disponibles.\\n\\n¿Tienes más de 48 años?\\n\\nSi tienes exactamente 48 años, selecciona No.\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_edad_si\",\n            \"title\": \"Sí\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_edad_no\",\n            \"title\": \"No\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        2000,
+        2160
+      ],
+      "id": "f16f8186-318a-4f95-ac0a-4846d2aa22a9",
+      "name": "RE pregunta edad",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"🎉 ¡Felicidades!\"\n    },\n    \"body\": {\n      \"text\": \"¡Felicidades! 🎉\\n\\nHas completado satisfactoriamente la precalificación inicial de Laudo ✅\\n\\nContamos con una oficina en Nuevo León donde puedes continuar con la revisión de tu caso.\\n\\n📍 Emilio Carranza 732, Centro, 64000 Monterrey, N.L., Mexico\\n🔗 https://maps.app.goo.gl/DqNuJYyNmZsq6MN36\\n\\n¿Te gustaría solicitar una cita con uno de nuestros asesores?\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"cita_si\",\n            \"title\": \"Solicitar cita\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"cita_no\",\n            \"title\": \"Más tarde\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1504,
+        2096
+      ],
+      "id": "d263a57f-a026-4fe8-9145-29145c43140f",
+      "name": "Pregunta cita NL",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"🎉 ¡Felicidades!\"\n    },\n    \"body\": {\n      \"text\": \"¡Felicidades! 🎉\\n\\nHas completado satisfactoriamente la precalificación inicial de Laudo ✅\\n\\nContamos con una oficina en Naucalpan donde puedes continuar con la revisión de tu caso.\\n\\n📍 Av. Primero de Mayo 15-Piso 12 , Oficina 1220, Naucalpan, 53500 Naucalpan de Juárez, Méx., Mexico\\n🔗 https://maps.app.goo.gl/ZAmSm74pfXTpxFTN9\\n\\n¿Te gustaría solicitar una cita con uno de nuestros asesores?\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"cita_si\",\n            \"title\": \"Solicitar cita\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"cita_no\",\n            \"title\": \"Más tarde\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1504,
+        2256
+      ],
+      "id": "242c83eb-fd74-4e8a-b83b-47af8b491d85",
+      "name": "Pregunta cita MX",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"preview_url\": false,\n    \"body\": \"Gracias por tu interés 🙏\\n\\nPara continuar con la precalificación de Laudo es necesario no estar pensionado. Como nos indicas que actualmente estás pensionado, por el momento no cumples con este requisito.\\n\\nGracias por contactarnos.\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1312,
+        2320
+      ],
+      "id": "93b16be4-4c70-4159-ac70-61d263bbdcbe",
+      "name": "Final pensionado",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"⚠️ Respuesta inválida\"\n    },\n    \"body\": {\n      \"text\": \"Por favor selecciona una de las opciones disponibles.\\n\\n¿Actualmente estás pensionado?\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_pensionado_si\",\n            \"title\": \"Sí\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_pensionado_no\",\n            \"title\": \"No\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1120,
+        2464
+      ],
+      "id": "bfe8d949-fb8e-4c27-8f61-687efab6dfc0",
+      "name": "RE pregunta pensionado",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"📅 Solicitar cita\"\n    },\n    \"body\": {\n      \"text\": \"¡Hola de nuevo! 👋\\n\\nVemos que anteriormente completaste tu precalificación.\\n\\n¿Cambiaste de opinión y te gustaría solicitar una cita con uno de nuestros asesores para continuar con la revisión de tu caso de Laudo?\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"cita_si\",\n            \"title\": \"Sí\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"cita_no\",\n            \"title\": \"No\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1120,
+        3168
+      ],
+      "id": "79dd7392-558d-4d9c-97dc-fbd2ffd0999e",
+      "name": "Pregunta re cita",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"⚠️ Respuesta inválida\"\n    },\n    \"body\": {\n      \"text\": \"Por favor selecciona una de las opciones disponibles.\\n\\n¿Te gustaría solicitar una cita para continuar con la revisión de tu caso de Laudo?\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"cita_si\",\n            \"title\": \"Sí\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"cita_no\",\n            \"title\": \"No\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1120,
+        3024
+      ],
+      "id": "de20a419-c011-4d1e-9192-d649c931d180",
+      "name": "RE pregunta calificado",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"preview_url\": false,\n    \"body\": \"👍 Entendido.\\n\\nTu precalificación quedó registrada correctamente.\\n\\nSi más adelante decides continuar con tu trámite, estaremos encantados de ayudarte.\\n\\n📞 Puedes volver a contactarnos cuando lo necesites.\\n\\n¡Que tengas un excelente día!\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1312,
+        2880
+      ],
+      "id": "99d08a22-4237-4717-a42c-7c00393b9bf2",
+      "name": "Final calificado",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"preview_url\": false,\n    \"body\": \"✅ ¡Solicitud recibida!\\n\\nHemos registrado tu solicitud de cita para continuar con la revisión de tu caso de Laudo.\\n\\n📞 Uno de nuestros asesores podrá contactarte para coordinar los siguientes pasos y confirmar la disponibilidad.\\n\\nRecuerda que la cita todavía no está confirmada.\\n\\n¡Gracias por tu interés!\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1312,
+        2736
+      ],
+      "id": "1cd98c19-4166-44f7-a263-402d7d38e6c0",
+      "name": "Espera agente",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads_laudo",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "etapa",
+              "fieldValue": "estado"
+            },
+            {
+              "fieldId": "fecha_reset",
+              "fieldValue": "={{ null }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        544,
+        1904
+      ],
+      "id": "6636fc54-9bd7-4b87-9068-ead9488b4c00",
+      "name": "Reset estado",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "5c1a4019-d7a4-4b7d-8277-bae50ac9a1bb",
+              "leftValue": "={{ new Date($json.fecha_reset) < new Date() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        352,
+        2032
+      ],
+      "id": "1339f874-3c2a-431e-9a25-2b387c8a1fba",
+      "name": "¿Debe reiniciarse?"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "d36c36b2-5db9-4faa-9c08-ff97b8d9dcc6",
+              "leftValue": "={{ $json.fecha_reset }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        160,
+        2048
+      ],
+      "id": "2e82aac1-58f0-47ab-93c0-ff824021670d",
+      "name": "¿Tiene fecha reset?"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4a79987c-a6ce-4ed1-81ec-d66553e6938f",
+              "leftValue": "={{ (new Date() - new Date($json.ultima_interaccion)) < 1500 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -224,
+        2032
+      ],
+      "id": "83a88c93-290e-4a60-be60-3412a32bea48",
+      "name": "¿Muy rapido?"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "apps7SwjnxHkNjJvO",
+          "mode": "list",
+          "cachedResultName": "Base Leads Nueva",
+          "cachedResultUrl": "https://airtable.com/apps7SwjnxHkNjJvO"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblkn1XuqkuSHre8q",
+          "mode": "list",
+          "cachedResultName": "Leads global",
+          "cachedResultUrl": "https://airtable.com/apps7SwjnxHkNjJvO/tblkn1XuqkuSHre8q"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "no_llamar": true,
+            "Fuente_lead": "BOT IA",
+            "company": "Proconsultores",
+            "source": "BOT IA",
+            "phone": "=+{{ $('Revisar tabla').item.json.telefono }}",
+            "state_google_ads": "={{ $('Revisar tabla').item.json.estado }}",
+            "company_aux": "Proconsultores",
+            "source_aux": "whatsapp_laudo"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Id",
+              "displayName": "Id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "primer nombre",
+              "displayName": "primer nombre",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Fuente_lead",
+              "displayName": "Fuente_lead",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Externos",
+                  "value": "Externos"
+                },
+                {
+                  "name": "Formulario",
+                  "value": "Formulario"
+                },
+                {
+                  "name": "Google Ads",
+                  "value": "Google Ads"
+                },
+                {
+                  "name": "Internos",
+                  "value": "Internos"
+                },
+                {
+                  "name": "Whatsapp",
+                  "value": "Whatsapp"
+                },
+                {
+                  "name": "Llamada IA",
+                  "value": "Llamada IA"
+                },
+                {
+                  "name": "BOT IA",
+                  "value": "BOT IA"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "phone to clean",
+              "displayName": "phone to clean",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "retell phone",
+              "displayName": "retell phone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "record_id",
+              "displayName": "record_id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Fecha de Creación",
+              "displayName": "Fecha de Creación",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "now",
+              "displayName": "now",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Recepción del lead",
+              "displayName": "Recepción del lead",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "source",
+              "displayName": "source",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Facebook",
+                  "value": "Facebook"
+                },
+                {
+                  "name": "Google Ads",
+                  "value": "Google Ads"
+                },
+                {
+                  "name": "campaña_prueba_mejoravit_1_1",
+                  "value": "campaña_prueba_mejoravit_1_1"
+                },
+                {
+                  "name": "mejoravit.com.mx",
+                  "value": "mejoravit.com.mx"
+                },
+                {
+                  "name": "tramitemejoravit.com.mx",
+                  "value": "tramitemejoravit.com.mx"
+                },
+                {
+                  "name": "mejoravit_test_trafico_1_0",
+                  "value": "mejoravit_test_trafico_1_0"
+                },
+                {
+                  "name": "campaña_prueba_mejoravit_1_0",
+                  "value": "campaña_prueba_mejoravit_1_0"
+                },
+                {
+                  "name": "creditosoloparati.com.mx - Paga",
+                  "value": "creditosoloparati.com.mx - Paga"
+                },
+                {
+                  "name": "camp_mejoravit_3",
+                  "value": "camp_mejoravit_3"
+                },
+                {
+                  "name": "gastosmedicosmayores.com.mx",
+                  "value": "gastosmedicosmayores.com.mx"
+                },
+                {
+                  "name": "planprivadoderetiro.com.mx",
+                  "value": "planprivadoderetiro.com.mx"
+                },
+                {
+                  "name": "120230631982860056",
+                  "value": "120230631982860056"
+                },
+                {
+                  "name": "120230631399250056",
+                  "value": "120230631399250056"
+                },
+                {
+                  "name": "120230745876040056",
+                  "value": "120230745876040056"
+                },
+                {
+                  "name": "120230746522690056",
+                  "value": "120230746522690056"
+                },
+                {
+                  "name": "120231124075190056",
+                  "value": "120231124075190056"
+                },
+                {
+                  "name": "120231121474600056",
+                  "value": "120231121474600056"
+                },
+                {
+                  "name": "120231124020350056",
+                  "value": "120231124020350056"
+                },
+                {
+                  "name": "120231123920450056",
+                  "value": "120231123920450056"
+                },
+                {
+                  "name": "camp_gastosmedicos_1",
+                  "value": "camp_gastosmedicos_1"
+                },
+                {
+                  "name": "120231123824320056",
+                  "value": "120231123824320056"
+                },
+                {
+                  "name": "120231559527230056",
+                  "value": "120231559527230056"
+                },
+                {
+                  "name": "120231559368040056",
+                  "value": "120231559368040056"
+                },
+                {
+                  "name": "120231559254180056",
+                  "value": "120231559254180056"
+                },
+                {
+                  "name": "camp_planprivado_1",
+                  "value": "camp_planprivado_1"
+                },
+                {
+                  "name": "120231559354950056",
+                  "value": "120231559354950056"
+                },
+                {
+                  "name": "120232051041390056",
+                  "value": "120232051041390056"
+                },
+                {
+                  "name": "120232055464780056",
+                  "value": "120232055464780056"
+                },
+                {
+                  "name": "120232055362800056",
+                  "value": "120232055362800056"
+                },
+                {
+                  "name": "camp_mejoravit_1_1",
+                  "value": "camp_mejoravit_1_1"
+                },
+                {
+                  "name": "creditosoloparati.com.mx",
+                  "value": "creditosoloparati.com.mx"
+                },
+                {
+                  "name": "120232706202520056",
+                  "value": "120232706202520056"
+                },
+                {
+                  "name": "120232705649050056",
+                  "value": "120232705649050056"
+                },
+                {
+                  "name": "120232706318460056",
+                  "value": "120232706318460056"
+                },
+                {
+                  "name": "120232704918870056",
+                  "value": "120232704918870056"
+                },
+                {
+                  "name": "120233050518180056",
+                  "value": "120233050518180056"
+                },
+                {
+                  "name": "120233050352380056",
+                  "value": "120233050352380056"
+                },
+                {
+                  "name": "120233050601970056",
+                  "value": "120233050601970056"
+                },
+                {
+                  "name": "120233051325170056",
+                  "value": "120233051325170056"
+                },
+                {
+                  "name": "camp_gastosmedicos_1_1",
+                  "value": "camp_gastosmedicos_1_1"
+                },
+                {
+                  "name": "120233050892050056",
+                  "value": "120233050892050056"
+                },
+                {
+                  "name": "120233445441950056",
+                  "value": "120233445441950056"
+                },
+                {
+                  "name": "120233446641650056",
+                  "value": "120233446641650056"
+                },
+                {
+                  "name": "120233445982140056",
+                  "value": "120233445982140056"
+                },
+                {
+                  "name": "120233445787340056",
+                  "value": "120233445787340056"
+                },
+                {
+                  "name": "120233446096120056",
+                  "value": "120233446096120056"
+                },
+                {
+                  "name": "120233887243710056",
+                  "value": "120233887243710056"
+                },
+                {
+                  "name": "120233887175650056",
+                  "value": "120233887175650056"
+                },
+                {
+                  "name": "120233886976800056",
+                  "value": "120233886976800056"
+                },
+                {
+                  "name": "120233887343830056",
+                  "value": "120233887343830056"
+                },
+                {
+                  "name": "120233887445080056",
+                  "value": "120233887445080056"
+                },
+                {
+                  "name": "120234264575990056",
+                  "value": "120234264575990056"
+                },
+                {
+                  "name": "120234264544050056",
+                  "value": "120234264544050056"
+                },
+                {
+                  "name": "120234265030110056",
+                  "value": "120234265030110056"
+                },
+                {
+                  "name": "120234264636060056",
+                  "value": "120234264636060056"
+                },
+                {
+                  "name": "120234652670950056",
+                  "value": "120234652670950056"
+                },
+                {
+                  "name": "120234652589810056",
+                  "value": "120234652589810056"
+                },
+                {
+                  "name": "120234652713580056",
+                  "value": "120234652713580056"
+                },
+                {
+                  "name": "120234652983000056",
+                  "value": "120234652983000056"
+                },
+                {
+                  "name": "120234652751580056",
+                  "value": "120234652751580056"
+                },
+                {
+                  "name": "120235030480430056",
+                  "value": "120235030480430056"
+                },
+                {
+                  "name": "120235293828610056",
+                  "value": "120235293828610056"
+                },
+                {
+                  "name": "camp_mejoravit_tiktok_1",
+                  "value": "camp_mejoravit_tiktok_1"
+                },
+                {
+                  "name": "120235030695210056",
+                  "value": "120235030695210056"
+                },
+                {
+                  "name": "120235430908440056",
+                  "value": "120235430908440056"
+                },
+                {
+                  "name": "120235431266730056",
+                  "value": "120235431266730056"
+                },
+                {
+                  "name": "120235430792970056",
+                  "value": "120235430792970056"
+                },
+                {
+                  "name": "120235293488660056",
+                  "value": "120235293488660056"
+                },
+                {
+                  "name": "120235294294410056",
+                  "value": "120235294294410056"
+                },
+                {
+                  "name": "120235675801100056",
+                  "value": "120235675801100056"
+                },
+                {
+                  "name": "120235677623790056",
+                  "value": "120235677623790056"
+                },
+                {
+                  "name": "120235677706540056",
+                  "value": "120235677706540056"
+                },
+                {
+                  "name": "120235677555750056",
+                  "value": "120235677555750056"
+                },
+                {
+                  "name": "120236203450410056",
+                  "value": "120236203450410056"
+                },
+                {
+                  "name": "120236203571360056",
+                  "value": "120236203571360056"
+                },
+                {
+                  "name": "120236204169140056",
+                  "value": "120236204169140056"
+                },
+                {
+                  "name": "120236203722610056",
+                  "value": "120236203722610056"
+                },
+                {
+                  "name": "source",
+                  "value": "source"
+                },
+                {
+                  "name": "120236203945550056",
+                  "value": "120236203945550056"
+                },
+                {
+                  "name": "120236579293220056",
+                  "value": "120236579293220056"
+                },
+                {
+                  "name": "120236579606510056",
+                  "value": "120236579606510056"
+                },
+                {
+                  "name": "120236579095810056",
+                  "value": "120236579095810056"
+                },
+                {
+                  "name": "120236579159100056",
+                  "value": "120236579159100056"
+                },
+                {
+                  "name": "120236579326930056",
+                  "value": "120236579326930056"
+                },
+                {
+                  "name": "120236923960090056",
+                  "value": "120236923960090056"
+                },
+                {
+                  "name": "120236926109690056",
+                  "value": "120236926109690056"
+                },
+                {
+                  "name": "120236926025050056",
+                  "value": "120236926025050056"
+                },
+                {
+                  "name": "120236926051380056",
+                  "value": "120236926051380056"
+                },
+                {
+                  "name": "120236926160340056",
+                  "value": "120236926160340056"
+                },
+                {
+                  "name": "120237314777700056",
+                  "value": "120237314777700056"
+                },
+                {
+                  "name": "120237314467060056",
+                  "value": "120237314467060056"
+                },
+                {
+                  "name": "120237314709160056",
+                  "value": "120237314709160056"
+                },
+                {
+                  "name": "120237315070060056",
+                  "value": "120237315070060056"
+                },
+                {
+                  "name": "120237314574940056",
+                  "value": "120237314574940056"
+                },
+                {
+                  "name": "120238202417270056",
+                  "value": "120238202417270056"
+                },
+                {
+                  "name": "120238202586140056",
+                  "value": "120238202586140056"
+                },
+                {
+                  "name": "120238202766340056",
+                  "value": "120238202766340056"
+                },
+                {
+                  "name": "120238202468610056",
+                  "value": "120238202468610056"
+                },
+                {
+                  "name": "120238446502090056",
+                  "value": "120238446502090056"
+                },
+                {
+                  "name": "120238445840440056",
+                  "value": "120238445840440056"
+                },
+                {
+                  "name": "120238446357730056",
+                  "value": "120238446357730056"
+                },
+                {
+                  "name": "120238670197660056",
+                  "value": "120238670197660056"
+                },
+                {
+                  "name": "120238670203520056",
+                  "value": "120238670203520056"
+                },
+                {
+                  "name": "120238670849720056",
+                  "value": "120238670849720056"
+                },
+                {
+                  "name": "120238670193160056",
+                  "value": "120238670193160056"
+                },
+                {
+                  "name": "120238985973410056",
+                  "value": "120238985973410056"
+                },
+                {
+                  "name": "120238986836210056",
+                  "value": "120238986836210056"
+                },
+                {
+                  "name": "120238987473470056",
+                  "value": "120238987473470056"
+                },
+                {
+                  "name": "120239327614220056",
+                  "value": "120239327614220056"
+                },
+                {
+                  "name": "120239327598800056",
+                  "value": "120239327598800056"
+                },
+                {
+                  "name": "120239330111500056",
+                  "value": "120239330111500056"
+                },
+                {
+                  "name": "120239627697660056",
+                  "value": "120239627697660056"
+                },
+                {
+                  "name": "120239627828130056",
+                  "value": "120239627828130056"
+                },
+                {
+                  "name": "120239627922090056",
+                  "value": "120239627922090056"
+                },
+                {
+                  "name": "120239627864340056",
+                  "value": "120239627864340056"
+                },
+                {
+                  "name": "120239842177010056",
+                  "value": "120239842177010056"
+                },
+                {
+                  "name": "120239842710690056",
+                  "value": "120239842710690056"
+                },
+                {
+                  "name": "120239842254790056",
+                  "value": "120239842254790056"
+                },
+                {
+                  "name": "120239917997710056",
+                  "value": "120239917997710056"
+                },
+                {
+                  "name": "120239917955550056",
+                  "value": "120239917955550056"
+                },
+                {
+                  "name": "120239918046650056",
+                  "value": "120239918046650056"
+                },
+                {
+                  "name": "120239918106450056",
+                  "value": "120239918106450056"
+                },
+                {
+                  "name": "120240127539820056",
+                  "value": "120240127539820056"
+                },
+                {
+                  "name": "120240127614340056",
+                  "value": "120240127614340056"
+                },
+                {
+                  "name": "120240127738510056",
+                  "value": "120240127738510056"
+                },
+                {
+                  "name": "120240288204350056",
+                  "value": "120240288204350056"
+                },
+                {
+                  "name": "120240288147400056",
+                  "value": "120240288147400056"
+                },
+                {
+                  "name": "120240288245440056",
+                  "value": "120240288245440056"
+                },
+                {
+                  "name": "120240456367380056",
+                  "value": "120240456367380056"
+                },
+                {
+                  "name": "120240456377180056",
+                  "value": "120240456377180056"
+                },
+                {
+                  "name": "120240601081750056",
+                  "value": "120240601081750056"
+                },
+                {
+                  "name": "120240601117320056",
+                  "value": "120240601117320056"
+                },
+                {
+                  "name": "120240601147620056",
+                  "value": "120240601147620056"
+                },
+                {
+                  "name": "120240601003560056",
+                  "value": "120240601003560056"
+                },
+                {
+                  "name": "120240778939430056",
+                  "value": "120240778939430056"
+                },
+                {
+                  "name": "120240778975360056",
+                  "value": "120240778975360056"
+                },
+                {
+                  "name": "120240780453460056",
+                  "value": "120240780453460056"
+                },
+                {
+                  "name": "120240951033610056",
+                  "value": "120240951033610056"
+                },
+                {
+                  "name": "120240951219780056",
+                  "value": "120240951219780056"
+                },
+                {
+                  "name": "120240951205360056",
+                  "value": "120240951205360056"
+                },
+                {
+                  "name": "120241133976090056",
+                  "value": "120241133976090056"
+                },
+                {
+                  "name": "120241133965110056",
+                  "value": "120241133965110056"
+                },
+                {
+                  "name": "120241133897980056",
+                  "value": "120241133897980056"
+                },
+                {
+                  "name": "120241133846570056",
+                  "value": "120241133846570056"
+                },
+                {
+                  "name": "120241251201450056",
+                  "value": "120241251201450056"
+                },
+                {
+                  "name": "120241251189460056",
+                  "value": "120241251189460056"
+                },
+                {
+                  "name": "120241251214300056",
+                  "value": "120241251214300056"
+                },
+                {
+                  "name": "120241251210140056",
+                  "value": "120241251210140056"
+                },
+                {
+                  "name": "120241389700280056",
+                  "value": "120241389700280056"
+                },
+                {
+                  "name": "120241389643440056",
+                  "value": "120241389643440056"
+                },
+                {
+                  "name": "120241389951960056",
+                  "value": "120241389951960056"
+                },
+                {
+                  "name": "120241549923940056",
+                  "value": "120241549923940056"
+                },
+                {
+                  "name": "120241549958220056",
+                  "value": "120241549958220056"
+                },
+                {
+                  "name": "120241549903150056",
+                  "value": "120241549903150056"
+                },
+                {
+                  "name": "120241549972100056",
+                  "value": "120241549972100056"
+                },
+                {
+                  "name": "120241782053710056",
+                  "value": "120241782053710056"
+                },
+                {
+                  "name": "120241781755620056",
+                  "value": "120241781755620056"
+                },
+                {
+                  "name": "120241999899440056",
+                  "value": "120241999899440056"
+                },
+                {
+                  "name": "120241999746800056",
+                  "value": "120241999746800056"
+                },
+                {
+                  "name": "120242191917200056",
+                  "value": "120242191917200056"
+                },
+                {
+                  "name": "120242193517210056",
+                  "value": "120242193517210056"
+                },
+                {
+                  "name": "120242376471560056",
+                  "value": "120242376471560056"
+                },
+                {
+                  "name": "120242376425680056",
+                  "value": "120242376425680056"
+                },
+                {
+                  "name": "120242554188820056",
+                  "value": "120242554188820056"
+                },
+                {
+                  "name": "120242554132810056",
+                  "value": "120242554132810056"
+                },
+                {
+                  "name": "120242702413200056",
+                  "value": "120242702413200056"
+                },
+                {
+                  "name": "120242702389200056",
+                  "value": "120242702389200056"
+                },
+                {
+                  "name": "120242880001480056",
+                  "value": "120242880001480056"
+                },
+                {
+                  "name": "120242880080810056",
+                  "value": "120242880080810056"
+                },
+                {
+                  "name": "120243031775010056",
+                  "value": "120243031775010056"
+                },
+                {
+                  "name": "120243031890540056",
+                  "value": "120243031890540056"
+                },
+                {
+                  "name": "120243278968130056",
+                  "value": "120243278968130056"
+                },
+                {
+                  "name": "120243279080080056",
+                  "value": "120243279080080056"
+                },
+                {
+                  "name": "120243466836900056",
+                  "value": "120243466836900056"
+                },
+                {
+                  "name": "120243466912960056",
+                  "value": "120243466912960056"
+                },
+                {
+                  "name": "120243647812450056",
+                  "value": "120243647812450056"
+                },
+                {
+                  "name": "120243647496150056",
+                  "value": "120243647496150056"
+                },
+                {
+                  "name": "120243647842660056",
+                  "value": "120243647842660056"
+                },
+                {
+                  "name": "120243647594920056",
+                  "value": "120243647594920056"
+                },
+                {
+                  "name": "120243793200610056",
+                  "value": "120243793200610056"
+                },
+                {
+                  "name": "120243792741880056",
+                  "value": "120243792741880056"
+                },
+                {
+                  "name": "120243793532640056",
+                  "value": "120243793532640056"
+                },
+                {
+                  "name": "120243793601910056",
+                  "value": "120243793601910056"
+                },
+                {
+                  "name": "120244038934070056",
+                  "value": "120244038934070056"
+                },
+                {
+                  "name": "120244038665040056",
+                  "value": "120244038665040056"
+                },
+                {
+                  "name": "120244038761750056",
+                  "value": "120244038761750056"
+                },
+                {
+                  "name": "120244257909450056",
+                  "value": "120244257909450056"
+                },
+                {
+                  "name": "120244257778360056",
+                  "value": "120244257778360056"
+                },
+                {
+                  "name": "120244257948470056",
+                  "value": "120244257948470056"
+                },
+                {
+                  "name": "120244257966130056",
+                  "value": "120244257966130056"
+                },
+                {
+                  "name": "120244459803770056",
+                  "value": "120244459803770056"
+                },
+                {
+                  "name": "120244452443910056",
+                  "value": "120244452443910056"
+                },
+                {
+                  "name": "camp_facebook",
+                  "value": "camp_facebook"
+                },
+                {
+                  "name": "120244645201630056",
+                  "value": "120244645201630056"
+                },
+                {
+                  "name": "120244645378260056",
+                  "value": "120244645378260056"
+                },
+                {
+                  "name": "120244645599430056",
+                  "value": "120244645599430056"
+                },
+                {
+                  "name": "120244917077940056",
+                  "value": "120244917077940056"
+                },
+                {
+                  "name": "120244917065740056",
+                  "value": "120244917065740056"
+                },
+                {
+                  "name": "120244916981030056",
+                  "value": "120244916981030056"
+                },
+                {
+                  "name": "120245116869180056",
+                  "value": "120245116869180056"
+                },
+                {
+                  "name": "120245116936690056",
+                  "value": "120245116936690056"
+                },
+                {
+                  "name": "120245386561300056",
+                  "value": "120245386561300056"
+                },
+                {
+                  "name": "120245386741420056",
+                  "value": "120245386741420056"
+                },
+                {
+                  "name": "120245650188190056",
+                  "value": "120245650188190056"
+                },
+                {
+                  "name": "120245650711910056",
+                  "value": "120245650711910056"
+                },
+                {
+                  "name": "120245650335390056",
+                  "value": "120245650335390056"
+                },
+                {
+                  "name": "120245650396170056",
+                  "value": "120245650396170056"
+                },
+                {
+                  "name": "120245933509350056",
+                  "value": "120245933509350056"
+                },
+                {
+                  "name": "120245933559330056",
+                  "value": "120245933559330056"
+                },
+                {
+                  "name": "120245933599440056",
+                  "value": "120245933599440056"
+                },
+                {
+                  "name": "120246212275150056",
+                  "value": "120246212275150056"
+                },
+                {
+                  "name": "120246212373340056",
+                  "value": "120246212373340056"
+                },
+                {
+                  "name": "120246212320200056",
+                  "value": "120246212320200056"
+                },
+                {
+                  "name": "120246212345150056",
+                  "value": "120246212345150056"
+                },
+                {
+                  "name": "120246547899930056",
+                  "value": "120246547899930056"
+                },
+                {
+                  "name": "120246545812210056",
+                  "value": "120246545812210056"
+                },
+                {
+                  "name": "120246548017890056",
+                  "value": "120246548017890056"
+                },
+                {
+                  "name": "120246547961630056",
+                  "value": "120246547961630056"
+                },
+                {
+                  "name": "120246824903840056",
+                  "value": "120246824903840056"
+                },
+                {
+                  "name": "120246825517950056",
+                  "value": "120246825517950056"
+                },
+                {
+                  "name": "120246824809300056",
+                  "value": "120246824809300056"
+                },
+                {
+                  "name": "120246825217950056",
+                  "value": "120246825217950056"
+                },
+                {
+                  "name": "120247160815260056",
+                  "value": "120247160815260056"
+                },
+                {
+                  "name": "120247160897630056",
+                  "value": "120247160897630056"
+                },
+                {
+                  "name": "120247161633210056",
+                  "value": "120247161633210056"
+                },
+                {
+                  "name": "120247162040460056",
+                  "value": "120247162040460056"
+                },
+                {
+                  "name": "120247415792110056",
+                  "value": "120247415792110056"
+                },
+                {
+                  "name": "120247416262070056",
+                  "value": "120247416262070056"
+                },
+                {
+                  "name": "120247415298520056",
+                  "value": "120247415298520056"
+                },
+                {
+                  "name": "120247657587430056",
+                  "value": "120247657587430056"
+                },
+                {
+                  "name": "120247657643970056",
+                  "value": "120247657643970056"
+                },
+                {
+                  "name": "120247659734870056",
+                  "value": "120247659734870056"
+                },
+                {
+                  "name": "120247659661170056",
+                  "value": "120247659661170056"
+                },
+                {
+                  "name": "120247763332190056",
+                  "value": "120247763332190056"
+                },
+                {
+                  "name": "120247763663710056",
+                  "value": "120247763663710056"
+                },
+                {
+                  "name": "120247763490890056",
+                  "value": "120247763490890056"
+                },
+                {
+                  "name": "120247889060100056",
+                  "value": "120247889060100056"
+                },
+                {
+                  "name": "120247889040280056",
+                  "value": "120247889040280056"
+                },
+                {
+                  "name": "120247889085940056",
+                  "value": "120247889085940056"
+                },
+                {
+                  "name": "120247889094990056",
+                  "value": "120247889094990056"
+                },
+                {
+                  "name": "120247986849080056",
+                  "value": "120247986849080056"
+                },
+                {
+                  "name": "120247986938230056",
+                  "value": "120247986938230056"
+                },
+                {
+                  "name": "120247986915840056",
+                  "value": "120247986915840056"
+                },
+                {
+                  "name": "120247986897930056",
+                  "value": "120247986897930056"
+                },
+                {
+                  "name": "120248099754100056",
+                  "value": "120248099754100056"
+                },
+                {
+                  "name": "120248099929800056",
+                  "value": "120248099929800056"
+                },
+                {
+                  "name": "120248099776850056",
+                  "value": "120248099776850056"
+                },
+                {
+                  "name": "120248099946200056",
+                  "value": "120248099946200056"
+                },
+                {
+                  "name": "120248182201020056",
+                  "value": "120248182201020056"
+                },
+                {
+                  "name": "120248183083770056",
+                  "value": "120248183083770056"
+                },
+                {
+                  "name": "120248183370910056",
+                  "value": "120248183370910056"
+                },
+                {
+                  "name": "120248182718840056",
+                  "value": "120248182718840056"
+                },
+                {
+                  "name": "120248209837450056",
+                  "value": "120248209837450056"
+                },
+                {
+                  "name": "120248209894590056",
+                  "value": "120248209894590056"
+                },
+                {
+                  "name": "120248209874180056",
+                  "value": "120248209874180056"
+                },
+                {
+                  "name": "120248209919730056",
+                  "value": "120248209919730056"
+                },
+                {
+                  "name": "120248209904270056",
+                  "value": "120248209904270056"
+                },
+                {
+                  "name": "120248209859580056",
+                  "value": "120248209859580056"
+                },
+                {
+                  "name": "120248209885470056",
+                  "value": "120248209885470056"
+                },
+                {
+                  "name": "120248209927430056",
+                  "value": "120248209927430056"
+                },
+                {
+                  "name": "120248425719590056",
+                  "value": "120248425719590056"
+                },
+                {
+                  "name": "120248425749650056",
+                  "value": "120248425749650056"
+                },
+                {
+                  "name": "120248425766270056",
+                  "value": "120248425766270056"
+                },
+                {
+                  "name": "120248425728580056",
+                  "value": "120248425728580056"
+                },
+                {
+                  "name": "120248488101530056",
+                  "value": "120248488101530056"
+                },
+                {
+                  "name": "120248488134540056",
+                  "value": "120248488134540056"
+                },
+                {
+                  "name": "120248487916740056",
+                  "value": "120248487916740056"
+                },
+                {
+                  "name": "120248570105490056",
+                  "value": "120248570105490056"
+                },
+                {
+                  "name": "120248570177130056",
+                  "value": "120248570177130056"
+                },
+                {
+                  "name": "120248570140520056",
+                  "value": "120248570140520056"
+                },
+                {
+                  "name": "120248570199140056",
+                  "value": "120248570199140056"
+                },
+                {
+                  "name": "120248649986020056",
+                  "value": "120248649986020056"
+                },
+                {
+                  "name": "120248649918290056",
+                  "value": "120248649918290056"
+                },
+                {
+                  "name": "micuentamejoravit",
+                  "value": "micuentamejoravit"
+                },
+                {
+                  "name": "120248649934780056",
+                  "value": "120248649934780056"
+                },
+                {
+                  "name": "24115511192",
+                  "value": "24115511192"
+                },
+                {
+                  "name": "120248742963960056",
+                  "value": "120248742963960056"
+                },
+                {
+                  "name": "120248742974990056",
+                  "value": "120248742974990056"
+                },
+                {
+                  "name": "120248823023590056",
+                  "value": "120248823023590056"
+                },
+                {
+                  "name": "120248823074840056",
+                  "value": "120248823074840056"
+                },
+                {
+                  "name": "120248900700700056",
+                  "value": "120248900700700056"
+                },
+                {
+                  "name": "120248900684350056",
+                  "value": "120248900684350056"
+                },
+                {
+                  "name": "120248944231500056",
+                  "value": "120248944231500056"
+                },
+                {
+                  "name": "{campaignid}",
+                  "value": "{campaignid}"
+                },
+                {
+                  "name": "120248944330790056",
+                  "value": "120248944330790056"
+                },
+                {
+                  "name": "24173351469",
+                  "value": "24173351469"
+                },
+                {
+                  "name": "Facebook - Cerrador NL",
+                  "value": "Facebook - Cerrador NL"
+                },
+                {
+                  "name": "recuperaciondesubcuenta",
+                  "value": "recuperaciondesubcuenta"
+                },
+                {
+                  "name": "recuperacion_subcuenta",
+                  "value": "recuperacion_subcuenta"
+                },
+                {
+                  "name": "120251112461310062",
+                  "value": "120251112461310062"
+                },
+                {
+                  "name": "120251231773690062",
+                  "value": "120251231773690062"
+                },
+                {
+                  "name": "BOT IA",
+                  "value": "BOT IA"
+                },
+                {
+                  "name": "mejoravit4_pmax_precalificar",
+                  "value": "mejoravit4_pmax_precalificar"
+                },
+                {
+                  "name": "mejoravit4_max_1",
+                  "value": "mejoravit4_max_1"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "source_aux",
+              "displayName": "source_aux",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "company",
+              "displayName": "company",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Compramoscasa",
+                  "value": "Compramoscasa"
+                },
+                {
+                  "name": "Proconsultores",
+                  "value": "Proconsultores"
+                },
+                {
+                  "name": "Reclutamet",
+                  "value": "Reclutamet"
+                },
+                {
+                  "name": "Reclutavit",
+                  "value": "Reclutavit"
+                },
+                {
+                  "name": "Vitamet-GMM",
+                  "value": "Vitamet-GMM"
+                },
+                {
+                  "name": "Vitamet-PPR",
+                  "value": "Vitamet-PPR"
+                },
+                {
+                  "name": "Proconsultores-recuperación_subcuenta",
+                  "value": "Proconsultores-recuperación_subcuenta"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "periodo_fx",
+              "displayName": "periodo_fx",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "state_google_ads",
+              "displayName": "state_google_ads",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "company_aux",
+              "displayName": "company_aux",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "tipo_recluta",
+              "displayName": "tipo_recluta",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "age",
+              "displayName": "age",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "no_llamar",
+              "displayName": "no_llamar",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        1504,
+        2736
+      ],
+      "id": "cabd22fc-fa79-4eaa-81af-c5ec8e2b1ad7",
+      "name": "Create a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "UtAT6gjSrG965PfQ",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"🎉 ¡Felicidades!\"\n    },\n    \"body\": {\n      \"text\": \"Has sido precalificado para continuar con la revisión de tu caso de Laudo ✅\\n\\n¿Te gustaría solicitar una cita con uno de nuestros asesores?\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"cita_si\",\n            \"title\": \"Solicitar cita\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"cita_no\",\n            \"title\": \"Más tarde\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1504,
+        2416
+      ],
+      "id": "bf768ec1-0d0d-4669-b062-53c705a0ca90",
+      "name": "Pregunta cita Otro",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"🏦 Crédito Infonavit\"\n    },\n    \"body\": {\n      \"text\": \"¿Tienes actualmente un crédito activo con Infonavit?\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_credito_si\",\n            \"title\": \"Sí\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_credito_no\",\n            \"title\": \"No\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1312,
+        3456
+      ],
+      "id": "251607c5-bfdf-489d-907a-a3eb393e8ca3",
+      "name": "Pregunta credito Infonavit",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "laudo_credito_si",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "11e745ea-251f-4756-a504-5ba935bf7c04"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5b823b95-faf8-48e7-867b-efdea53a6f71",
+                    "leftValue": "={{ $json.mensaje_original }}",
+                    "rightValue": "laudo_credito_no",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        928,
+        3712
+      ],
+      "id": "2cda3949-290d-423b-a005-4623383390a9",
+      "name": "Credito Infonavit"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads_laudo",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "credito_infonavit_activo",
+              "fieldValue": true
+            },
+            {
+              "fieldId": "calificado",
+              "fieldValue": false
+            },
+            {
+              "fieldId": "etapa",
+              "fieldValue": "rechazado"
+            },
+            {
+              "fieldId": "motivo_rechazo",
+              "fieldValue": "credito_infonavit_activo"
+            },
+            {
+              "fieldId": "fecha_reset",
+              "fieldValue": "={{ new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        3616
+      ],
+      "id": "c08dc446-7c98-4afd-817c-12fe5448e89f",
+      "name": "Si credito activo",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads_laudo",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "credito_infonavit_activo",
+              "fieldValue": false
+            },
+            {
+              "fieldId": "calificado",
+              "fieldValue": true
+            },
+            {
+              "fieldId": "etapa",
+              "fieldValue": "calificado"
+            },
+            {
+              "fieldId": "fecha_calificado",
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        3808
+      ],
+      "id": "299a29ab-51e5-4154-8379-46496b6bccda",
+      "name": "No credito activo",
+      "credentials": {
+        "supabaseApi": {
+          "id": "EFjO99fbvZAdcXOA",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/634841066379477/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"⚠️ Respuesta inválida\"\n    },\n    \"body\": {\n      \"text\": \"Por favor selecciona una de las opciones disponibles. ¿Tienes actualmente un crédito activo con Infonavit?\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_credito_si\",\n            \"title\": \"Sí\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_credito_no\",\n            \"title\": \"No\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1120,
+        3968
+      ],
+      "id": "72084c8f-af4b-4d6d-8c19-278df44041c4",
+      "name": "RE pregunta credito Infonavit",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "lqDafH23HRvPDNkv",
+          "name": "WhatsApp Meta API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "¿Usuario existe?": {
+      "main": [
+        [
+          {
+            "node": "¿Muy rapido?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Crear tabla",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Revisar tabla": {
+      "main": [
+        [
+          {
+            "node": "¿Usuario existe?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Obtener datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Etapa?": {
+      "main": [
+        [
+          {
+            "node": "Estado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edad",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Pensionado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Credito Infonavit",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "calificado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fin",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Re cita",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Estado de mexico": {
+      "main": [
+        [
+          {
+            "node": "Pregunta edad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ciudad de mexico": {
+      "main": [
+        [
+          {
+            "node": "Pregunta edad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nuevo leon": {
+      "main": [
+        [
+          {
+            "node": "Pregunta edad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar Mensaje": {
+      "main": [
+        [
+          {
+            "node": "¿Tiene fecha reset?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Otro": {
+      "main": [
+        [
+          {
+            "node": "Pregunta edad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Estado": {
+      "main": [
+        [
+          {
+            "node": "Nuevo leon",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ciudad de mexico",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Estado de mexico",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Otro",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "RE pregunta estado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edad": {
+      "main": [
+        [
+          {
+            "node": "Si mayor de 48",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No mayor de 48",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "RE pregunta edad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No mayor de 48": {
+      "main": [
+        [
+          {
+            "node": "Final edad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Si mayor de 48": {
+      "main": [
+        [
+          {
+            "node": "Pregunta pensionado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pensionado": {
+      "main": [
+        [
+          {
+            "node": "Si pensionado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No pensionado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "RE pregunta pensionado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Si pensionado": {
+      "main": [
+        [
+          {
+            "node": "Final pensionado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Estado?": {
+      "main": [
+        [
+          {
+            "node": "Pregunta cita NL",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Pregunta cita MX",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Pregunta cita Otro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crear tabla": {
+      "main": [
+        [
+          {
+            "node": "Pregunta estado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener datos": {
+      "main": [
+        [
+          {
+            "node": "Revisar tabla",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "calificado": {
+      "main": [
+        [
+          {
+            "node": "Si cita",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No cita",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "RE pregunta calificado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Si cita": {
+      "main": [
+        [
+          {
+            "node": "Espera agente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No cita": {
+      "main": [
+        [
+          {
+            "node": "Final calificado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Re cita": {
+      "main": [
+        [
+          {
+            "node": "Si cita",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No cita",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "RE pregunta calificado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fin": {
+      "main": [
+        [
+          {
+            "node": "Pregunta re cita",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Espera agente": {
+      "main": [
+        [
+          {
+            "node": "Create a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reset estado": {
+      "main": [
+        [
+          {
+            "node": "Pregunta estado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Debe reiniciarse?": {
+      "main": [
+        [
+          {
+            "node": "Reset estado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "¿Etapa?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Tiene fecha reset?": {
+      "main": [
+        [
+          {
+            "node": "¿Debe reiniciarse?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "¿Etapa?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Muy rapido?": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Guardar Mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No pensionado": {
+      "main": [
+        [
+          {
+            "node": "Pregunta credito Infonavit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Credito Infonavit": {
+      "main": [
+        [
+          {
+            "node": "Si credito activo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No credito activo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "RE pregunta credito Infonavit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Si credito activo": {
+      "main": [
+        [
+          {
+            "node": "Final credito activo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No credito activo": {
+      "main": [
+        [
+          {
+            "node": "¿Estado?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "48e0c13b-0bc9-4d60-86f8-8bd0b31a002a",
+  "meta": {
+    "instanceId": "bf168903a33cfec42ff3ec307c6b8d46610847bf94dc4be799c84e8be60878c0"
+  },
+  "nodeGroups": [],
+  "id": "jcaIuhviy427ailO",
+  "tags": []
+}
