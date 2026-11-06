@@ -1377,7 +1377,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"🎂 Edad\"\n    },\n    \"body\": {\n      \"text\": \"¿Tienes más de 48 años?\\n\\nSi tienes exactamente 48 años, selecciona No.\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_edad_si\",\n            \"title\": \"Sí\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_edad_no\",\n            \"title\": \"No\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"🎂 Edad\"\n    },\n    \"body\": {\n      \"text\": \"¿Tienes más de 48 años?\\n\\nSi tienes exactamente 48 años, selecciona Si.\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_edad_si\",\n            \"title\": \"Sí\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_edad_no\",\n            \"title\": \"No\"\n          }\n        }\n      ]\n    }\n  }\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -1552,7 +1552,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"⚠️ Respuesta inválida\"\n    },\n    \"body\": {\n      \"text\": \"Por favor selecciona una de las opciones disponibles.\\n\\n¿Tienes más de 48 años?\\n\\nSi tienes exactamente 48 años, selecciona No.\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_edad_si\",\n            \"title\": \"Sí\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_edad_no\",\n            \"title\": \"No\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"⚠️ Respuesta inválida\"\n    },\n    \"body\": {\n      \"text\": \"Por favor selecciona una de las opciones disponibles.\\n\\n¿Tienes más de 48 años?\\n\\nSi tienes exactamente 48 años, selecciona Si.\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_edad_si\",\n            \"title\": \"Sí\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_edad_no\",\n            \"title\": \"No\"\n          }\n        }\n      ]\n    }\n  }\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -4324,7 +4324,7 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "48e0c13b-0bc9-4d60-86f8-8bd0b31a002a",
+  "versionId": "9abd0542-bb72-4e08-bc03-f6fc5e4c377f",
   "meta": {
     "instanceId": "bf168903a33cfec42ff3ec307c6b8d46610847bf94dc4be799c84e8be60878c0"
   },
