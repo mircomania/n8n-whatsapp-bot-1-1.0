@@ -2,43 +2,45 @@
 
 ## Descripción
 
-Bot de WhatsApp para atender y precalificar leads de Mejoravit, desarrollado para Pro Consultores. Conduce una conversación estructurada mediante reglas deterministas y deriva la solicitud de cita de un usuario calificado.
+Bot multicampaña de WhatsApp para Pro Consultores. Atiende **Mejoravit y Laudo** con reglas deterministas de precalificación y deriva a Airtable las solicitudes de cita de usuarios calificados. La v1.3 fue desplegada y probada en producción en Contabo el **5 de noviembre de 2026**, según confirmación del usuario, con validación de los recorridos principales.
 
-WhatsApp Cloud API proporciona el canal, n8n coordina la automatización y Supabase PostgreSQL conserva los datos comerciales y el estado conversacional. Cuando un usuario calificado solicita una cita, el workflow crea un registro en Airtable para la gestión interna.
+El sistema dispone de seis workflows: `whatsapp-webhook`, `whatsapp-router`, `whatsapp-leads`, `whatsapp-laudo`, `whatsapp-monitor` y `whatsapp-incidentes`. WhatsApp Cloud API aporta el canal; n8n coordina las conversaciones; Supabase conserva el contexto de servicio y los historiales comerciales separados; Airtable es la salida interna para solicitudes de cita.
 
 ## Objetivos
 
-- Responder de manera consistente a cada mensaje admitido.
-- Aplicar las reglas deterministas de precalificación por ubicación, situación laboral y subcuenta.
-- Conservar el estado entre ejecuciones independientes.
-- Registrar resultados y motivos de rechazo.
-- Crear en Airtable un registro cuando un usuario calificado solicita una cita.
-- Observar consumo mensual de Meta e incidentes de autenticación/facturación y notificarlos mediante Slack.
-- Mantener una operación complementaria de captación, sin convertir el bot en el sistema central de operaciones de la empresa.
+- Resolver el servicio por mensaje explícito, contexto vigente o historial, y solicitar elección cuando corresponda.
+- Aplicar las reglas propias de Mejoravit y Laudo sin mezclar sus datos ni etapas.
+- Conservar continuidad conversacional y permitir un cambio explícito entre campañas.
+- Registrar resultados y motivos de rechazo en la tabla comercial del servicio.
+- Crear en Airtable una solicitud de cita, con el nombre de perfil disponible como referencia provisional.
+- Mantener el monitoreo mensual de Meta y los avisos de incidentes mediante Slack.
+- Operar como herramienta complementaria de captación, sin sustituir el sistema central de la empresa.
 
-La meta comercial inicial es generar aproximadamente 20 leads calificados mensuales. Es una meta de negocio, no una métrica alcanzada o verificada.
+La meta comercial inicial registrada es generar aproximadamente 20 leads calificados mensuales. Es una meta de negocio, no una métrica alcanzada; su alcance no se revalidó para v1.3.
 
 ## Estado del producto
 
-- **v1.0 — MVP:** completada.
-- **v1.1 — Despliegue en producción:** completada en Contabo.
-- **v1.2 — Integración con Airtable:** completada, implementada y publicada en producción. Airtable es la salida interna automatizada vigente; el aviso al agente por WhatsApp fue retirado.
-- **v1.9 — Mantenimiento avanzado:** reservada y no priorizada; no fue requisito para cerrar v1.2.
+| Versión | Estado |
+|---|---|
+| v1.0 — MVP | Completada. |
+| v1.1 — Despliegue en producción | Completada en Contabo. |
+| v1.2 — Integración con Airtable | Completada y publicada; retirado el aviso interno por WhatsApp. |
+| v1.3 — Multicampaña | Desplegada el 5 de noviembre; recorridos principales validados según reporte del usuario. |
+| v1.4–v1.8 | Sin alcance definido. |
+| v1.9 — Mantenimiento avanzado | Reservada y no priorizada; sus propuestas históricas no son requisitos automáticos de v1.3. |
 
-El registro de Airtable se genera cuando un usuario calificado solicita una cita. No representa una cita confirmada con fecha y horario. Supabase sigue siendo la base principal. Los JSON actuales fueron reportados por el usuario como exportes de la versión estabilizada; `Fuente_lead` usa el valor intencional `BOT IA`.
+Laudo admite personas de **48 años cumplidos o más**, sin pensión ni crédito Infonavit activo, incluidos leads del estado Otro. Mejoravit conserva los filtros de ubicación, antigüedad laboral y subcuenta implementados. Las reglas y discrepancias del export están en [Lógica de negocio](business-logic.md).
 
-## Monitoreo e incidentes
+## Alcance validado y límites
 
-Al 2 de noviembre de 2026 el usuario reporta publicados los cuatro workflows: recepción, precalificación, monitoreo e incidentes. `whatsapp-monitor` consulta diariamente consumo de Meta, conserva resúmenes mensuales en Supabase y notifica pasos de 1.000 mensajes y US$20 mediante Slack API. `whatsapp-incidentes` gestiona autenticación y facturación `131042`, con reserva de una alerta cada 24 horas por tipo.
+El usuario confirmó recepción real, distribución a ambos bots, continuidad por contexto/historial, cambio explícito de campaña, menú, recorridos positivos hasta Supabase/Airtable en ambos servicios y Laudo con Otro, una respuesta negativa con resultado esperado y transmisión del nombre de perfil. El detalle y las comprobaciones de Supabase reportadas están en [Estado actual](current-state.md#validación-de-v13--5-de-noviembre-de-2026).
 
-La corrección de noviembre admite estadísticas ausentes como ceros provisionales. **Antecedente al 2 de noviembre:** estaban pendientes la prueba específica de protección SQL contra ceros y la siguiente ejecución automática completa.
+El nombre de perfil no es identidad legal o verificada y no se guarda en Supabase. Un registro de Airtable representa una **solicitud de cita**, sin fecha u horario confirmados. Las etiquetas `BOT IA` siguen siendo valores comerciales, no uso de IA.
 
-**Actualización confirmada por el usuario el 3 de noviembre:** la prueba real en Supabase con `BEGIN`/`ROLLBACK` conservó 1.871 mensajes y US$7,3984 y devolvió el registro existente ante una actualización con ceros ([evidencia SQL](../supabase/README.md#prueba-ejecutada-en-supabase--3-de-noviembre-de-2026)); el monitor completó su ejecución automática del día; el webhook fue probado en producción y su recorrido comercial llegó a Airtable; y el respaldo de dos tablas y cuatro funciones SQL quedó versionado en GitHub.
+No se acredita cobertura exhaustiva ni operación prolongada sin fallos. Siguen pendientes la revisión completa de mensajes predefinidos de captación, la alineación de los textos de edad publicados con el export local, el respaldo completo y su restauración, y escenarios de mantenimiento no verificados. Véase el [roadmap](roadmap.md).
 
-Siguen pendientes la restauración y compilación SQL en PostgreSQL aislado, los permisos efectivos en esa restauración, la integración n8n específica ante bloqueo de ceros y los demás escenarios no verificados. Los ceros provisionales de noviembre no son consumo real confirmado. [Estado actual](current-state.md) distingue las pruebas reportadas de las validaciones estáticas de Codex; no se cambia el alcance ni se asigna una versión nueva.
+## Monitoreo y operación
 
-## Operación y mantenimiento
+Monitoreo e incidentes mantienen su función independiente del router. Sus antecedentes del 2 y 3 de noviembre —incluido el PASS SQL de protección contra ceros y la ejecución automática del monitor— y sus pendientes específicos se conservan en [Estado actual](current-state.md) y en el [respaldo SQL](../supabase/README.md). Las pruebas comerciales del día 5 no validan por extensión los escenarios pendientes del monitoreo.
 
-El seguimiento de nuevos registros se realizará como parte del mantenimiento operativo habitual. La prueba manual reportada confirmó la creación de un registro con los valores esperados; no equivale a pruebas exhaustivas con múltiples leads ni demuestra funcionamiento a largo plazo.
-
-La operación se mantiene por excepción, apoyada por monitoreo diario: investigar errores reales, atender casos excepcionales relevantes, cambios comerciales solicitados y mantenimiento necesario. No se planifican refactors preventivos sin evidencia. Los exportes locales no sustituyen a la instancia viva como referencia operativa.
+La operación continúa por excepción: investigar errores confirmados, cambios comerciales aprobados y mantenimiento necesario de credenciales o infraestructura. La versión desplegada se documenta a partir del reporte operativo y de la inspección local; los exports no prueban por sí solos la configuración viva.

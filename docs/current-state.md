@@ -1,12 +1,46 @@
 # Estado actual
 
-Fecha de revisión documental: **3 de noviembre de 2026**. Se conservan los antecedentes del **2 de noviembre** y se incorporan las comprobaciones operativas confirmadas por el usuario el **3 de noviembre**: protección SQL contra ceros, ejecución automática del monitor, recorrido comercial del webhook hasta Airtable y respaldo SQL versionado en GitHub. La verificación de tablas y permisos en Supabase también fue reportada al día 3.
+Fecha de revisión documental: **5 de noviembre de 2026**. La **v1.3 multicampaña está desplegada en Contabo y validada en sus recorridos principales**, según confirmación del usuario de ese día. Se mantienen los antecedentes de infraestructura del **2 de octubre** y las pruebas de monitoreo/incidentes del **2 y 3 de noviembre**, con sus límites originales.
 
-El usuario reporta publicados en Contabo `whatsapp-webhook`, `whatsapp-leads`, `whatsapp-monitor` y `whatsapp-incidentes`. Esta actualización incorpora su reporte de pruebas operativas realizadas entre el **21 de octubre y el 3 de noviembre de 2026**, además de la inspección local de los cuatro JSON. Las capturas, resultados de n8n y consultas SQL de esas pruebas se encuentran en la conversación de trabajo; no se han incorporado como archivos de evidencia al repositorio.
+El usuario confirmó publicados los seis workflows: `whatsapp-webhook`, `whatsapp-router`, `whatsapp-leads`, `whatsapp-laudo`, `whatsapp-monitor` y `whatsapp-incidentes`. La arquitectura vigente usa el router entre receptor y bots comerciales; no la llamada directa histórica a Mejoravit. La URL pública conserva `/webhook/whatsapp-leads` y no se cambió la configuración de Meta.
 
-El **3 de noviembre** se inspeccionó el nuevo `workflows/whatsapp-webhook.json` frente a Git HEAD `bec3a33`: incorpora un filtro previo de mensaje entrante y un acuse explícito para la rama sin mensaje. Esa inspección local no comprobó su publicación ni ejecutó workflows en producción. Posteriormente, el usuario confirmó la prueba de `whatsapp-webhook` en producción el mismo día, con recorrido comercial correcto hasta Airtable; no se infiere equivalencia exacta entre export e instancia viva.
+Se separan **pruebas de producción confirmadas por el usuario**, **consultas directas de Supabase reportadas durante esas pruebas**, **comprobaciones estáticas locales** y **pendientes**. Codex no accedió a producción ni ejecutó n8n o SQL durante este cierre. Los exports, sus IDs y su propiedad `active` no demuestran publicación ni equivalencia exacta con la instancia viva. Las pruebas no acreditan cobertura exhaustiva ni operación prolongada sin fallos.
 
-Se distingue **evidencia operativa reportada por el usuario**, **hechos comprobados localmente en los exports** y **pendientes**. Codex no accedió directamente a producción ni consultó servicios durante esta revisión documental; las pruebas operativas descritas fueron ejecutadas y confirmadas por el usuario. Los exports, incluido su campo `active`, no prueban la configuración viva ni su equivalencia exacta. La infraestructura y los antecedentes de migración conservan como referencia la confirmación del **2 de octubre de 2026**; no se revalidaron versiones, recursos o respaldos en noviembre.
+## Validación de v1.3 — 5 de noviembre de 2026
+
+### Pruebas de producción confirmadas por el usuario
+
+- Recepción real de mensajes desde WhatsApp y distribución por el router a Mejoravit y Laudo.
+- Recuperación de conversaciones previamente iniciadas y continuidad mediante contexto y registros históricos.
+- Cambio explícito entre campañas y funcionamiento del menú interactivo de servicios.
+- Ruta positiva completa de Laudo hasta Supabase y Airtable, incluida una prueba con estado **Otro**.
+- Ruta positiva completa de Mejoravit hasta Supabase y Airtable.
+- Prueba de respuesta negativa con resultado esperado; el reporte no individualiza todos los rechazos ni todos los bordes comerciales.
+- Extracción y transmisión del nombre de perfil hasta `name` de Airtable en ambos servicios.
+- Conservación local de respaldos de los workflows anteriores por el usuario; no se verificó su integridad o restauración.
+
+Son resultados reportados y confirmados por el usuario en la sesión de trabajo. No se incorporaron al repositorio nombres, teléfonos, capturas o payloads reales de los leads controlados. Las pruebas comerciales del día 5 no convierten en verificadas las pruebas pendientes del monitoreo o de incidentes.
+
+### Consultas directas de Supabase reportadas
+
+El usuario informó que las consultas ejecutadas durante las pruebas comprobaron contexto, etapas y calificación de los leads controlados. Se registran como comprobaciones de Supabase **reportadas por el usuario**, distintas de las verificaciones locales de archivos. No se infieren a partir de ellas el DDL completo, RLS, permisos efectivos, índices, concurrencia ni validación de todos los registros.
+
+La regla comercial de Laudo admite **48 años cumplidos o más**, incluyendo exactamente 48, y el estado Otro. No se reportó de forma específica una prueba numérica del borde de 48 años; el workflow interpreta botones declarados, no verifica documentos ni calcula edad.
+
+### Comprobaciones estáticas locales del cierre
+
+Se inspeccionaron los seis JSON: cantidades de nodos del inventario, nombres e IDs de nodo únicos dentro de cada workflow, conexiones con destinos existentes y contratos de entrada. Webhook, router y ambos bots transmiten `telefono`, `mensaje`, `tipo` y `nombre_whatsapp` como strings. El nombre se extrae por contacto coincidente, se recorta y limita a 120 caracteres, llega a Airtable y no se incluye en las escrituras Supabase. Estas observaciones no ejecutan el motor n8n.
+
+El router implementa prioridad explícita → contexto de menos de 24 horas → historial único → menú. Guarda el servicio seleccionado antes del despacho. El detalle técnico se concentra en [Arquitectura](architecture.md) y las transiciones en [Lógica de negocio](business-logic.md).
+
+**Diferencias y límites observados:**
+
+- El router local no tiene campo `id` y conserva `active: false`. Su ID de producción figura por confirmación del usuario y en la llamada del webhook. No se modificó el export para aparentar verificación de publicación.
+- Había una modificación local previa de `whatsapp-laudo.json`. Los textos `Pregunta edad`, `RE pregunta edad` y `Final edad` ya son coherentes con admitir 48 años; la discrepancia reportada no se reproduce en esos textos locales. Queda pendiente confirmar su correspondencia con los publicados y corregir allí el texto si aún difiere. El cierre documental no cambió ese JSON ni su estado Git previo.
+- En Mejoravit se conservan la comparación `nuevo leon` frente al valor guardado `Nuevo León` y un reset que solo escribe la etapa. Sus efectos concretos en la ruta NL y después del vencimiento no se dan por resueltos por las pruebas positivas reportadas.
+- No se acreditan idempotencia, concurrencia de creación de contexto, recuperación de fallos parciales, cobertura completa de errores o procesamiento general de lotes Meta.
+
+La documentación y el respaldo SQL se revisaron de forma local. No se repitieron pruebas operativas ni se elaboró una nueva certificación de seguridad de los servicios externos.
 
 ## Producción en Contabo
 
@@ -34,18 +68,22 @@ Estado reportado al 2 de octubre de 2026: el bot funciona con tráfico real y no
 
 n8n publica el puerto 5678 únicamente en la interfaz local del VPS. Caddy atiende los puertos públicos 80 y 443, administra HTTPS y funciona como proxy inverso hacia n8n. También atiende la verificación GET de Meta y dirige los POST de WhatsApp al workflow receptor.
 
-Meta utiliza el dominio de Contabo como destino del webhook. Supabase continúa como servicio externo y la tabla comercial principal sigue siendo `public.leads`. Durante la migración no se introdujeron mecanismos experimentales de idempotencia ni colas de mensajes.
+Meta conserva el dominio y la URL del webhook. Supabase continúa como servicio externo: `public.leads` conserva Mejoravit; v1.3 añade el historial separado de Laudo y el contexto del router. Durante la migración histórica no se introdujeron mecanismos experimentales de idempotencia ni colas de mensajes.
 
 ## Workflows y migración
 
-Al 2 de noviembre se reportan cuatro workflows publicados:
+Inventario de v1.3 al **5 de noviembre de 2026**: los IDs de producción y la publicación fueron confirmados por el usuario; los conteos se comprobaron en los exports locales. Antecedente: al 2 de noviembre se reportaban cuatro workflows; v1.3 incorpora router y Laudo.
 
-| Workflow | Responsabilidad observada en el export |
-|---|---|
-| `whatsapp-webhook` | Recibir mensajes, invocar el flujo comercial y detectar estados fallidos de Meta con código `131042`. Tiene asociado `whatsapp-incidentes` como workflow de errores. |
-| `whatsapp-leads` | Ejecutar la precalificación, persistir el estado, responder por WhatsApp y crear registros en Airtable cuando corresponde. |
-| `whatsapp-monitor` | Consultar diariamente consumo de Meta, guardar el resumen mensual en Supabase y alertar umbrales mediante Slack API. |
-| `whatsapp-incidentes` | Clasificar incidentes de autenticación/facturación y reservar, enviar y confirmar alertas por tipo. |
+| Workflow | ID de producción reportado | Nodos locales | Responsabilidad |
+|---|---|---:|---|
+| `whatsapp-webhook` | `hqkg7XY6QQRbUixD` | 9 | Receptor Meta, extracción de entrada/perfil, llamada al router y detección `131042`. |
+| `whatsapp-router` | `1kC2Z69ssI0xMWtK` | 18 | Selección de servicio, contexto, historial, menú y despacho. |
+| `whatsapp-leads` | `4grFx6GCtkfCtebO` | 44 | Precalificación de Mejoravit en `public.leads` y derivación Airtable. |
+| `whatsapp-laudo` | `jcaIuhviy427ailO` | 50 | Precalificación de Laudo en `public.leads_laudo` y derivación Airtable. |
+| `whatsapp-monitor` | `6AgILmSn4Qf5mjAt` | 11 | Consumo diario, resumen mensual y umbrales Slack. |
+| `whatsapp-incidentes` | `7xMeGjyPHSF7anEo` | 11 | Reserva, envío y confirmación de alertas de autenticación/facturación. |
+
+La arquitectura vigente de los seis componentes está en [Arquitectura](architecture.md). Las pruebas y migraciones anteriores se conservan como antecedentes fechados.
 
 La migración trasladó los datos persistentes de n8n desde la instalación local detenida hacia el VPS. Se conservaron la base interna de n8n, los workflows, la configuración, la clave de cifrado y las credenciales cifradas. La restauración fue comprobada mediante el funcionamiento de los workflows y una prueba comercial real.
 
@@ -57,11 +95,11 @@ Antecedente reportado al **2 de octubre de 2026**: la integración fue añadida 
 
 Configuración reportada: nodo nativo Airtable, recurso `Record`, operación `Create`, base “Base Leads Nueva” y tabla “Leads global”. Se usa una credencial Airtable Personal Access Token guardada en n8n, con permisos `data.records:read`, `data.records:write` y `schema.bases:read`, limitada a esa base. No se documenta el token.
 
-El mapeo reportado incluye `phone` desde `Revisar tabla.telefono`; `state_google_ads` desde el estado del lead; `source` y `Fuente_lead` con valor fijo `BOT IA`; `company` y `company_aux` con `Proconsultores`; y `no_llamar` activado. El export coincide con esos valores. Otros campos visibles podían permanecer vacíos. `BOT IA` es una etiqueta comercial y no significa que se use IA.
+Actualización v1.3 — 5 de noviembre: ambos bots conservan `Si cita -> Espera agente -> Create a record`. El mapeo observado incluye `phone` desde `Revisar tabla.telefono`, `state_google_ads` desde el estado, `source` y `Fuente_lead: BOT IA`, `company` y `company_aux: Proconsultores`, y `no_llamar` activado. `source_aux` distingue `whatsapp_mejoravit` / `whatsapp_laudo`. `name` recibe el perfil actual a través de `nombre_whatsapp`, sin guardarse en Supabase; es una referencia provisional, no identidad verificada. El usuario confirmó su llegada en ambos servicios. Si no viene perfil en el evento que genera el registro, se envía vacío. `BOT IA` es una etiqueta comercial y no significa que se use IA.
 
 El registro representa la solicitud de cita de un usuario que superó la precalificación. No significa que la cita tenga fecha u horario confirmados.
 
-### Validación reportada
+### Validación histórica de Airtable
 
 Durante las primeras pruebas, n8n rechazó el valor `BOT IA` de `source` porque no aparecía entre las opciones reconocidas por la configuración del nodo. Tras actualizar esa configuración, la prueba manual reportada creó un registro en Airtable. La observación de operación superior a una semana sin errores también fue reportada por el usuario; no equivale a una prueba exhaustiva.
 
@@ -104,18 +142,20 @@ El export envía los valores numéricos a la RPC, pero no envía `sin_datos_meta
 
 `whatsapp-incidentes` admite `meta_autenticacion` y `meta_facturacion`:
 
-- **Autenticación:** su Error Trigger clasifica errores de autenticación solo cuando el workflow del evento es `whatsapp-webhook`; reconoce texto como `Authorization failed` y referencias a código 190. El export receptor lo configura como workflow de errores. No se demuestra cobertura directa de errores de `whatsapp-leads` o `whatsapp-monitor`.
+- **Autenticación:** su Error Trigger clasifica errores de autenticación solo cuando el workflow del evento es `whatsapp-webhook`; reconoce texto como `Authorization failed` y referencias a código 190. El export receptor lo configura como workflow de errores. No se demuestra cobertura directa de errores de `whatsapp-router`, `whatsapp-leads`, `whatsapp-laudo` o `whatsapp-monitor`.
 - **Facturación `131042`:** una rama del receptor recorre estados de entrega `failed`, detecta el código y llama a `whatsapp-incidentes` sin esperar su finalización. Distingue la referencia a falta de método de pago de un diagnóstico general de elegibilidad de pago. Devuelve el primer caso coincidente del evento.
 
 El flujo utiliza las RPC `reservar_alerta_incidente` y `confirmar_alerta_incidente` para limitar las notificaciones a **una cada 24 horas por tipo**. Solo envía si `debe_notificar` lo autoriza. Tras `ok === true` confirma la reserva; si Slack no confirma, intenta liberarla y termina con error. Los exports no incluyen esa lógica SQL; la fuente original suministrada el 3 de noviembre se conserva en [incident-functions.sql](../supabase/incident-functions.sql). La reserva dura 5 minutos y el bloqueo de 24 horas se mide desde el aviso confirmado. La confirmación exige tipo y UUID, pero no comprueba que la reserva siga vigente; no se alteró ese comportamiento.
 
 **Pruebas operativas reportadas:** se simuló `Authorization failed` y se recibió la alerta en Slack; también se simuló `131042`, se comprobó el recorrido receptor → incidentes → Slack y su registro en Supabase, y se restableció el estado de esa prueba. En una transacción SQL revertida se verificaron primera reserva autorizada, segunda reserva del mismo tipo rechazada, confirmación y nuevo rechazo durante el bloqueo, sin registros permanentes de esa prueba SQL. Falta observar un ciclo completo de 24 horas con incidentes reales separados por ese intervalo.
 
-## Estado de los exportes del repositorio
+## Antecedentes de los exports — 2 y 3 de noviembre
 
 La [auditoría del 2 de noviembre](audit-2026-11-02.md) conserva la fotografía de cuatro exports y el cierre de privacidad de ese día: dos opciones ambiguas del catálogo cacheado `source` de Airtable fueron anonimizadas sin alterar lógica comercial; el endpoint histórico de `dockers-run.txt` se reclasificó como placeholder. La anonimización no borra versiones anteriores de Git ni equivale a auditar todo su historial.
 
 ### Nuevo webhook revisado el 3 de noviembre
+
+Esta subsección conserva exclusivamente la fotografía del día 3. La llamada directa a Mejoravit que describe fue sustituida por el router en v1.3; no representa la ruta vigente.
 
 **Hecho verificado localmente:** JSON válido con 9 nodos, frente a 7 en HEAD `bec3a33`. Los siete nodos anteriores conservan todos sus parámetros y ajustes; tres cambian de posición. Se añade `¿Es mensaje entrante?` antes de extraer los campos comerciales:
 
@@ -170,9 +210,9 @@ Según el procedimiento operativo reportado, la autenticación de Meta utiliza u
 
 ## Supabase
 
-La base de datos comercial no fue migrada. La tabla principal continúa siendo `public.leads`, con el esquema comercial existente. El monitoreo añade persistencia mensual y RPC operativas reportadas, descritas arriba, sin sustituir `public.leads`. Durante esta revisión documental no se ejecutó SQL ni se modificaron datos o políticas.
+La migración histórica del VPS no trasladó la base comercial. En v1.3 se usan tres tablas comerciales: `public.leads` para Mejoravit, `public.leads_laudo` para Laudo y `public.whatsapp_routing` para servicio activo por teléfono. El usuario confirmó las consultas de contexto/etapas/calificación durante las pruebas del día 5. Los historiales se conservan separados al cambiar explícitamente de campaña; la ventana de contexto se evalúa al recibir mensajes y no borra registros automáticamente. No se ejecutó SQL ni se modificaron datos o políticas en esta revisión documental.
 
-El usuario confirmó el **3 de noviembre** que el respaldo estructural de las dos tablas y cuatro funciones del monitoreo/incidentes en [supabase/](../supabase/README.md) está **versionado en GitHub**. El esquema y los permisos proceden de la configuración verificada y reportada por el usuario; las funciones proceden de las definiciones suministradas de `pg_get_functiondef()`. Se conservaron firmas, cuerpos, retornos y `search_path` vacío; las ACL reflejan EXECUTE para `service_role`/`postgres` y ausencia de acceso para `PUBLIC`, `anon` y `authenticated`. Ambas tablas tienen RLS activado, sin FORCE RLS ni políticas explícitas. La revisión de Codex fue estática y no ejecutó SQL ni probó restauración; la prueba real de protección contra ceros en Supabase fue confirmada por el usuario por separado. El respaldo no es una copia de los datos o de todo el proyecto y no tiene una restauración validada.
+El usuario confirmó el **3 de noviembre** que el respaldo estructural de las dos tablas y cuatro funciones del monitoreo/incidentes en [supabase/](../supabase/README.md) está **versionado en GitHub**. El esquema y los permisos proceden de la configuración verificada y reportada por el usuario; las funciones proceden de las definiciones suministradas de `pg_get_functiondef()`. Se conservaron firmas, cuerpos, retornos y `search_path` vacío; las ACL reflejan EXECUTE para `service_role`/`postgres` y ausencia de acceso para `PUBLIC`, `anon` y `authenticated`. Ambas tablas tienen RLS activado, sin FORCE RLS ni políticas explícitas. La revisión de Codex fue estática y no ejecutó SQL ni probó restauración; la prueba real de protección contra ceros en Supabase fue confirmada por el usuario por separado. El respaldo no es una copia de los datos o de todo el proyecto y no tiene una restauración validada. La inspección de `schema.sql` confirma que no contiene `public.leads`, `public.leads_laudo` ni `public.whatsapp_routing`; el respaldo estructural completo de las tablas multicampaña sigue pendiente. No se deducen permisos, políticas RLS o índices de esas tablas desde los workflows.
 
 La etapa persistida que se observa actualmente después de una respuesta afirmativa a la solicitud de cita es `cita`. No debe asumirse que el valor `cita_si` sea el valor almacenado.
 
@@ -186,12 +226,16 @@ No se documentan contraseñas, claves privadas, claves públicas completas ni ot
 
 Existe una copia local de la instalación de n8n realizada el **21 de septiembre de 2026**, utilizada durante la migración. La instalación restaurada fue validada mediante una prueba comercial real.
 
-No se contrató Auto Backup de Contabo ni se configuraron respaldos automáticos periódicos de producción. Tampoco se realizó una prueba independiente de restauración del respaldo histórico. La copia de Windows no debe presentarse como respaldo actualizado de datos generados posteriormente en producción.
+Al 2 de octubre no se había contratado Auto Backup de Contabo ni configurado un respaldo automático periódico. No se aportó una actualización que valide esos mecanismos en este cierre. El 5 de noviembre el usuario confirmó copias locales de los workflows anteriores; son un antecedente adicional, sin comprobación de integridad o restauración. La copia de Windows no debe presentarse como respaldo actualizado de datos generados posteriormente en producción.
 
 GitHub conserva documentación, exportes de workflows y el respaldo estructural SQL reportado como versionado al 3 de noviembre, pero no es un respaldo completo de n8n o de los datos de Supabase. No se incorporan bases internas, respaldos de datos ni credenciales al repositorio.
 
 ## Pendientes operativos y de control documental
 
+- Verificación completa de mensajes predefinidos en anuncios, campañas y sitios web: incluir Mejoravit o Laudo según corresponda. No hay evidencia de una revisión integral completada.
+- Confirmar en producción los tres textos de edad de Laudo ya corregidos en el archivo local y corregir cualquier discrepancia publicada; no se declara completada esa verificación ni la prueba específica del borde de 48 años.
+- Respaldo estructural completo de las tablas multicampaña; el SQL versionado solo cubre monitoreo e incidentes.
+- Verificar los efectos concretos de las diferencias heredadas de Mejoravit en la ruta NL y el reset; no se cambiaron durante el cierre.
 - Existencia de un respaldo actual, íntegro y restaurable de producción.
 - Validación de integración completa con n8n ante bloqueo de ceros y retorno del registro existente; la prueba SQL y la ejecución automática del monitor del 3 de noviembre ya están confirmadas.
 - Recepción posterior de estadísticas reales de noviembre; los ceros actuales son provisionales.

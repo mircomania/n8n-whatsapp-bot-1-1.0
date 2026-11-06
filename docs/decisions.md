@@ -36,6 +36,8 @@ Motivo: Aislar responsabilidades y permitir que el flujo comercial trabaje con e
 
 Consecuencias: La evolución futura debe preservar la responsabilidad determinista de `whatsapp-leads` y definir explícitamente cualquier nuevo enrutamiento.
 
+Actualización — 5 de noviembre de 2026: DEC-017 conserva la separación entre recepción y lógica comercial, pero sustituye el enlace directo receptor → Mejoravit por receptor → router → bot. La descripción de dos workflows anterior es histórica, no la arquitectura vigente de v1.3.
+
 ### DEC-003 — Desarrollar inicialmente en Windows
 
 Fecha: síntesis histórica; fecha exacta no verificada.
@@ -144,6 +146,8 @@ Motivo: Incorporar al flujo existente el destino que la empresa utilizará para 
 
 Consecuencias: Se descartaron del alcance de v1.2 la IA, el workflow `whatsapp-ia`, la coordinación automatizada de disponibilidad y las notificaciones por correo. La integración Airtable fue implementada y publicada. DEC-012 mantuvo temporalmente ambos mecanismos; DEC-013 retiró después el aviso por WhatsApp. La base y tabla fueron configuradas en producción. Los exportes locales se reportaron como actualizados; `Fuente_lead: BOT IA` es el valor intencional confirmado por el usuario.
 
+Actualización — 5 de noviembre de 2026: DEC-017 amplía la organización comercial de dos workflows con router y Laudo. Se mantiene la decisión de usar Airtable en lugar de IA/correo y la semántica de solicitud de cita. El mantenimiento independiente de monitoreo e incidentes sigue registrado en DEC-014 y DEC-015.
+
 ### DEC-012 — Mantener temporalmente WhatsApp y Airtable
 
 Fecha: 23 de septiembre de 2026.
@@ -209,3 +213,53 @@ Decisión: Aceptar provisionalmente esa respuesta con ceros y `sin_datos_meta: t
 Consecuencias: Se creó manualmente el registro de noviembre y se comprobó la separación respecto de octubre. Los ceros no se consideran consumo real confirmado. La marca provisional no se envía en el cuerpo de la RPC del export. Al cierre del 2 de noviembre la protección SQL estaba implementada según el reporte, sin una copia SQL en el repositorio ni prueba específica de sobrescritura. Actualización confirmada por el usuario — 3 de noviembre de 2026: el [respaldo SQL original](../supabase/README.md) de las dos tablas y cuatro funciones está versionado en GitHub. La [prueba real en Supabase](../supabase/README.md#prueba-ejecutada-en-supabase--3-de-noviembre-de-2026), con `BEGIN`/`ROLLBACK`, conservó **1.871 mensajes y US$7,3984** ante el intento de sobrescribir octubre con ceros y devolvió el registro existente; la verificación posterior mantuvo datos y fechas intactos. Resultado: **PASS**. El monitor también completó su ejecución automática del día. El SQL incluye `IF NOT FOUND`; no consta la fecha de incorporación de ese bloque a producción.
 
 Siguen pendientes restauración y compilación SQL en PostgreSQL aislado, permisos efectivos en esa restauración e integración completa con n8n bajo el escenario de bloqueo de ceros. Estas confirmaciones operativas se distinguen de las validaciones estáticas de Codex y no introducen decisiones técnicas nuevas.
+
+## v1.3 multicampaña — cierre del 5 de noviembre de 2026
+
+Las siguientes entradas registran las decisiones implementadas y la confirmación operativa del usuario al cierre de v1.3. No cambian retrospectivamente las decisiones históricas ni acreditan por sí mismas pruebas no reportadas. La evidencia y sus límites están en [Estado actual](current-state.md).
+
+### DEC-017 — Introducir un router entre el receptor y los bots comerciales
+
+Fecha de referencia: 5 de noviembre de 2026.
+
+Estado: Implementada y publicada según confirmación del usuario; recorridos principales validados en producción según su reporte.
+
+Contexto: El mismo canal WhatsApp debe atender Mejoravit y Laudo manteniendo separadas sus reglas y conversaciones.
+
+Decisión: Conservar `whatsapp-webhook` como receptor de Meta y delegar a `whatsapp-router`, que llama a `whatsapp-leads` o `whatsapp-laudo`. El sistema queda compuesto por estos cuatro workflows comerciales y los independientes `whatsapp-monitor` / `whatsapp-incidentes`. Se conserva la URL pública anterior y la configuración de Meta.
+
+Consecuencias: Se sustituye únicamente el enlace comercial directo descrito históricamente en DEC-002 y se amplía la organización original de DEC-011. Se mantienen recepción, acuses y rama `131042`, las reglas deterministas y el registro Airtable al solicitar cita. Las llamadas comparten cuatro campos string: `telefono`, `mensaje`, `tipo` y `nombre_whatsapp`. Los IDs y la publicación se reportan por el usuario; `active` no acredita estado vivo.
+
+### DEC-018 — Priorizar servicio explícito, contexto e historial separado
+
+Fecha de referencia: 5 de noviembre de 2026.
+
+Estado: Implementada; continuidad, menú y cambio explícito de campaña comprobados en los recorridos reportados por el usuario.
+
+Decisión: Resolver primero una identificación explícita única del servicio; después, un contexto válido de menos de 24 horas; después, existencia del teléfono en una sola tabla comercial. Si ambas o ninguna tabla contienen historial y no hay una prioridad anterior resuelta, ofrecer el menú de servicios. La detección explícita reconoce palabras completas e IDs de botón; no interpreta intención en lenguaje natural.
+
+Persistencia: `public.whatsapp_routing` guarda contexto por teléfono. `public.leads` conserva Mejoravit y `public.leads_laudo` conserva Laudo. Una decisión válida crea o actualiza contexto y renueva la última interacción antes del despacho. El menú no escribe ni despacha. Cambiar de servicio no elimina ni reinicia los historiales comerciales.
+
+Consecuencias: La ventana se evalúa al llegar un mensaje; exactamente 24 horas vence, sin borrado automático. Un contexto vencido todavía puede resolverse por historial único. Fechas ausentes, inválidas o futuras no validan contexto. La secuencia consulta/create/update no acredita atomicidad ni recuperación ante una carrera de creación; esos escenarios siguen pendientes, sin introducir un nuevo diseño en este cierre.
+
+### DEC-019 — Definir la precalificación independiente de Laudo
+
+Fecha de referencia: 5 de noviembre de 2026.
+
+Estado: Implementada; ruta positiva, incluida Otro, hasta Supabase/Airtable confirmada por el usuario. No se afirma validación exhaustiva de bordes o de cada rechazo.
+
+Decisión: Laudo admite Nuevo León, Ciudad de México, Estado de México y Otro. Requiere **48 años cumplidos o más**, no estar pensionado y no tener crédito Infonavit activo. Exactamente 48 sí califica. La etapa y el campo técnico `mayor_48`, así como el motivo heredado `edad_no_supera_48`, no redefinen ese mínimo comercial. El bot registra respuestas declaradas mediante botones; no verifica documentalmente edad o elegibilidad.
+
+Consecuencias: Otro puede completar la precalificación y solicitar cita; su pregunta de cita es neutral, sin oficina local afirmada. Se conserva la tabla independiente y la distinción entre calificación, solicitud de cita y cita confirmada. Mejoravit mantiene sus propias reglas, sin aplicar a Laudo los requisitos de antigüedad o subcuenta.
+
+Pendiente textual: el cierre reportó mensajes incompatibles con el mínimo de 48 en tres nodos. El archivo local recibido el día 5 ya contiene la corrección, como se registra en [Lógica de negocio](business-logic.md#textos-de-edad-antecedente-y-pendiente-de-publicación). Queda por confirmar esa correspondencia en producción y corregir el texto publicado si difiere; no se cambió el JSON ni se declara una prueba específica de exactamente 48 años.
+
+### DEC-020 — Transmitir el perfil provisional directamente a Airtable
+
+Fecha de referencia: 5 de noviembre de 2026.
+
+Estado: Implementada; llegada del nombre a Airtable en ambos servicios confirmada por el usuario en producción.
+
+Decisión: Extraer `contacts[].profile.name` únicamente del contacto cuyo `wa_id` coincide con el remitente, recortar espacios exteriores, limitar a 120 caracteres y transmitir como `nombre_whatsapp` hasta el campo existente `name` de Airtable. Conservar caracteres especiales/emojis dentro del límite y usar cadena vacía cuando falte nombre. No guardarlo en Supabase ni modificar la calificación o la etapa por ese dato.
+
+Consecuencias: El nombre es una referencia provisional para el agente, no identidad legal o verificada. Depende del perfil disponible en el evento que genera el registro; no se recupera de mensajes anteriores. Los contratos y mappings de receptor, router y ambos bots incluyen el campo. Las pruebas reportadas y la inspección local no se extienden a una certificación de identidad o de todas las variantes de perfil.

@@ -6,6 +6,14 @@ Las cuatro funciones proceden del texto SQL extraído mediante `pg_get_functiond
 
 `schema.sql` ya existía y se conservó sin cambios. Su DDL fue reconstruido a partir de la estructura de tablas reportada por el usuario; no es una extracción literal de `pg_dump`. Este directorio no es un respaldo íntegro del proyecto Supabase y no contiene un volcado de datos para restauración, credenciales o configuración de conexión.
 
+## Alcance frente a v1.3 — 5 de noviembre de 2026
+
+La v1.3 multicampaña incorpora un router y Laudo a los cuatro workflows anteriores; el usuario confirmó los seis publicados y sus recorridos comerciales principales en Contabo el 5 de noviembre. Este directorio conserva su referencia estructural del **3 de noviembre**, limitada a monitoreo e incidentes. Las pruebas comerciales no validan la restauración de estos archivos.
+
+La inspección de `schema.sql` confirma que **no contiene DDL de `public.leads`, `public.leads_laudo` ni `public.whatsapp_routing`**. Faltan, por tanto, las definiciones completas de las tablas comerciales y de contexto para un respaldo multicampaña. No se reconstruyeron a partir de los nodos n8n ni se inventaron permisos, políticas RLS, índices o migraciones. Tampoco incluye datos o credenciales.
+
+El respaldo estructural completo, la recuperación de datos y la prueba de restauración permanecen pendientes. Las copias anteriores de workflows que el usuario conservó localmente no sustituyen ese respaldo ni prueban restaurabilidad. Véanse [Estado actual](../docs/current-state.md) y [Arquitectura](../docs/architecture.md) para las responsabilidades vigentes.
+
 ## Archivos y responsabilidades
 
 | Archivo | Contenido |
@@ -55,10 +63,10 @@ Los archivos de funciones incluyen `SET LOCAL search_path = pg_catalog, public` 
 
 ## Validaciones y diferencias documentales
 
-### Validaciones estáticas realizadas por Codex
+### Validaciones estáticas del respaldo realizadas por Codex — 3 de noviembre de 2026
 
 - Comparación literal de las cuatro definiciones con el SQL suministrado, después de retirar únicamente escapes de presentación; las transacciones, el `SET LOCAL` y las ACL son envoltorios externos identificados, no cambios en las definiciones.
-- Revisión estática de firmas, lenguajes, retornos, delimitadores, parámetros y columnas contra `schema.sql`. Coinciden los conflictos con las claves primarias y los campos que se leen/escriben. El esquema original y los cuatro workflows se conservaron sin cambios, comprobados por SHA-256.
+- Revisión estática de firmas, lenguajes, retornos, delimitadores, parámetros y columnas contra `schema.sql`. Coinciden los conflictos con las claves primarias y los campos que se leen/escriben. Durante esa preparación del respaldo, el esquema original y los cuatro workflows entonces revisados se conservaron sin cambios, comprobados por SHA-256. No describe una auditoría nueva de los seis workflows de v1.3.
 - Las cinco llamadas RPC de los exports (incluidas confirmación y liberación) envían los argumentos de las cuatro firmas. La reserva devuelve los campos que espera `¿Notificar incidente?`; el resumen y los umbrales devuelven filas de la tabla mensual que consume el monitor. No se simuló PostgREST ni n8n.
 - La inspección del SQL confirmó el retorno del registro existente al bloquear ceros. Ese comportamiento también quedó verificado en la prueba de Supabase reportada a continuación. No consta la fecha en que se incorporó ese bloque a producción.
 - Revisión de secretos y privacidad: sin tokens de servicios, API keys, contraseñas, claves privadas, valores reales de reserva, identificadores de cuenta, teléfonos, NSS o datos de leads en estos cuatro archivos.

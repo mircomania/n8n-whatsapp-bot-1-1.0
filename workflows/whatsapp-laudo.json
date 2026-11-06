@@ -30,10 +30,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -416,
-        2256
+        -1536,
+        2032
       ],
-      "id": "0b2efb9c-c9c6-4668-b4e7-bb96e8e61d07",
+      "id": "0f8f1dd6-23e3-4d69-8e19-04aac9dc9ce4",
       "name": "¿Usuario existe?"
     },
     {
@@ -54,10 +54,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -608,
-        2256
+        -1728,
+        2032
       ],
-      "id": "3ae5256b-d5d8-47a4-8ada-9512d372c3cc",
+      "id": "e35ff6d7-f831-42ff-9995-1fcf52dcd186",
       "name": "Revisar tabla",
       "alwaysOutputData": true,
       "credentials": {
@@ -81,8 +81,7 @@
               "name": "tipo"
             },
             {
-              "name": "nombre_whatsapp",
-              "type": "string"
+              "name": "nombre_whatsapp"
             }
           ]
         }
@@ -90,10 +89,10 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        -992,
-        2256
+        -2112,
+        2032
       ],
-      "id": "190fee14-466f-457b-9642-08a5a5022db5",
+      "id": "e9962496-d4ea-4953-8445-45659fec4edd",
       "name": "When Executed by Another Workflow"
     },
     {
@@ -267,10 +266,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        736,
-        1984
+        -384,
+        1760
       ],
-      "id": "4e6f5972-db5a-4206-b103-7d5edcf1507d",
+      "id": "62ac9f7c-b9e1-41d8-beaa-132bab61fdd8",
       "name": "¿Etapa?"
     },
     {
@@ -302,10 +301,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1120,
-        1600
+        0,
+        1376
       ],
-      "id": "784882f4-e2a7-4f86-9b6e-df0e230beac8",
+      "id": "d4ff38e8-8300-4317-8fe6-27a92e71bd58",
       "name": "Estado de mexico",
       "credentials": {
         "supabaseApi": {
@@ -343,10 +342,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1120,
-        1456
+        0,
+        1232
       ],
-      "id": "7c43f901-6c90-4882-aa0c-3aa4d62293ed",
+      "id": "daf4979f-c109-47e1-8eda-a026afcacd7d",
       "name": "Ciudad de mexico",
       "credentials": {
         "supabaseApi": {
@@ -384,10 +383,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1120,
-        1312
+        0,
+        1088
       ],
-      "id": "4ca80186-72d4-484a-ba28-f998efd0efb8",
+      "id": "b75b230b-d356-4f6a-8b05-c09842985773",
       "name": "Nuevo leon",
       "credentials": {
         "supabaseApi": {
@@ -425,10 +424,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -32,
-        2048
+        -1152,
+        1824
       ],
-      "id": "544f8712-10f1-4939-9cc9-32d79e447978",
+      "id": "19fcb7b7-f3e5-4f30-adda-037388e87435",
       "name": "Guardar Mensaje",
       "credentials": {
         "supabaseApi": {
@@ -466,10 +465,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1120,
-        1744
+        0,
+        1520
       ],
-      "id": "89ecc93f-ea26-4709-930e-39abf774a200",
+      "id": "eb24b75c-6347-4b66-9290-a907dd57f72b",
       "name": "Otro",
       "credentials": {
         "supabaseApi": {
@@ -582,10 +581,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        928,
-        1440
+        -192,
+        1216
       ],
-      "id": "621656dc-5b26-4220-b6b3-4914bb31103d",
+      "id": "a4729401-8327-4722-8c20-93997daee949",
       "name": "Estado"
     },
     {
@@ -646,10 +645,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        1808,
-        1984
+        688,
+        1760
       ],
-      "id": "3a31ff0d-3c0a-422c-a79e-0027b6dc1df5",
+      "id": "d0875596-9efe-4612-bc6f-366ee505c7fe",
       "name": "Edad"
     },
     {
@@ -693,10 +692,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        2000,
-        2000
+        880,
+        1776
       ],
-      "id": "2b767740-d7b7-467b-a17d-ad92ea4d7287",
+      "id": "acb6f00d-f6a8-4b23-8947-dddf2b4c2663",
       "name": "No mayor de 48",
       "credentials": {
         "supabaseApi": {
@@ -734,10 +733,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        2000,
-        1856
+        880,
+        1632
       ],
-      "id": "f50eb3af-759b-4dee-b0e3-00f58653069a",
+      "id": "7b7cd295-1022-4d7b-be77-e734e9a8aac9",
       "name": "Si mayor de 48",
       "credentials": {
         "supabaseApi": {
@@ -804,10 +803,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        928,
-        2304
+        -192,
+        2080
       ],
-      "id": "f809c61a-5313-493d-b080-7da64f10a80b",
+      "id": "739f9ff0-d6f9-4ecf-af41-135d7b30a7be",
       "name": "Pensionado"
     },
     {
@@ -851,10 +850,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1120,
-        2176
+        0,
+        1952
       ],
-      "id": "3ba22d4a-283d-42cb-b5af-cace37cd53d6",
+      "id": "912e9bb2-caa6-4761-b75f-6c0e9812e539",
       "name": "Si pensionado",
       "credentials": {
         "supabaseApi": {
@@ -892,10 +891,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1120,
-        2320
+        0,
+        2096
       ],
-      "id": "502fb500-764d-4b9a-af8a-541308afd830",
+      "id": "744dddc6-cbfa-4a53-af8a-db8aa264d9d6",
       "name": "No pensionado",
       "credentials": {
         "supabaseApi": {
@@ -990,10 +989,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        1312,
-        2176
+        192,
+        1952
       ],
-      "id": "4608487c-6d26-4cba-af68-8861a8131e76",
+      "id": "228a2447-9348-43fc-a466-7a43cab0f148",
       "name": "¿Estado?"
     },
     {
@@ -1023,10 +1022,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        544,
-        2272
+        -576,
+        2048
       ],
-      "id": "f4fd9c87-82ac-4d26-86f5-83097008b23b",
+      "id": "a449d998-567a-49ea-ba4d-41c25e0fe96b",
       "name": "Crear tabla",
       "credentials": {
         "supabaseApi": {
@@ -1070,10 +1069,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -800,
-        2256
+        -1920,
+        2032
       ],
-      "id": "833d48a7-a66a-47e2-858b-b66ad1ce38fe",
+      "id": "6d2c220f-a2f2-479d-8cc8-87cc2938b7f4",
       "name": "Obtener datos"
     },
     {
@@ -1134,10 +1133,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        928,
-        2864
+        -192,
+        2640
       ],
-      "id": "c0eb90d8-ce6d-4eed-a1ee-aeec77a7f11d",
+      "id": "f221968b-b483-4f4b-aef1-333838922b9d",
       "name": "calificado"
     },
     {
@@ -1173,10 +1172,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1120,
-        2736
+        0,
+        2512
       ],
-      "id": "4cd07f83-556e-485e-ba0b-c9901a4f888b",
+      "id": "ade88020-f856-4c8f-9917-616174635f99",
       "name": "Si cita",
       "credentials": {
         "supabaseApi": {
@@ -1222,10 +1221,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1120,
-        2880
+        0,
+        2656
       ],
-      "id": "9086c468-bf0d-4775-87ff-36b7af8a37ea",
+      "id": "2d9f4b75-6476-4b76-aa91-9d78b28eea94",
       "name": "No cita",
       "credentials": {
         "supabaseApi": {
@@ -1292,10 +1291,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        928,
-        3392
+        -192,
+        3168
       ],
-      "id": "b3e939ca-d10a-4e05-9712-e98e52799a26",
+      "id": "a633d6f0-b98f-43a2-9cf2-ffbc33170370",
       "name": "Re cita"
     },
     {
@@ -1323,10 +1322,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        928,
-        3168
+        -192,
+        2944
       ],
-      "id": "807f8600-26ee-4538-9271-4504a1e7639f",
+      "id": "3329c5ae-c653-4958-b4c2-cdbadfe9ad43",
       "name": "Fin",
       "credentials": {
         "supabaseApi": {
@@ -1358,10 +1357,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        736,
-        2272
+        -384,
+        2048
       ],
-      "id": "9d0a850d-770d-40dd-97f5-47b083609cf2",
+      "id": "b939091f-f34c-4a59-9d33-cae5557e76e5",
       "name": "Pregunta estado",
       "credentials": {
         "httpHeaderAuth": {
@@ -1387,16 +1386,16 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"🎂 Edad\"\n    },\n    \"body\": {\n      \"text\": \"¿Tienes más de 48 años?\\n\\nSi tienes exactamente 48 años, selecciona Si.\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_edad_si\",\n            \"title\": \"Sí\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_edad_no\",\n            \"title\": \"No\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "jsonBody": "=\n{\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"🎂 Edad\"\n    },\n    \"body\": {\n      \"text\": \"¿Tienes 48 años o más?\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_edad_si\",\n            \"title\": \"Sí\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_edad_no\",\n            \"title\": \"No\"\n          }\n        }\n      ]\n    }\n  }\n}\n",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1312,
-        1456
+        192,
+        1232
       ],
-      "id": "47969a69-c617-492a-b654-6cbe9dcc73f5",
+      "id": "82128cf6-f714-4a0c-a69b-f677ebc78711",
       "name": "Pregunta edad",
       "credentials": {
         "httpHeaderAuth": {
@@ -1428,10 +1427,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1120,
-        1888
+        0,
+        1664
       ],
-      "id": "5ebd5f93-1603-442e-bd67-707e06b4999f",
+      "id": "d6cca9ad-cd7f-4932-9c89-53974b63b221",
       "name": "RE pregunta estado",
       "credentials": {
         "httpHeaderAuth": {
@@ -1463,10 +1462,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1312,
-        1744
+        192,
+        1520
       ],
-      "id": "defdab82-40d2-4ece-a82a-2b536b5e40fd",
+      "id": "158bc910-96e9-46d5-bb92-a0fb2fe5d995",
       "name": "Final credito activo",
       "credentials": {
         "httpHeaderAuth": {
@@ -1498,10 +1497,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        2192,
-        1856
+        1072,
+        1632
       ],
-      "id": "96f9b6ba-ef06-48f3-94ed-3b3f781e3c56",
+      "id": "2c55f4ff-6bb1-41a3-951c-23b409969222",
       "name": "Pregunta pensionado",
       "credentials": {
         "httpHeaderAuth": {
@@ -1527,16 +1526,16 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"preview_url\": false,\n    \"body\": \"Gracias por tu interés 🙏\\n\\nPara continuar con la precalificación de Laudo es necesario tener más de 48 años. Si tienes 48 años o menos, por el momento no cumples con este requisito.\\n\\nGracias por contactarnos.\"\n  }\n}",
+        "jsonBody": "=\n{\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"preview_url\": false,\n    \"body\": \"Gracias por tu interés 🙏\\n\\nPara continuar con la precalificación de Laudo es necesario tener al menos 48 años cumplidos.\\n\\nComo nos indicas que tienes menos de 48 años, por el momento no cumples con este requisito.\\n\\nGracias por contactarnos.\"\n  }\n}\n",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        2192,
-        2000
+        1072,
+        1776
       ],
-      "id": "75cd78c7-b7c9-433a-ac7c-0fe7eb02c094",
+      "id": "2ff3afd5-398c-40c8-8119-559ade88dae9",
       "name": "Final edad",
       "credentials": {
         "httpHeaderAuth": {
@@ -1562,16 +1561,16 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"⚠️ Respuesta inválida\"\n    },\n    \"body\": {\n      \"text\": \"Por favor selecciona una de las opciones disponibles.\\n\\n¿Tienes más de 48 años?\\n\\nSi tienes exactamente 48 años, selecciona Si.\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_edad_si\",\n            \"title\": \"Sí\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_edad_no\",\n            \"title\": \"No\"\n          }\n        }\n      ]\n    }\n  }\n}",
+        "jsonBody": "=\n{\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Obtener datos').item.json.telefono }}\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"button\",\n    \"header\": {\n      \"type\": \"text\",\n      \"text\": \"⚠️ Respuesta inválida\"\n    },\n    \"body\": {\n      \"text\": \"Por favor selecciona una de las opciones disponibles.\\n\\n¿Tienes 48 años o más?\"\n    },\n    \"action\": {\n      \"buttons\": [\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_edad_si\",\n            \"title\": \"Sí\"\n          }\n        },\n        {\n          \"type\": \"reply\",\n          \"reply\": {\n            \"id\": \"laudo_edad_no\",\n            \"title\": \"No\"\n          }\n        }\n      ]\n    }\n  }\n}\n",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        2000,
-        2160
+        880,
+        1936
       ],
-      "id": "f16f8186-318a-4f95-ac0a-4846d2aa22a9",
+      "id": "4e043814-1049-4bce-8ba1-64bd29d712d7",
       "name": "RE pregunta edad",
       "credentials": {
         "httpHeaderAuth": {
@@ -1603,10 +1602,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1504,
-        2096
+        384,
+        1872
       ],
-      "id": "d263a57f-a026-4fe8-9145-29145c43140f",
+      "id": "c477c22e-2783-42e8-916d-14557c223c91",
       "name": "Pregunta cita NL",
       "credentials": {
         "httpHeaderAuth": {
@@ -1638,10 +1637,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1504,
-        2256
+        384,
+        2032
       ],
-      "id": "242c83eb-fd74-4e8a-b83b-47af8b491d85",
+      "id": "10ecff1e-3904-496c-a05c-65d54373d7bf",
       "name": "Pregunta cita MX",
       "credentials": {
         "httpHeaderAuth": {
@@ -1673,10 +1672,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1312,
-        2320
+        192,
+        2096
       ],
-      "id": "93b16be4-4c70-4159-ac70-61d263bbdcbe",
+      "id": "6d49d5a0-38e1-47b5-9035-0c9fb0727ee6",
       "name": "Final pensionado",
       "credentials": {
         "httpHeaderAuth": {
@@ -1708,10 +1707,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1120,
-        2464
+        0,
+        2240
       ],
-      "id": "bfe8d949-fb8e-4c27-8f61-687efab6dfc0",
+      "id": "29e31319-ffac-469b-979c-9d54701a0a03",
       "name": "RE pregunta pensionado",
       "credentials": {
         "httpHeaderAuth": {
@@ -1743,10 +1742,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1120,
-        3168
+        0,
+        2944
       ],
-      "id": "79dd7392-558d-4d9c-97dc-fbd2ffd0999e",
+      "id": "ce3bf000-e73c-4b38-8cda-4756e7856e57",
       "name": "Pregunta re cita",
       "credentials": {
         "httpHeaderAuth": {
@@ -1778,10 +1777,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1120,
-        3024
+        0,
+        2800
       ],
-      "id": "de20a419-c011-4d1e-9192-d649c931d180",
+      "id": "a49dafd1-2028-46c7-81af-ecf0e9ebf2d6",
       "name": "RE pregunta calificado",
       "credentials": {
         "httpHeaderAuth": {
@@ -1813,10 +1812,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1312,
-        2880
+        192,
+        2656
       ],
-      "id": "99d08a22-4237-4717-a42c-7c00393b9bf2",
+      "id": "3ddd4df9-d41c-48df-80d9-326406e04c62",
       "name": "Final calificado",
       "credentials": {
         "httpHeaderAuth": {
@@ -1848,10 +1847,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1312,
-        2736
+        192,
+        2512
       ],
-      "id": "1cd98c19-4166-44f7-a263-402d7d38e6c0",
+      "id": "cd5a7d70-8db2-418c-bd79-e22052e0182a",
       "name": "Espera agente",
       "credentials": {
         "httpHeaderAuth": {
@@ -1889,10 +1888,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        544,
-        1904
+        -576,
+        1680
       ],
-      "id": "6636fc54-9bd7-4b87-9068-ead9488b4c00",
+      "id": "8be878bf-a779-4167-9616-155de0c4a03a",
       "name": "Reset estado",
       "credentials": {
         "supabaseApi": {
@@ -1930,10 +1929,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        352,
-        2032
+        -768,
+        1808
       ],
-      "id": "1339f874-3c2a-431e-9a25-2b387c8a1fba",
+      "id": "b1bc6c8d-26ab-4915-842c-621be085f7f0",
       "name": "¿Debe reiniciarse?"
     },
     {
@@ -1964,10 +1963,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        160,
-        2048
+        -960,
+        1824
       ],
-      "id": "2e82aac1-58f0-47ab-93c0-ff824021670d",
+      "id": "cb136297-84c1-4100-9fc8-5c5343fd9674",
       "name": "¿Tiene fecha reset?"
     },
     {
@@ -1998,10 +1997,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -224,
-        2032
+        -1344,
+        1808
       ],
-      "id": "83a88c93-290e-4a60-be60-3412a32bea48",
+      "id": "675d4b53-049c-4a80-a255-796225d9f6a6",
       "name": "¿Muy rapido?"
     },
     {
@@ -3514,10 +3513,10 @@
       "type": "n8n-nodes-base.airtable",
       "typeVersion": 2.2,
       "position": [
-        1504,
-        2736
+        384,
+        2512
       ],
-      "id": "cabd22fc-fa79-4eaa-81af-c5ec8e2b1ad7",
+      "id": "659bc69c-0fd4-4773-863d-28649cfa3798",
       "name": "Create a record",
       "credentials": {
         "airtableTokenApi": {
@@ -3549,10 +3548,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1504,
-        2416
+        384,
+        2192
       ],
-      "id": "bf768ec1-0d0d-4669-b062-53c705a0ca90",
+      "id": "ed4205df-1ad4-4851-af79-fc98d4c72d61",
       "name": "Pregunta cita Otro",
       "credentials": {
         "httpHeaderAuth": {
@@ -3584,10 +3583,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1312,
-        3456
+        192,
+        3232
       ],
-      "id": "251607c5-bfdf-489d-907a-a3eb393e8ca3",
+      "id": "bbe98386-3207-49ad-a5b4-87ed03298d1e",
       "name": "Pregunta credito Infonavit",
       "credentials": {
         "httpHeaderAuth": {
@@ -3654,10 +3653,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        928,
-        3712
+        -192,
+        3488
       ],
-      "id": "2cda3949-290d-423b-a005-4623383390a9",
+      "id": "e486d3f0-15a1-47e3-8e3e-e8ce70ee387a",
       "name": "Credito Infonavit"
     },
     {
@@ -3701,10 +3700,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1120,
-        3616
+        0,
+        3392
       ],
-      "id": "c08dc446-7c98-4afd-817c-12fe5448e89f",
+      "id": "bba5f8bb-ec06-4bd5-b0c6-4ba552316c7f",
       "name": "Si credito activo",
       "credentials": {
         "supabaseApi": {
@@ -3750,10 +3749,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1120,
-        3808
+        0,
+        3584
       ],
-      "id": "299a29ab-51e5-4154-8379-46496b6bccda",
+      "id": "791158ab-0d7e-4988-a776-d94bae9302e8",
       "name": "No credito activo",
       "credentials": {
         "supabaseApi": {
@@ -3785,10 +3784,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1120,
-        3968
+        0,
+        3744
       ],
-      "id": "72084c8f-af4b-4d6d-8c19-278df44041c4",
+      "id": "c3220314-fa44-4ab0-93fb-76f9c6123957",
       "name": "RE pregunta credito Infonavit",
       "credentials": {
         "httpHeaderAuth": {
@@ -4335,7 +4334,7 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "9abd0542-bb72-4e08-bc03-f6fc5e4c377f",
+  "versionId": "e99dd0a3-df45-4483-a744-3ccda8ac17f6",
   "meta": {
     "instanceId": "bf168903a33cfec42ff3ec307c6b8d46610847bf94dc4be799c84e8be60878c0"
   },
