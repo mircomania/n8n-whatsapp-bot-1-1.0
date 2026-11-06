@@ -13,6 +13,10 @@
             },
             {
               "name": "tipo"
+            },
+            {
+              "name": "nombre_whatsapp",
+              "type": "string"
             }
           ]
         }
@@ -46,6 +50,12 @@
               "id": "2834b25a-7f46-4f0f-a845-0e7a05708f73",
               "name": "tipo",
               "value": "={{ $json.tipo }}",
+              "type": "string"
+            },
+            {
+              "id": "ab81fc80-0cf7-46d5-b9e5-469cfc58ff13",
+              "name": "nombre_whatsapp",
+              "value": "={{ String($json.nombre_whatsapp ?? '') }}",
               "type": "string"
             }
           ]
@@ -495,6 +505,12 @@
               "name": "servicio_resuelto",
               "value": "={{ (() => { const itemsTrue = $('¿Existe contexto?').all(0); const itemsFalse = $('¿Existe contexto?').all(1); const servicio = (itemsTrue[0] ?? itemsFalse[0])?.json?.servicio_resuelto; return servicio === 'mejoravit' || servicio === 'laudo' ? servicio : ''; })() }}",
               "type": "string"
+            },
+            {
+              "id": "6ce54691-b8a1-403f-8d5a-861d87e553c9",
+              "name": "nombre_whatsapp",
+              "value": "={{ $('Obtener datos').first().json.nombre_whatsapp }}",
+              "type": "string"
             }
           ]
         },
@@ -587,7 +603,8 @@
           "value": {
             "telefono": "={{ $json.telefono }}",
             "mensaje": "={{ $json.mensaje }}",
-            "tipo": "={{ $json.tipo }}"
+            "tipo": "={{ $json.tipo }}",
+            "nombre_whatsapp": "={{ $json.nombre_whatsapp }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -614,6 +631,16 @@
             {
               "id": "tipo",
               "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "nombre_whatsapp",
+              "displayName": "nombre_whatsapp",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -651,7 +678,8 @@
           "value": {
             "telefono": "={{ $json.telefono }}",
             "mensaje": "={{ $json.mensaje }}",
-            "tipo": "={{ $json.tipo }}"
+            "tipo": "={{ $json.tipo }}",
+            "nombre_whatsapp": "={{ $json.nombre_whatsapp }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -678,6 +706,16 @@
             {
               "id": "tipo",
               "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "nombre_whatsapp",
+              "displayName": "nombre_whatsapp",
               "required": false,
               "defaultMatch": false,
               "display": true,

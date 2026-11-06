@@ -79,6 +79,10 @@
             },
             {
               "name": "tipo"
+            },
+            {
+              "name": "nombre_whatsapp",
+              "type": "string"
             }
           ]
         }
@@ -1052,6 +1056,12 @@
               "name": "tipo",
               "value": "={{ $json.tipo }}",
               "type": "string"
+            },
+            {
+              "id": "31ae10d5-0c9a-47fb-a53f-8eb90e924a8f",
+              "name": "nombre_whatsapp",
+              "value": "={{ String($json.nombre_whatsapp ?? '') }}",
+              "type": "string"
             }
           ]
         },
@@ -2021,7 +2031,8 @@
             "phone": "=+{{ $('Revisar tabla').item.json.telefono }}",
             "state_google_ads": "={{ $('Revisar tabla').item.json.estado }}",
             "company_aux": "Proconsultores",
-            "source_aux": "whatsapp_laudo"
+            "source_aux": "whatsapp_laudo",
+            "name": "={{ $('Obtener datos').first().json.nombre_whatsapp || '' }}"
           },
           "matchingColumns": [],
           "schema": [

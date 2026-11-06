@@ -22,6 +22,12 @@
               "name": "mensaje",
               "value": "={{\n$json.body.entry[0].changes[0].value.messages[0].text?.body ||\n$json.body.entry[0].changes[0].value.messages[0].interactive?.list_reply?.id ||\n$json.body.entry[0].changes[0].value.messages[0].interactive?.button_reply?.id ||\n''\n}}",
               "type": "string"
+            },
+            {
+              "id": "c70878f0-7f16-46c9-8e3c-99d279be481c",
+              "name": "nombre_whatsapp",
+              "value": "={{ (() => { const value = $json.body?.entry?.[0]?.changes?.[0]?.value; const from = value?.messages?.[0]?.from; const contacts = Array.isArray(value?.contacts) ? value.contacts : []; const contact = typeof from === 'string' && from !== '' ? contacts.find(c => c?.wa_id === from) : undefined; const nombre = contact?.profile?.name; return typeof nombre === 'string' ? Array.from(nombre.trim()).slice(0, 120).join('').trim() : ''; })() }}",
+              "type": "string"
             }
           ]
         },
@@ -209,7 +215,8 @@
           "value": {
             "telefono": "={{ $json.telefono }}",
             "tipo": "={{ $json.tipo }}",
-            "mensaje": "={{ $json.mensaje }}"
+            "mensaje": "={{ $json.mensaje }}",
+            "nombre_whatsapp": "={{ $json.nombre_whatsapp }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -236,6 +243,16 @@
             {
               "id": "tipo",
               "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "nombre_whatsapp",
+              "displayName": "nombre_whatsapp",
               "required": false,
               "defaultMatch": false,
               "display": true,

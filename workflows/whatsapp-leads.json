@@ -79,6 +79,10 @@
             },
             {
               "name": "tipo"
+            },
+            {
+              "name": "nombre_whatsapp",
+              "type": "string"
             }
           ]
         }
@@ -989,6 +993,12 @@
               "id": "e0db4e8a-8b07-475e-95ff-7f559c23b80c",
               "name": "tipo",
               "value": "={{ $json.tipo }}",
+              "type": "string"
+            },
+            {
+              "id": "e11efc0e-3243-4baa-8840-c0d8bcf9eefe",
+              "name": "nombre_whatsapp",
+              "value": "={{ String($json.nombre_whatsapp ?? '') }}",
               "type": "string"
             }
           ]
@@ -1955,7 +1965,8 @@
             "phone": "=+{{ $('Revisar tabla').item.json.telefono }}",
             "state_google_ads": "={{ $('Revisar tabla').item.json.estado }}",
             "company_aux": "Proconsultores",
-            "source_aux": "whatsapp_mejoravit"
+            "source_aux": "whatsapp_mejoravit",
+            "name": "={{ $('Obtener datos').first().json.nombre_whatsapp || '' }}"
           },
           "matchingColumns": [],
           "schema": [
